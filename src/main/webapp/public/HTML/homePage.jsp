@@ -15,7 +15,7 @@
 </head>
 <body>
 	<%--Navbar --%>
-	<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+	<nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3">
 		<div class="container">
 			<a href="#" class="navbar-brand">CleanEverywhere</a>
 
@@ -46,12 +46,19 @@
 	</nav>
 	
 	<%-- Showcase --%>
-	<section class="bg-dark text-light p-5 text-center">
-	<div class="container">
-	<div>
-	
-	</div>
-	</div>
+	<section class="bg-dark text-light p-5 text-center text-sm-start">
+		<div class="container">
+			<div class="d-sm-flex align-items-center justify-content-between">
+				<div>
+					<h1>Book Now For Professional Cleaning</h1>
+					<p class="lead my-4">
+						Professional house cleaning services with flexible schedule and booking slots
+					</p>
+					<button class="btn btn-primary btn-lg">Book Now</button>
+				</div>
+				<img class="img-fluid w-50 d-none d-sm-block" alt="" src="../Image/types-of-house-cleaning-services-to-offer.jpg">
+			</div>
+		</div>
 	</section>
 
 
