@@ -52,11 +52,13 @@
 				<div>
 					<h1>Book Now For Professional Cleaning</h1>
 					<p class="lead my-4">
-						Professional house cleaning services with flexible schedule and booking slots
+						Professional house cleaning services with
+						flexible schedule and booking slots
 					</p>
-					<button class="btn btn-primary btn-lg">Book Now</button>
+					<button class="btn btn-primary btn-lg rounded">Book Now</button>
 				</div>
-				<img class="img-fluid w-50 d-none d-sm-block" alt="" src="../Image/types-of-house-cleaning-services-to-offer.jpg">
+				<img class="img-fluid w-50 d-none d-sm-block rounded" alt=""
+					src="../Image/types-of-house-cleaning-services-to-offer.jpg">
 			</div>
 		</div>
 	</section>
