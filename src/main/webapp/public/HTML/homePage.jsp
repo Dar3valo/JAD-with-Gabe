@@ -26,7 +26,19 @@
 
 			<div class="collapse navbar-collapse" id="navmenu">
 				<ul class="navbar-nav">
-					<li class="nav-item"><a class="nav-link" href="#Services">Services</a>
+					<li class="nav-item">
+						<a class="nav-link" href="#Services">Services</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="#login">Login</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#Register">Register</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#Booking">Book Now</a>
 					</li>
 				</ul>
 			</div>
