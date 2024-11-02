@@ -38,12 +38,21 @@
 						<a class="nav-link" href="#Register">Register</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#Booking">Book Now</a>
+						<a class="nav-link" href="#Booking">BookNow</a>
 					</li>
 				</ul>
 			</div>
 		</div>
 	</nav>
+	
+	<%-- Showcase --%>
+	<section class="bg-dark text-light p-5 text-center">
+	<div class="container">
+	<div>
+	
+	</div>
+	</div>
+	</section>
 
 
 	<script
