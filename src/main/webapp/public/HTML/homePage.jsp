@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CleanEverywhere</title>
+<link rel="stylesheet" href="../CSS/styles.css" />
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -113,7 +114,20 @@
 
 	<%-- Carousel --%>
 	<section class="p-5 bg-dark">
-		
+		<div id="allCleanCarousel" class="carousel slide"
+			data-bs-ride="carousel">
+			<div class="carousel-inner">
+				<div class="carousel-item active c-item">
+					<img src="../Image/carouselImage1.jpg" class="d-block w-100 c-img" alt="...">
+				</div>
+				<div class="carousel-item c-item">
+					<img src="../Image/carouselImage2.jpg" class="d-block w-100 c-img" alt="...">
+				</div>
+				<div class="carousel-item c-item">
+					<img src="../Image/1.jpg" class="d-block w-100 c-img" alt="...">
+				</div>
+			</div>
+		</div>
 	</section>
 
 	<script
