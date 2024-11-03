@@ -6,7 +6,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CleanEverywhere</title>
-<link rel="stylesheet" href="../CSS/styles.css" />
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -14,7 +13,18 @@
 	crossorigin="anonymous" />
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
-<link rel="stylesheet" href="../CSS/styles.css">
+<%-- <link rel="stylesheet" href="../CSS/styles.css" /> --%>
+<style>
+.c-item {
+	height: 480px;
+}
+
+.c-img {
+	height: 100%;
+	object-fit: cover;
+	filter: brightness(0.6);
+}
+</style>
 </head>
 <body>
 	<%--Navbar --%>
@@ -68,10 +78,13 @@
 				<strong>Experience AllClean Benefits</strong>
 			</h1>
 			<br>
-			<div class="row text-center d-flex align-items-stretch g-4">  <%--This makes the columns stretch to the same height --%>
+			<div class="row text-center d-flex align-items-stretch g-4">
+				<%--This makes the columns stretch to the same height --%>
 				<div class="col-md">
-					<div class="card bg-dark text-light h-100"> <%-- Set the height requirements of card to 100% and ensure card fills up the 100% space --%>
-						<div class="card-body text-center d-flex flex-column">  <%-- Allow the contents of the card to stack vertically, improving readability --%>
+					<div class="card bg-dark text-light h-100">
+						<%-- Set the height requirements of card to 100% and ensure card fills up the 100% space --%>
+						<div class="card-body text-center d-flex flex-column">
+							<%-- Allow the contents of the card to stack vertically, improving readability --%>
 							<div class="h1 mb-3">
 								<i class="bi bi-calendar-week"> Flexible Scheduling</i>
 							</div>
@@ -116,17 +129,44 @@
 	<section class="p-5 bg-dark">
 		<div id="allCleanCarousel" class="carousel slide"
 			data-bs-ride="carousel">
+			<div class="carousel-indicators">
+				<button type="button" data-bs-target="#allCleanCarousel"
+					data-bs-slide-to="0" class="active" aria-current="true"
+					aria-label="Slide 1"></button>
+				<button type="button" data-bs-target="#allCleanCarousel"
+					data-bs-slide-to="1" aria-label="Slide 2"></button>
+				<button type="button" data-bs-target="#allCleanCarousel"
+					data-bs-slide-to="2" aria-label="Slide 3"></button>
+			</div>
+
 			<div class="carousel-inner">
 				<div class="carousel-item active c-item">
-					<img src="../Image/carouselImage1.jpg" class="d-block w-100 c-img" alt="...">
+					<img src="../Image/carouselImage1.jpg" class="d-block w-100 c-img"
+						alt="...">
+					<div class="carousel-caption d-none d-md-block">
+						<h5>First slide label</h5>
+						<p>Some representative placeholder content for the first
+							slide.</p>
+					</div>
 				</div>
 				<div class="carousel-item c-item">
-					<img src="../Image/carouselImage2.jpg" class="d-block w-100 c-img" alt="...">
+					<img src="../Image/carouselImage2.jpg" class="d-block w-100 c-img"
+						alt="...">
 				</div>
 				<div class="carousel-item c-item">
 					<img src="../Image/1.jpg" class="d-block w-100 c-img" alt="...">
 				</div>
 			</div>
+			<button class="carousel-control-prev" type="button"
+				data-bs-target="#allCleanCarousel" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button"
+				data-bs-target="#allCleanCarousel" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Next</span>
+			</button>
 		</div>
 	</section>
 
