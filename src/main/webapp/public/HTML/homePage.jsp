@@ -143,18 +143,42 @@
 				<div class="carousel-item active c-item">
 					<img src="../Image/carouselImage1.jpg" class="d-block w-100 c-img"
 						alt="...">
-					<div class="carousel-caption d-none d-md-block">
-						<h5>First slide label</h5>
-						<p>Some representative placeholder content for the first
-							slide.</p>
+					<div class="carousel-caption top-0 mt-4 d-none d-md-block">
+						<h1 class="mt-5 fs-3">Kitchen Cleaning</h1>
+						<p class="lead">
+							- Washing dishes and cutlery <br>
+							- Dusting and wiping all surfaces <br>
+							- Vacuuming and mopping of floor <br>
+							- Emptying and wiping sinks
+						</p>
+						<button class="btn btn-primary px-4 py-2 fs-5 mt-5">Services</button>
 					</div>
 				</div>
 				<div class="carousel-item c-item">
 					<img src="../Image/carouselImage2.jpg" class="d-block w-100 c-img"
 						alt="...">
+						<div class="carousel-caption top-0 mt-4 d-none d-md-block">
+						<h1 class="mt-5 fs-3">Bathroom Cleaning</h1>
+						<p class="lead">
+							- Scrubbing toilets,showers and sinks <br>
+							- Wiping down mirrors and glass <br>
+							- Mopping and scrubbing floors
+						</p>
+						<button class="btn btn-primary px-4 py-2 fs-5 mt-5">Services</button>
+					</div>
 				</div>
 				<div class="carousel-item c-item">
 					<img src="../Image/1.jpg" class="d-block w-100 c-img" alt="...">
+					<div class="carousel-caption top-0 mt-4 d-none d-md-block">
+						<h1 class="mt-5 fs-3">Bedroom Cleaning</h1>
+						<p class="lead">
+							- Dusting bed surfaces <br>
+							- Mopping of floors <br>
+							- Wiping down cabinets and doors<br>
+							- Sanitizing remotes and buttons
+						</p>
+						<button class="btn btn-primary px-4 py-2 fs-5 mt-5">Services</button>
+					</div>
 				</div>
 			</div>
 			<button class="carousel-control-prev" type="button"
