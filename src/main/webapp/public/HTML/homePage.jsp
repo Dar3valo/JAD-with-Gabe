@@ -15,6 +15,12 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
 <%-- <link rel="stylesheet" href="../CSS/styles.css" /> --%>
 <style>
+body:before{
+	display: block;
+	content: '';
+	height: 60px;
+}
+
 .c-item {
 	height: 480px;
 }
@@ -69,7 +75,7 @@
 </head>
 <body>
 	<%--Navbar --%>
-	<nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3">
+	<nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 fixed-top">
 		<div class="container">
 			<a href="#" class="navbar-brand">AllClean</a>
 
@@ -89,6 +95,8 @@
 					<li class="nav-item"><a class="nav-link" href="#Register">Register</a>
 					</li>
 					<li class="nav-item"><a class="nav-link" href="#Booking">BookNow</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="#questions">Questions</a>
 					</li>
 				</ul>
 			</div>
@@ -235,6 +243,37 @@
 		</div>
 	</section>
 
+	<%-- Learn Sections --%>
+	<section id="learn" class="p-5">
+		<div class="container">
+			<h1>
+				<strong>How it works</strong>
+			</h1>
+			<br>
+			<br>
+			<div class="row align-items-center justify-content-between">
+				<div class="col-md">
+					<img src="../Image/service.jpg" class="img-fluid rounded"
+						width="400" height="400" alt="">
+				</div>
+				<div class="col-md p-5">
+					<h2>
+						<strong>Book a service</strong>
+					</h2>
+					<p class="lead">Our platform simplifies the process of booking
+						professional services, offering a streamlined experience from
+						start to finish.</p>
+					<p>Choose the type of service you need, select a convenient
+						time, and let us handle the rest. Our vetted professionals are
+						ready to deliver quality service tailored to your needs.</p>
+					<a href="#" class="btn btn-light mt-3"> <i
+						class="bi bi-chevron-right">Book Now</i>
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<%-- Testimonial carousel --%>
 	<section class="p-5 bg-dark">
 		<div class="container">
@@ -340,6 +379,104 @@
 		</div>
 	</section>
 
+	<%-- Question Accordion --%>
+	<section id="questions" class="p-5">
+		<div class="container">
+			<h2 class="text-center mb-4">Frequently Asked Questions</h2>
+			<div class="accordion accordion-flush" id="questions">
+				<%-- Item 1 --%>
+				<div class="accordion-item">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed" type="button"
+							data-bs-toggle="collapse" data-bs-target="#question-one">
+							What types of cleaning services do you offer?</button>
+					</h2>
+					<div id="question-one" class="accordion-collapse collapse"
+						data-bs-parent="#questions">
+						<div class="accordion-body">We offer a variety of cleaning
+							services, including regular home cleaning, deep cleaning,
+							move-in/move-out cleaning, office cleaning, and post-construction
+							cleaning. Contact us for any specialized cleaning needs!
+						</div>
+					</div>
+				</div>
+
+				<%-- Item 2 --%>
+				<div class="accordion-item">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed" type="button"
+							data-bs-toggle="collapse" data-bs-target="#question-two">
+							How can I book a cleaning service?</button>
+					</h2>
+					<div id="question-two" class="accordion-collapse collapse"
+						data-bs-parent="#questions">
+						<div class="accordion-body">Booking a cleaning service is
+							simple! You can book directly through our website by selecting a
+							service, choosing a date and time, and completing the booking
+							form. Alternatively, you can contact us by phone.
+						</div>
+					</div>
+				</div>
+
+				<%-- Item 3 --%>
+				<div class="accordion-item">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed" type="button"
+							data-bs-toggle="collapse" data-bs-target="#question-three">
+							Do I need to provide cleaning supplies?</button>
+					</h2>
+					<div id="question-three" class="accordion-collapse collapse"
+						data-bs-parent="#questions">
+						<div class="accordion-body">No, our cleaning professionals
+							bring all the necessary supplies and equipment. However, if you
+							have specific products you prefer, feel free to let us know, and
+							we can use them during the service.
+						</div>
+					</div>
+				</div>
+
+				<%-- Item 4 --%>
+				<div class="accordion-item">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed" type="button"
+							data-bs-toggle="collapse" data-bs-target="#question-four">
+							What is included in a deep cleaning?</button>
+					</h2>
+					<div id="question-four" class="accordion-collapse collapse"
+						data-bs-parent="#questions">
+						<div class="accordion-body">Deep cleaning includes all the
+							services in a standard cleaning, plus thorough scrubbing and
+							sanitizing of hard-to-reach areas, cleaning inside appliances,
+							and addressing grime buildup. It’s perfect for homes needing an
+							intensive refresh.
+						</div>
+					</div>
+				</div>
+
+				<%-- Item 5 --%>
+				<div class="accordion-item">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed" type="button"
+							data-bs-toggle="collapse" data-bs-target="#question-five">
+							What if I need to reschedule or cancel my appointment?</button>
+					</h2>
+					<div id="question-five" class="accordion-collapse collapse"
+						data-bs-parent="#questions">
+						<div class="accordion-body">We understand that plans can
+							change. You can reschedule or cancel your appointment by
+							contacting us at least 24 hours in advance to avoid a
+							cancellation fee. We're here to make the process as flexible as
+							possible.
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<%-- Footer --%>
+	
+	
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
