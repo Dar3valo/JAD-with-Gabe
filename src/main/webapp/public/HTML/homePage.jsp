@@ -24,6 +24,47 @@
 	object-fit: cover;
 	filter: brightness(0.6);
 }
+
+.section-header{
+	position:relative;
+	padding-bottom: 25px;
+	text-align: center;
+	font-weight: 900;
+	color: #FFF;
+}
+
+.section-header:after{
+	content: '';
+	height: 3px;
+	width: 200px;
+	position: absolute;
+	bottom: 0;
+	left: calc(50% - 100px);
+	background: #FFF;
+}
+
+.section-header span{
+	display: block;
+	font-size: 15px;
+	font-weight: 300;
+}
+
+.testimonials{
+	max-width: 1000px;
+	padding: 0 15px 50px;
+	margin: 0 auto 80px auto;
+}
+
+.single-item{
+	background: #FFF;
+	color: #111;
+	padding: 15px;
+	margin: 50px 15px;
+}
+
+.profile{
+	margin-bottom: 30px;
+}
 </style>
 </head>
 <body>
@@ -191,6 +232,111 @@
 				<span class="carousel-control-next-icon" aria-hidden="true"></span>
 				<span class="visually-hidden">Next</span>
 			</button>
+		</div>
+	</section>
+
+	<%-- Testimonial carousel --%>
+	<section class="p-5 bg-dark">
+		<div class="container">
+			<h1 class="section-header">
+				Client Review <span>Lolololololololololololololololol</span>
+			</h1>
+
+			<div class="testimonials text-light">
+				<div id="carouselExampleControls" class="carousel slide"
+					data-bs-ride="carousel">
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<div class="single-item">
+								<div class="row">
+									<div class="col-md-5">
+										<div class="profile">
+											<div class="img-area">
+												<img src="../Image/DGmail-removebg-preview.png" alt="">
+											</div>
+											<div class="bio">
+												<h2>Dave Wood</h2>
+												<h4>Web Developer</h4>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="content">
+											<p>
+												<span><i class="bi bi-chat-right-quote-fill"></i></span>WHateev uou say
+												scu thi is just gibberish for long emsssage sjdfdvjkhsuf
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="carousel-item">
+							<div class="single-item">
+								<div class="row">
+									<div class="col-md-5">
+										<div class="profile">
+											<div class="img-area">
+												<img src="../Image/JGmail-removebg-preview.png" alt="">
+											</div>
+											<div class="bio">
+												<h2>Dave Wood</h2>
+												<h4>Web Developer</h4>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="content">
+											<p>
+												<span><i class="bi bi-chat-right-quote-fill"></i></span>WHateev uou say
+												scu thi is just gibberish for long emsssage sjdfdvjkhsuf
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="carousel-item">
+							<div class="single-item">
+								<div class="row">
+									<div class="col-md-5">
+										<div class="profile">
+											<div class="img-area">
+												<img src="../Image/SGmail-removebg-preview.png" alt="">
+											</div>
+											<div class="bio">
+												<h2>Dave Wood</h2>
+												<h4>Web Developer</h4>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="content">
+											<p>
+												<span><i class="bi bi-chat-right-quote-fill"></i></span>WHateev uou say
+												scu thi is just gibberish for long emsssage sjdfdvjkhsuf
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<button class="carousel-control-prev" type="button"
+						data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button"
+						data-bs-target="#carouselExampleControls" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
+			</div>
 		</div>
 	</section>
 
