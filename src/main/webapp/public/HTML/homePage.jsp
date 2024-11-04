@@ -476,35 +476,6 @@ body:before{
 		</div>
 	</section>
 	
-	<%-- Contact and map (to be pasted in contact.jsp)--%>
-	<section class="p-5">
-		<div class="container">
-			<div class="row g-4">
-				<div class="col-md">
-					<h2 class="text-center mb-4">Contact Info</h2>
-					<ul class="list-group list-group-flush lead">
-						<li class="list-group-item">
-							<span class="fw-bold">Main Location:</span> Dover Avenue 12 Singapore
-						</li>
-						<li class="list-group-item">
-							<span class="fw-bold">AllClean Customer Service:</span> +65 92376592
-						</li>
-						<li class="list-group-item">
-							<span class="fw-bold">AllClean email:</span> allclean1234@gmail.com
-						</li>
-					</ul>
-				</div>
-				<%-- Map Implementation --%>
-				<div class="col-md">
-					<iframe class="rounded"
-						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.775867639408!2d103.774974574942!3d1.3097810617033891!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da1a602ff17c15%3A0xa9545dd23993859e!2sSingapore%20Polytechnic!5e0!3m2!1sen!2ssg!4v1730737891172!5m2!1sen!2ssg"
-						width="600" height="450" style="border: 0;" allowfullscreen=""
-						loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-					</iframe>
-				</div>
-			</div>
-		</div>
-	</section>
 
 	<%-- Footer --%>
 	<footer class="p-5 bg-dark text-white text-center position-relative">
