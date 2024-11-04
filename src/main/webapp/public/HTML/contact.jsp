@@ -62,9 +62,9 @@ body:before {
 						<li class="list-group-item"><span class="fw-bold">Main
 								Location:</span> Dover Avenue 12 Singapore</li>
 						<li class="list-group-item"><span class="fw-bold">AllClean
-								Customer Service:</span> +65 92376592</li>
+								Customer Service:</span> +65 68704727</li>
 						<li class="list-group-item"><span class="fw-bold">AllClean
-								email:</span> allclean1234@gmail.com</li>
+								email:</span> vernon_tan@ichat.sp.edu.sg</li>
 					</ul>
 				</div>
 				<%-- Map Implementation --%>
