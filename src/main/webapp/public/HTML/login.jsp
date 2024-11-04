@@ -74,6 +74,8 @@
 		<input type="submit" name="btnSubmit" value=Login>
 		<input type="reset" name="btnReset" value=Reset>
 	</form> --%>
+	
+	<script src="../JS/loginJS.js"></script>
 
 
 </body>
