@@ -252,7 +252,7 @@
 									<div class="col-md-5">
 										<div class="profile">
 											<div class="img-area">
-												<img src="../Image/DGmail-removebg-preview.png" alt="">
+												<img src="../Image/D Removed BG_edited.jpg" alt="">
 											</div>
 											<div class="bio">
 												<h2>Dave Wood</h2>
@@ -278,7 +278,7 @@
 									<div class="col-md-5">
 										<div class="profile">
 											<div class="img-area">
-												<img src="../Image/JGmail-removebg-preview.png" alt="">
+												<img src="../Image/J Removed BG.png" alt="">
 											</div>
 											<div class="bio">
 												<h2>Dave Wood</h2>
@@ -304,7 +304,7 @@
 									<div class="col-md-5">
 										<div class="profile">
 											<div class="img-area">
-												<img src="../Image/SGmail-removebg-preview.png" alt="">
+												<img src="../Image/S 213x213.jpg" alt="">
 											</div>
 											<div class="bio">
 												<h2>Dave Wood</h2>
