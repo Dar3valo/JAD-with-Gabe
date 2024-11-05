@@ -76,7 +76,7 @@ body:before{
 	<%--Navbar --%>
 	<nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 fixed-top">
 		<div class="container">
-			<a href="#" class="navbar-brand">AllClean</a>
+			<a href="homePage.jsp" class="navbar-brand">AllClean</a>
 
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navmenu">
@@ -89,7 +89,10 @@ body:before{
 					</li>
 				</ul>
 				<ul class="navbar-nav ms-auto">
-					<li class="nav-item"><a class="nav-link" href="#login">Login</a>
+					<li class="nav-item">
+					<a id="logoutButton" href="#" class="nav-link d-none">Logout</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="loginv2.jsp">Login</a>
 					</li>
 					<li class="nav-item"><a class="nav-link" href="#Register">Register</a>
 					</li>
