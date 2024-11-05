@@ -12,7 +12,7 @@
 	crossorigin="anonymous" />
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
-<link rel="stylesheet" href="loginStylesV2" />
+<link rel="stylesheet" href="../CSS/loginStylesV2.css" />
 <title>New Simple Login</title>
 <style>
 body:before {
@@ -44,7 +44,7 @@ body:before {
 					</li>
 					<li class="nav-item"><a class="nav-link" href="loginv2.jsp">Login</a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="#Register">Register</a>
+					<li class="nav-item"><a class="nav-link" href="register.jsp">Register</a>
 					</li>
 					<li class="nav-item"><a class="nav-link" href="#Booking">BookNow</a>
 					</li>
@@ -59,7 +59,7 @@ body:before {
 
 
 	<%-- Login Section --%>
-	<section class="p-5">
+	<section class="d-flex justify-content-center align-items-center min-vh-100 p-5">
 		<div
 			class="container-flex justify-content-center align-items-center min-vh-100">
 			<div class="row border rounded-5 p-3 bg-white shadow box-area">
