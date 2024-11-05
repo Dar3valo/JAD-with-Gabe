@@ -41,7 +41,7 @@ body:before{
 					<li class="nav-item">
 					<a id="logoutButton" href="#" class="nav-link d-none">Logout</a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="loginv2.jsp">Login</a>
+					<li class="nav-item"><a class="nav-link" href="login.jsp">Login</a>
 					</li>
 					<li class="nav-item"><a class="nav-link" href="register.jsp">Register</a>
 					</li>
