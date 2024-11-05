@@ -105,7 +105,7 @@ body:before {
                     <button class="btn btn-lg btn-primary w-100 fs-6">Login</button>
                 </div>
                 <div class="row">
-                    <small>Don't have account? <a href="#">Sign Up</a></small>
+                    <small>Don't have account? <a href="register.jsp">Sign Up</a></small>
                 </div>
           </div>
        </div> 
