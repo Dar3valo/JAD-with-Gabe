@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AllClean User feedback form</title>
+<link href="../CSS/star.css" rel="stylesheet">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -77,6 +78,19 @@ body:before {
 							<textarea rows="4" class="form-control" required></textarea>
 							<br>
 						</div>
+
+						<div class="form-group mb-4">
+							<label class="form-label text-white">Rate our services:</label>
+							<div class="rating">
+								<input type="radio" name="rating" id="r1"><label for="r1"></label>
+								<input type="radio" name="rating" id="r2"><label for="r2"></label>
+								<input type="radio" name="rating" id="r3"><label for="r3"></label>
+								<input type="radio" name="rating" id="r4"><label for="r4"></label>
+								<input type="radio" name="rating" id="r5"> <label for="r5"></label>
+							</div>
+						</div>
+						
+						
 						<button type="submit" class="btn btn-primary">Submit</button>
 					</form>
 				</div>
