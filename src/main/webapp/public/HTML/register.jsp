@@ -60,7 +60,6 @@ body:before {
 	</nav>
 
 
-	<%-- Login Section --%>
 	<%-- Registration Section --%>
 <section class="d-flex justify-content-center align-items-center min-vh-100 p-5">
     <div class="container-flex justify-content-center align-items-center min-vh-100">
