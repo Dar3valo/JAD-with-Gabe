@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AllCleanFooter</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -12,16 +13,17 @@
 	crossorigin="anonymous" />
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
-<link rel="stylesheet" href="../CSS/register.css" />
-<title>AllCleanRegister</title>
 </head>
 <body>
-
-	<%-- Navbar --%>
-	<jsp:include page="navbar.jsp" />
-	
 	<%-- Footer --%>
-	<jsp:include page="footer.jsp" />
-	
+	<footer class="p-5 bg-dark text-white text-center position-relative">
+		<div class="container">
+			<p class="lead">Copyright &copy; 2024 AllClean Services</p>
+			
+			<a href="#" class="position-absolute bottom-0 end-0 p-5">
+				<i class="bi bi-arrow-up-circle h1"></i>
+			</a>
+		</div>
+	</footer>
 </body>
 </html>
