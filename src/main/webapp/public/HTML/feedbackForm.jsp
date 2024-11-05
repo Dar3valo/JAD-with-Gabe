@@ -66,6 +66,16 @@ body:before {
 					<p class="text-white">We would love to hear from you!</p>
 					<hr class="bg-light">
 					<form>
+						<div id="rating-parent" class="form-group">
+							<div class="rating">
+								<input type="radio" name="rating" id="r1"><label for="r1"></label>
+								<input type="radio" name="rating" id="r2"><label for="r2"></label>
+								<input type="radio" name="rating" id="r3"><label for="r3"></label>
+								<input type="radio" name="rating" id="r4"><label for="r4"></label>
+								<input type="radio" name="rating" id="r5"> <label for="r5"></label>
+							</div>
+						</div>
+						
 						<div class="form-group mb-2">
 							<label class="form-label text-white">Comments on cleaning
 								services:</label>
@@ -78,20 +88,8 @@ body:before {
 							<textarea rows="4" class="form-control" required></textarea>
 							<br>
 						</div>
-
-						<div class="form-group mb-4">
-							<label class="form-label text-white">Rate our services:</label>
-							<div class="rating">
-								<input type="radio" name="rating" id="r1"><label for="r1"></label>
-								<input type="radio" name="rating" id="r2"><label for="r2"></label>
-								<input type="radio" name="rating" id="r3"><label for="r3"></label>
-								<input type="radio" name="rating" id="r4"><label for="r4"></label>
-								<input type="radio" name="rating" id="r5"> <label for="r5"></label>
-							</div>
-						</div>
 						
-						
-						<button type="submit" class="btn btn-primary">Submit</button>
+						<button type="submit" class="btn btn-primary mt-4">Submit</button>
 					</form>
 				</div>
 			</div>
