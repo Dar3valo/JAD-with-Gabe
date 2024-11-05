@@ -43,7 +43,7 @@ body:before {
 					</li>
 					<li class="nav-item"><a class="nav-link" href="#Booking">BookNow</a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="#questions">Questions</a>
+					<li class="nav-item"><a class="nav-link" href="homePage.jsp#questions">Questions</a>
 					</li>
 					<li class="nav-item"><a class="nav-link" href="contact.jsp">Contact
 							Us</a></li>
