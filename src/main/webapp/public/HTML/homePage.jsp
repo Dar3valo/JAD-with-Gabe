@@ -64,6 +64,91 @@
 .profile{
 	margin-bottom: 30px;
 }
+
+#testimonialCarousel{
+	display: grid;
+	place-items: center;
+	height: 100vh;
+}
+
+.section-header{
+	position: relative;
+	text-align: center;
+	font-weight: 900;
+	padding-bottom: 25px;
+	color: #fff;
+}
+
+.section-header:after{
+	content: '';
+	height: 3px;
+	width: 200px;
+	position: absolute;
+	bottom: 0;
+	left: calc(50% - 100px);
+	background: #fff;
+}
+
+.section-header span{
+	display: block;
+	font-size: 15px;
+	font-weight: 300;
+}
+
+.testimonials{
+	max-width: 1000px;
+	padding: 0 15px 50px;
+	margin: 0 auto 80px auto;
+}
+
+.single-item{
+	background: #fff;
+	color: #111;
+	padding: 15px;
+	margin: 50px 15px;
+}
+
+.profile{
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+.img-area{
+	margin: 0 15px 15px 15px;
+}
+
+.img-area img{
+	height: 200px;
+	width: 200px;
+	border-radius: 50%;
+	border: 7px solid #212529;
+	object-fit: cover;
+}
+
+.content{
+	font-size: 18px;
+}
+
+.content p{
+	text-align:justify;
+}
+
+.content p span{
+	font-size: 48px;
+	margin-right: 20px;
+	color: #212529;
+}
+
+.bio h4{
+	font-family: berkshire swash;
+}
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon{
+	background-color: #212529;
+	
+}
+
 </style>
 </head>
 <body>
@@ -167,7 +252,9 @@
 							- Vacuuming and mopping of floor <br>
 							- Emptying and wiping sinks
 						</p>
-						<button class="btn btn-primary px-4 py-2 fs-5 mt-5">Services</button>
+						<button class="btn btn-primary px-4 py-2 fs-5 mt-5"
+							onclick="window.location.href='services.jsp'">Services
+						</button>
 					</div>
 				</div>
 				<div class="carousel-item c-item">
@@ -180,7 +267,9 @@
 							- Wiping down mirrors and glass <br>
 							- Mopping and scrubbing floors
 						</p>
-						<button class="btn btn-primary px-4 py-2 fs-5 mt-5">Services</button>
+						<button class="btn btn-primary px-4 py-2 fs-5 mt-5"
+							onclick="window.location.href='services.jsp'">Services
+						</button>
 					</div>
 				</div>
 				<div class="carousel-item c-item">
@@ -193,7 +282,9 @@
 							- Wiping down cabinets and doors<br>
 							- Sanitizing remotes and buttons
 						</p>
-						<button class="btn btn-primary px-4 py-2 fs-5 mt-5">Services</button>
+						<button class="btn btn-primary px-4 py-2 fs-5 mt-5"
+							onclick="window.location.href='services.jsp'">Services
+						</button>
 					</div>
 				</div>
 			</div>
@@ -242,10 +333,10 @@
 	</section>
 
 	<%-- Testimonial carousel --%>
-	<section class="p-5 bg-dark">
+	<section class="p-5 bg-dark" id="testimonialCarousel">
 		<div class="container">
 			<h1 class="section-header">
-				Client Review <span>Lolololololololololololololololol</span>
+				Client Review <span>AllClean Services Feedback</span>
 			</h1>
 
 			<div class="testimonials text-light">
@@ -258,7 +349,7 @@
 									<div class="col-md-5">
 										<div class="profile">
 											<div class="img-area">
-												<img src="../Image/D Removed BG_edited.jpg" alt="">
+												<img src="../Image/defaultpic.png" alt="">
 											</div>
 											<div class="bio">
 												<h2>Dave Wood</h2>
@@ -270,8 +361,11 @@
 									<div class="col-md-6">
 										<div class="content">
 											<p>
-												<span><i class="bi bi-chat-right-quote-fill"></i></span>WHateev uou say
-												scu thi is just gibberish for long emsssage sjdfdvjkhsuf
+												<span><i class="bi bi-chat-right-quote-fill"></i></span>
+												I'm so busy coding nowadays for my company project that I barely
+												have time to clean up my house. Thanks for AllClean, my house is well-maintained
+												and cleaned every week. I'm so grateful to AllClean services as this has saved me
+												a lot of time and trouble!
 											</p>
 										</div>
 									</div>
@@ -284,11 +378,11 @@
 									<div class="col-md-5">
 										<div class="profile">
 											<div class="img-area">
-												<img src="../Image/J Removed BG.png" alt="">
+												<img src="../Image/defaultpic.png" alt="">
 											</div>
 											<div class="bio">
-												<h2>Dave Wood</h2>
-												<h4>Web Developer</h4>
+												<h2>John Doe</h2>
+												<h4>Oracle CEO</h4>
 											</div>
 										</div>
 									</div>
@@ -296,8 +390,9 @@
 									<div class="col-md-6">
 										<div class="content">
 											<p>
-												<span><i class="bi bi-chat-right-quote-fill"></i></span>WHateev uou say
-												scu thi is just gibberish for long emsssage sjdfdvjkhsuf
+												<span><i class="bi bi-chat-right-quote-fill"></i></span>
+												AllClean services is the best cleaning service I have ever heard of.
+												The maid is so friendly and does everything I tell her to do. Will recommend!
 											</p>
 										</div>
 									</div>
@@ -310,11 +405,11 @@
 									<div class="col-md-5">
 										<div class="profile">
 											<div class="img-area">
-												<img src="../Image/S 213x213.jpg" alt="">
+												<img src="../Image/defaultpic.png" alt="">
 											</div>
 											<div class="bio">
-												<h2>Dave Wood</h2>
-												<h4>Web Developer</h4>
+												<h2>Sarah Leo</h2>
+												<h4>Pre-School Teacher</h4>
 											</div>
 										</div>
 									</div>
@@ -322,9 +417,10 @@
 									<div class="col-md-6">
 										<div class="content">
 											<p>
-												<span><i class="bi bi-chat-right-quote-fill"></i></span>WHateev uou say
-												scu thi is just gibberish for long emsssage sjdfdvjkhsuf
-											</p>
+												<span><i class="bi bi-chat-right-quote-fill"></i></span>
+												AllClean services saves a lot of time for me since I'm out majority of the day
+												and always come back tired. The maid helps do all the housework and tidying
+												and I can just rest and have some alone time. Will recommend 10/10!
 										</div>
 									</div>
 								</div>
