@@ -50,8 +50,10 @@ body:before {
 					</li>
 					<li class="nav-item"><a class="nav-link" href="homePage.jsp#questions">Questions</a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="contact.jsp">Contact
-							Us</a></li>
+					<li class="nav-item"><a class="nav-link" href="contact.jsp">Contact Us</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="feedbackForm.jsp">Feedback</a>
+					</li>
 				</ul>
 			</div>
 		</div>
