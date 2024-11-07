@@ -68,6 +68,22 @@
 								class="form-control form-control-lg bg-light fs-6"
 								placeholder="Confirm Password">
 						</div>
+						<div id="gender-parent" class="form-group my-2">
+							<div class="gender d-flex justify-content-center">
+								<div class="me-3">
+									<input type="radio" name="gender" id="male"><label
+										for="male">&nbsp;Male</label>
+								</div>
+								<div class="me-3">
+									<input type="radio" name="gender" id="female"><label
+										for="female">&nbsp;Female</label>
+								</div>
+								<div class="me-3">
+									<input type="radio" name="gender" id="ratherNotSay"><label
+										for="ratherNotSay">&nbsp;Rather not say</label>
+								</div>
+							</div>
+						</div>
 						<div class="input-group mb-3">
 							<button class="btn btn-lg btn-primary w-100 fs-6">Sign
 								Up</button>
@@ -80,7 +96,7 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<%-- Footer --%>
 	<jsp:include page="footer.jsp" />
 	
