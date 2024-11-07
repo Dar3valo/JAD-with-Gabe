@@ -73,7 +73,7 @@
 								Up</button>
 						</div>
 						<div class="row">
-							<small>Already have an account? <a href="loginv2.jsp">Login</a></small>
+							<small>Already have an account? <a href="login.jsp">Login</a></small>
 						</div>
 					</div>
 				</div>
