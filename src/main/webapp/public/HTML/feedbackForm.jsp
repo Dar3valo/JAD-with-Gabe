@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AllClean User feedback form</title>
 <link href="../CSS/star.css" rel="stylesheet">
+<link href="../CSS/feedback.css" rel="stylesheet">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -39,6 +40,31 @@
 							</div>
 						</div>
 						
+						<hr class="bg-light">
+
+						<div class="form-check text-white">
+							<%-- Social Media Checkbox --%>
+							<input type="checkbox" class="form-check-input" id="socialMedia">
+							<label for="socialMedia" class="form-check-label text-light">Social
+								Media</label><br>
+
+							<%-- Friends Checkbox --%>
+							<input type="checkbox" class="form-check-input" id="friends">
+							<label for="friends" class="form-check-label text-light">Friends</label><br>
+
+							<%-- Internet Checkbox --%>
+							<input type="checkbox" class="form-check-input" id="internet">
+							<label for="internet" class="form-check-label text-light">Internet</label><br>
+
+							<%-- Others Checkbox --%>
+							<input type="checkbox" class="form-check-input" id="others">
+							<label for="others" class="form-check-label text-light">Others:</label><br>
+
+							<%-- Textarea for Other's Checkbox --%>
+							<textarea id="otherSource" class="form-control mt-2"
+								placeholder="Please specify"></textarea>
+						</div>
+
 						<div class="form-group mb-2">
 							<label class="form-label text-white">Comments on cleaning
 								services:</label>
