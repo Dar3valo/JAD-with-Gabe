@@ -62,7 +62,7 @@
 
 							<%-- Textarea for Other's Checkbox --%>
 							<textarea id="otherSource" class="form-control mt-2"
-								placeholder="Please specify"></textarea>
+								placeholder="Please specify"></textarea><br>
 						</div>
 
 						<div class="form-group mb-2">
