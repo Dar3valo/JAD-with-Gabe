@@ -48,25 +48,26 @@
 							<h2>Welcome!</h2>
 							<p>Sign up to get started with AllClean.</p>
 						</div>
+						<form method="post" action="registerBackend.jsp">
 						<div class="input-group mb-3">
 							<input type="text"
 								class="form-control form-control-lg bg-light fs-6"
-								placeholder="Full Name">
+								placeholder="Full Name" name="name">
 						</div>
 						<div class="input-group mb-3">
 							<input type="text"
 								class="form-control form-control-lg bg-light fs-6"
-								placeholder="Email Address">
+								placeholder="Email Address" name="email">
 						</div>
 						<div class="input-group mb-3">
 							<input type="password"
 								class="form-control form-control-lg bg-light fs-6"
-								placeholder="Password">
+								placeholder="Password" name="password">
 						</div>
 						<div class="input-group mb-3">
 							<input type="password"
 								class="form-control form-control-lg bg-light fs-6"
-								placeholder="Confirm Password">
+								placeholder="Confirm Password" name="confirmPassword">
 						</div>
 						<div id="gender-parent" class="form-group my-2">
 							<div class="gender d-flex justify-content-center">
@@ -88,6 +89,7 @@
 							<button class="btn btn-lg btn-primary w-100 fs-6">Sign
 								Up</button>
 						</div>
+						</form>
 						<div class="row">
 							<small>Already have an account? <a href="login.jsp">Login</a></small>
 						</div>
