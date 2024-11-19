@@ -24,7 +24,7 @@
 
 	<%-- Booking Section with cart --%>
 	<section class="p-5">
-		<div class="bf-container">
+		<div class="bf-container bg-white">
 			<div class="bf-body">
 				<div class="bf-head">
 					<h1>Booking Form</h1>
@@ -76,7 +76,7 @@
 				</form>
 				
 				<div class="bf-footer">
-					<p>Designed by <a href="#">-Coders Fly-</a></p>
+					<p>Designed by <a href="#">-The Codey Duo-</a></p>
 				</div>
 				
 				

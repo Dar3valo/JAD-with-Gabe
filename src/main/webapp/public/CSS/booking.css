@@ -23,7 +23,7 @@ p{
 
 a{
 	text-decoration: none;
-	color: #115035;
+	color: #fff;
 }
 
 .bf-container{
@@ -63,7 +63,7 @@ a{
 }
 
 .bf-head p{
-	color: #115035;
+	color: #fff;
 }
 
 input, textarea, select{
