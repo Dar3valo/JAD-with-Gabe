@@ -48,7 +48,7 @@
 							<h2>Welcome!</h2>
 							<p>Sign up to get started with AllClean.</p>
 						</div>
-						<form method="post" action="registerBackend.jsp">
+						<form method="post" action="<%=request.getContextPath()%>/UserRegisterServlet">
 						<div class="input-group mb-3">
 							<input type="text"
 								class="form-control form-control-lg bg-light fs-6"
