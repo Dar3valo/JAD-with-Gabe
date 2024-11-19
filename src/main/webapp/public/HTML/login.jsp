@@ -49,9 +49,9 @@
 							<p>We are happy to have you back.</p>
 						</div>
 						 <!-- Start of form tag -->
-                    <form method="post" action="loginBackend.jsp"> <!-- Form action points to the servlet for processing -->
+                    <form method="post" action="<%=request.getContextPath()%>/UserLoginServlet"> <!-- Form action points to the servlet for processing -->
                         <div class="input-group mb-3">
-                            <input type="text" name="loginid" class="form-control form-control-lg bg-light fs-6"
+                            <input type="text" name="email" class="form-control form-control-lg bg-light fs-6"
                                 placeholder="Email address" required>
                         </div>
                         <div class="input-group mb-1">
