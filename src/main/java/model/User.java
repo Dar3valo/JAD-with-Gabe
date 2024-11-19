@@ -1,10 +1,10 @@
 package model;
 
-public class Login {
+public class User {
 	private String email;
 	private String password;
 	
-	public Login(String email, String password) {
+	public User(String email, String password) {
 		super();
 		this.email = email;
 		this.password = password;
