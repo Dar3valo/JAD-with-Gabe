@@ -7,5 +7,9 @@ body{
 }
 
 .primaryFont {
+	font-weight: 700;
+}
+
+.secondaryFont {
 	font-weight: 600;
 }

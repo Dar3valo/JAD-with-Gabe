@@ -21,21 +21,38 @@
     <jsp:include page="navbar.jsp" />
 
     <!-- Main content -->
-    <div class="container d-flex flex-column vh-100 mx-0">
+    <div class="container-fluid d-flex flex-column vh-100 mx-0">
         <div class="row my-5 h-100">
             <%-- Filter Sidepanel --%>
-            <section id="filter" class="col-3">
-	            <div class="border-end h-100">
-	                <h3 class="border-bottom mx-3 pb-5 primaryFont">Filter By Category</h3>
-                </div>
-            </section>
+            <div class="col-3">
+	            <section id="filter" class="border-end h-100">
+	                <h3 class="border-bottom mx-3 pb-5 mb-5 primaryFont">Filter By Category</h3>
+	                <div class="mx-3">
+	                	<!-- Filter Categories Form Here -->
+	                	<h4 class="secondaryFont">Categories</h4>
+	                	<form class="lh-lg">
+	                		<input type="checkbox" id="home" name="home" value="home">
+							<label for="home"> Home Cleaning</label><br>
+							<input type="checkbox" id="office" name="office" value="office">
+							<label for="office"> Office Cleaning</label><br>
+							<input type="checkbox" id="tapestry" name="tapestry" value="tapestry">
+							<label for="tapestry"> Tapestry Cleaning</label><br> 
+	                	</form>
+	                </div>
+                </section>
+            </div>
 
             <%-- Display Services --%>
-            <section class="col-9 pr-5 ml-5">
-	            <div class="h-100">
+            <div class="col-9 pr-5 ml-5">
+	            <section id="services" class="h-100">
                 	<h3 class="border-bottom mx-3 pb-5 primaryFont">Services</h3>
-                </div>
-            </section>
+	                <div class="mx-3">
+	                	<!-- Services Offered Displayed Here -->
+	                	<%-- Dummy Modal Service --%>
+	                	
+	                </div>
+                </section>
+            </div>
         </div>
     </div>
 
