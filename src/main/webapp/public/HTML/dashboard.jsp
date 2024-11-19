@@ -46,10 +46,24 @@
             <div class="col-9 pr-5 ml-5">
 	            <section id="services" class="h-100">
                 	<h3 class="border-bottom mx-3 pb-5 primaryFont">Services</h3>
-	                <div class="mx-3">
+	                <div class="mx-3 servicesContainer overflow-auto">
 	                	<!-- Services Offered Displayed Here -->
 	                	<%-- Dummy Modal Service --%>
-	                	
+                		<div class="serviceModal p-0"> <!-- overall -->
+                		 	<!-- image -->
+						    <div class="serviceModalImageWrapper">
+						        <img class="serviceModalImageImg" src="../Image/carouselImage1.jpg" alt="...">
+						        <div class="serviceModalImageGradient h-100"></div>
+						        <h5 class="serviceModalImagePrice text-end me-5 pt-2 pe-3 fw-bolder">$90</h5>
+						        <h6 class="serviceModalImageText mb-0 pb-0 ps-3 text-start">Example Name of Something</h6>
+						    </div>
+						    
+						    <!-- description -->
+						    <div>
+						        <p class="text-start">Description goes here</p>
+						    </div>
+						</div>
+						
 	                </div>
                 </section>
             </div>

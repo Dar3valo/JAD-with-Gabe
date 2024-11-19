@@ -13,3 +13,94 @@ body{
 .secondaryFont {
 	font-weight: 600;
 }
+
+.servicesContainer {
+    display: flex;              /* Enables flexbox */
+    flex-wrap: wrap;            /* Allow children to wrap to the next line when needed */
+    overflow-x: auto;           /* Enables horizontal scrollbar when content overflows */
+    gap: 10px;                  /* Adds spacing between children */
+    max-height: 75vh;
+}
+
+.servicesContainer > * {
+    flex: 0 0 auto;             /* Prevents the child from growing or shrinking */
+    width: 200px;               /* Set a fixed width for each child */
+    height: 150px;              /* Set a fixed height for each child */
+    background-color: lightgray; /* Background color for better visibility */
+    border: 1px solid #ccc;     /* Optional: border for visibility */
+}
+
+.serviceModal {
+    width: 350px;
+    height: 400px;
+    background-color: #f0f0f0; /* Optional: Background to help visualize the div */
+    border: 1px solid #ccc; /* Optional: Border to distinguish the div */
+    display: flex; /* Flexbox for proper alignment of child elements */
+    flex-direction: column; /* Stack image and description vertically */
+    overflow: hidden; /* Ensure content fits within the dimensions */
+}
+.serviceModal img {
+    width: 100%; /* Make the image take the full width */
+    height: 100%; /* Set the image height relative to the parent */
+    object-fit: cover; /* Ensure the image fills its space without distortion */
+}
+.serviceModal div {
+    height: 50%; /* Allocate the remaining space for the description */
+    padding: 10px; /* Add some padding for the description */
+    text-align: center; /* Center align text */
+}
+
+.serviceModal > * {
+	margin: 0px;
+	padding: 0px;
+}
+
+.serviceModalImageWrapper {
+    position: relative;
+    width: 100%;
+    height: 300px;
+}
+
+.serviceModalImageImg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 100;
+}
+
+.serviceModalImageGradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0) 100%);
+    z-index: 101;
+}
+
+.serviceModalImageText {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    color: white;
+    z-index: 102;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.serviceModalImagePrice {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    color: limegreen;
+    text-shadow: 0 0 8px green, 0 0 12px green, 0 0 16px green;
+    z-index: 102;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
