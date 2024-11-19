@@ -38,13 +38,22 @@ body:before{
 					</li>
 				</ul>
 				<ul class="navbar-nav ms-auto">
-					<li class="nav-item">
-					<a id="logoutButton" href="#" class="nav-link d-none">Logout</a>
-					</li>
+				
+					<% 
+                        // Check if the user is logged in
+                        Object loggedInUser = session.getAttribute("loggedInUser");
+                        if (loggedInUser != null) {
+                    %>
+                        <li class="nav-item">
+                            <a id="logoutButton" href="logout.jsp" class="nav-link">Logout</a>
+                        </li>
+                    <% } else { %>
+					
 					<li class="nav-item"><a class="nav-link" href="login.jsp">Login</a>
 					</li>
 					<li class="nav-item"><a class="nav-link" href="register.jsp">Register</a>
 					</li>
+					<% } %>
 					<li class="nav-item"><a class="nav-link" href="booking.jsp">BookNow</a>
 					</li>
 					<li class="nav-item"><a class="nav-link" href="homePage.jsp#questions">Questions</a>
