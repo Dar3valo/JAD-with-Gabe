@@ -76,7 +76,7 @@
 				</form>
 				
 				<div class="bf-footer">
-					<p>Desgined by <a href="#">-Coders Fly-</a></p>
+					<p>Designed by <a href="#">-Coders Fly-</a></p>
 				</div>
 				
 				
