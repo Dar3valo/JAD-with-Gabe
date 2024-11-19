@@ -33,7 +33,7 @@
             <%-- Display Services --%>
             <section class="col-9 pr-5 ml-5">
 	            <div class="h-100">
-                	<h3 class="primaryFont">Services</h3>
+                	<h3 class="border-bottom mx-3 pb-5 primaryFont">Services</h3>
                 </div>
             </section>
         </div>
