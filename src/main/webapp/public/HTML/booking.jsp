@@ -90,6 +90,10 @@
                     <label for="zip" class="form-label">Zip</label>
                     <input type="text" class="form-control" id="zip" required>
                 </div>
+                <div>
+                	<label for="specialRequest" class="form-label">Special Request</label>
+                	<textarea class="form-control" id="specialRequest" rows="4" placeholder="Enter your special request here" required></textarea>
+                </div>
 
                 <!-- Terms and Conditions -->
                 <div class="col-12">
