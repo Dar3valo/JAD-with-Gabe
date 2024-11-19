@@ -1,26 +1,22 @@
-DO $$ 
-BEGIN
-    -- Dynamically drop all foreign key constraints
-    EXECUTE (
-        SELECT string_agg(
-            'ALTER TABLE ' || quote_ident(table_schema) || '.' || quote_ident(table_name) || 
-            ' DROP CONSTRAINT ' || quote_ident(constraint_name) || ';',
-            ' '
-        )
-        FROM information_schema.table_constraints
-        WHERE constraint_type = 'FOREIGN KEY'
-    );
+-- Drop tables without dependencies first
+DROP TABLE IF EXISTS Service_Service_Category;
+DROP TABLE IF EXISTS Service_Offered;
+DROP TABLE IF EXISTS Cart_Item;
 
-    -- Dynamically drop all tables
-    EXECUTE (
-        SELECT string_agg(
-            'DROP TABLE IF EXISTS ' || quote_ident(table_schema) || '.' || quote_ident(table_name) || ' CASCADE;',
-            ' '
-        )
-        FROM information_schema.tables
-        WHERE table_schema = 'public'
-    );
-END $$;
+-- Drop tables with dependencies next
+DROP TABLE IF EXISTS Booking;
+DROP TABLE IF EXISTS Active_Session;
+
+-- Drop dependent tables' parents
+DROP TABLE IF EXISTS Service;
+DROP TABLE IF EXISTS Service_Category;
+
+-- Drop users and related tables
+DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Role;
+
+-- Finally, drop remaining independent tables
+DROP TABLE IF EXISTS Schedule;
 
 -- CREATE TABLES
 CREATE TABLE Role (
@@ -29,7 +25,7 @@ CREATE TABLE Role (
     description TEXT
 );
 
-CREATE TABLE User (
+CREATE TABLE Users (
     user_id INT PRIMARY KEY,
     password VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
@@ -90,13 +86,13 @@ CREATE TABLE Cart_Item (
 );
 
 -- CREATE FOREIGN KEYS
-ALTER TABLE User
+ALTER TABLE Users
 ADD CONSTRAINT fk_user_role
 FOREIGN KEY (role_id) REFERENCES Role(role_id);
 
 ALTER TABLE Active_Session
 ADD CONSTRAINT fk_active_session_user
-FOREIGN KEY (user_id) REFERENCES User(user_id);
+FOREIGN KEY (user_id) REFERENCES Users(user_id);
 
 ALTER TABLE Service
 ADD CONSTRAINT fk_service_category
@@ -112,14 +108,14 @@ ALTER TABLE Service_Offered
 ADD CONSTRAINT fk_service_offered_service
 FOREIGN KEY (service_id) REFERENCES Service(service_id),
 ADD CONSTRAINT fk_service_offered_user
-FOREIGN KEY (user_id) REFERENCES User(user_id);
+FOREIGN KEY (user_id) REFERENCES Users(user_id);
 
 ALTER TABLE Booking
 ADD CONSTRAINT fk_booking_user
-FOREIGN KEY (user_id) REFERENCES User(user_id),
+FOREIGN KEY (user_id) REFERENCES Users(user_id),
 ADD CONSTRAINT fk_booking_schedule
 FOREIGN KEY (schedule_id) REFERENCES Schedule(schedule_id);
 
 ALTER TABLE Cart_Item
 ADD CONSTRAINT fk_cart_item_user
-FOREIGN KEY (user_id) REFERENCES User(user_id);
+FOREIGN KEY (user_id) REFERENCES Users(user_id);
