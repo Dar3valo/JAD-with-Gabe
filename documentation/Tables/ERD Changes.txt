@@ -1,0 +1,11 @@
+/////////////////////////////////////////////
+///// ERD TABLES CHANGES AND REASONINGS /////
+/////////////////////////////////////////////
+
+- ERD V1.0
+	created tables for user, booking and session and service management
+	
+- ERD V2.0
+	updated tables to handle errors where some tables weren't properly linked to each other
+	updated tables to handle additional feature of freelance cleaners
+	updated tables to handle cart logic, where users can store bookings in cart

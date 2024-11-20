@@ -1,0 +1,11 @@
+////////////////////
+/// Drivers Used ///
+////////////////////
+
+- Please include drivers in WEBINF/lib/[store drivers in this folder]
+
+- V2.0
+	PostgreSQL for backend logic, driver used is version:
+	Java 8
+	42.7.4
+	install link: https://jdbc.postgresql.org/download/postgresql-42.7.4.jar
