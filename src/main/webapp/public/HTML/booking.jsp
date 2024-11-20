@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="model.Service" %>
+<%@ page import="model.ServiceDAO" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,11 +59,16 @@
 
                 <div class="col-md-6">
                     <label for="serviceType" class="form-label">Service Type</label>
-                    <select id="serviceType" class="form-select" required>
-                        <option selected>Choose...</option>
-                        <option value="cleaning">Cleaning</option>
-                        <option value="maintenance">Maintenance</option>
-                        <option value="repair">Repair</option>
+                    <select id="serviceType" name="serviceType" class="form-select" required>
+                        <option selected disabled>Choose...</option>
+                        <%
+                        	List<Service> services = ServiceDAO.getAllServices();
+                    		for(Service service: services){
+                    	%>
+                    		<option value="<%= service.getService_id() %>" class="option-black"> <%=service.getName() %></option>
+                    	<%	
+                    		}
+                        %>
                     </select>
                 </div>
                 <div class="col-md-6">
