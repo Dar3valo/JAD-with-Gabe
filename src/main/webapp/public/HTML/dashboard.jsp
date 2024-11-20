@@ -35,12 +35,13 @@
 						<h4 class="secondaryFont">Categories</h4>
 						<form class="lh-lg d-flex flex-column filterCategories">
 							<div class="overflow-auto h-75 mb-5 filters">
-								<input type="radio" id="home" name=selectedFilter value="home">
-								<label for="home">Home Cleaning</label> <br> <input
-									type="radio" id="office" name="selectedFilter" value="office"><label
+								<input type="radio" id="home" name=selectedFilter value="home"><label
+									for="home">Home Cleaning</label> <br> <input type="radio"
+									id="office" name="selectedFilter" value="office"><label
 									for="office">Office Cleaning</label><br> <input
-									type="radio" id="tapestry" name="selectedFilter" value="tapestry"><label
-									for="tapestry">Tapestry Cleaning</label><br> <br>
+									type="radio" id="tapestry" name="selectedFilter"
+									value="tapestry"><label for="tapestry">Tapestry
+									Cleaning</label><br> <br>
 							</div>
 
 							<div class="d-flex align-items-end mt-auto">
