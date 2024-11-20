@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="../CSS/booking.css" />
     <link rel="stylesheet" href="https://fonts.google.com/share?selection.family=Montserrat:ital,wght@0,100..900;1,100..900|Raleway:ital,wght@0,100..900;1,100..900">
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
     <title>AllClean Booking</title>
 </head>
 <body>
@@ -40,10 +41,7 @@
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" required>
                 </div>
-                <div class="col-md-6">
-                    <label for="phone" class="form-label">Phone Number</label>
-                    <input type="text" class="form-control" id="phone" required>
-                </div>
+                
 
                 <!-- Appointment Details -->
                 <div class="col-md-6">
@@ -51,7 +49,7 @@
                     <input type="date" class="form-control" id="appointmentDate" required>
                 </div>
                 <div class="col-md-6">
-                    <label for="appointmentTime" class="form-label">Appointment Time</label>
+                    <label for="appointmentTime" class="form-label">Appointment Start Time</label>
                     <input type="time" class="form-control" id="appointmentTime" required>
                 </div>
 
@@ -64,6 +62,10 @@
                         <option value="repair">Repair</option>
                     </select>
                 </div>
+                <div class="col-md-6">
+                    <label for="appointmentTime" class="form-label">Appointment End Time</label>
+                    <input type="time" class="form-control" id="appointmentTime" required>
+                </div>
 
                 <!-- Address Information -->
                 <div class="col-12">
@@ -73,18 +75,6 @@
                 <div class="col-12">
                     <label for="address2" class="form-label">Address 2</label>
                     <input type="text" class="form-control" id="address2" placeholder="Apartment, studio, or floor">
-                </div>
-                <div class="col-md-6">
-                    <label for="city" class="form-label">City</label>
-                    <input type="text" class="form-control" id="city" required>
-                </div>
-                <div class="col-md-4">
-                    <label for="state" class="form-label">State</label>
-                    <select id="state" class="form-select" required>
-                        <option selected>Choose...</option>
-                        <option>State 1</option>
-                        <option>State 2</option>
-                    </select>
                 </div>
                 <div class="col-md-2">
                     <label for="zip" class="form-label">Zip</label>
