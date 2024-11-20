@@ -21,6 +21,10 @@ filterCategories {
 	max-height: 75vh;
 }
 
+input[type="radio"] {
+    margin-right: 10px;
+}
+
 /* Services */
 .servicesContainer {
     display: flex;              /* Enables flexbox */
