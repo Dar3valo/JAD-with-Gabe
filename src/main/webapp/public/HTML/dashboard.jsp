@@ -33,13 +33,21 @@
 					<div class="mx-3">
 						<!-- Filter Categories Form Here -->
 						<h4 class="secondaryFont">Categories</h4>
-						<form class="lh-lg overflow-auto filterCategories">
-							<input type="checkbox" id="home" name="home" value="home">
-							<label for="home"> Home Cleaning</label><br> <input
-								type="checkbox" id="office" name="office" value="office">
-							<label for="office"> Office Cleaning</label><br> <input
-								type="checkbox" id="tapestry" name="tapestry" value="tapestry">
-							<label for="tapestry"> Tapestry Cleaning</label><br>
+						<form class="lh-lg d-flex flex-column filterCategories">
+							<div class="overflow-auto h-75 mb-5 filters">
+								<input type="radio" id="home" name=selectedFilter value="home">
+								<label for="home">Home Cleaning</label> <br> <input
+									type="radio" id="office" name="selectedFilter" value="office"><label
+									for="office">Office Cleaning</label><br> <input
+									type="radio" id="tapestry" name="selectedFilter" value="tapestry"><label
+									for="tapestry">Tapestry Cleaning</label><br> <br>
+							</div>
+
+							<div class="d-flex align-items-end mt-auto">
+								<input type="submit" class="btn btn-primary"
+									value="Search Filters">
+							</div>
+
 						</form>
 					</div>
 				</section>
@@ -67,9 +75,10 @@
 
 							<!-- description -->
 							<div class="d-flex flex-column">
-								<p class="text-start">Description goes here here</p>
+								<p class="text-start h-75 overflow-auto">Description goes
+									here here</p>
 								<div class="d-flex align-items-end justify-content-end mt-auto">
-									<button class="btn-primary w-25 h-50" data-bs-toggle="modal"
+									<button class="btn-primary w-25 h-100" data-bs-toggle="modal"
 										data-bs-target="#editService">Edit</button>
 								</div>
 							</div>
@@ -89,13 +98,70 @@
 
 									<!-- edit service modal contents -->
 									<form>
-										<div class="modal-body"></div>
+										<div class="modal-body">
+											<div class="row mb-3">
+												<div class="col-3">
+													<label for="serviceName">Name:</label>
+												</div>
+												<div class="col-9">
+													<input type="text" class="form-control" id="serviceName"
+														name="serviceName" required>
+												</div>
+											</div>
+
+											<div class="row mb-3">
+												<div class="col-3">
+													<label for="servicePrice">Price:</label>
+												</div>
+												<div class="col-9">
+													<input type="number" class="form-control" id="servicePrice"
+														name="servicePrice" min="0" step="0.01" placeholder="0.00"
+														required>
+												</div>
+											</div>
+
+											<div class="row mb-3">
+												<div class="col-3">
+													<label for="serviceDescription">Description:</label>
+												</div>
+												<div class="col-9">
+													<textarea id="serviceDescription" name="serviceDescription"
+														class="form-control" rows="4" cols="50">Example description</textarea>
+												</div>
+											</div>
+
+											<div class="row mb-3">
+												<div class="col-3">
+													<label>Categories:</label>
+												</div>
+												<div class="col-9">
+													<div class="overflow-auto"
+														style="max-height: 150px; border: 1px solid #ced4da; padding: 10px; border-radius: 4px;">
+														<div>
+															<input type="checkbox" id="home" name="serviceCategory"
+																value="home"> <label for="home">Home
+																Cleaning</label>
+														</div>
+														<div>
+															<input type="checkbox" id="office" name="serviceCategory"
+																value="office"> <label for="office">Office
+																Cleaning</label>
+														</div>
+														<div>
+															<input type="checkbox" id="tapestry"
+																name="serviceCategory" value="tapestry"> <label
+																for="tapestry">Tapestry Cleaning</label>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
 
 										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
+											<button type="button" class="btn btn-danger"
 												data-bs-dismiss="modal">Close</button>
-											<button type="button" class="btn btn-primary"
-												data-bs-dismiss="modal">Save changes</button>
+											<input type="submit" class="btn btn-primary"
+												data-bs-dismiss="modal" value="Save Changes">
 										</div>
 									</form>
 								</div>
