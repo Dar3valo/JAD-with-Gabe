@@ -2,6 +2,8 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
+/* Overall */
+
 body{
 	font-family: 'Poppins', sans-serif;
 }
@@ -14,6 +16,13 @@ body{
 	font-weight: 600;
 }
 
+/* Filter by Category */
+filterCategories {
+	max-height: 75vh;
+}
+
+/* Services */
+
 .servicesContainer {
     display: flex;              /* Enables flexbox */
     flex-wrap: wrap;            /* Allow children to wrap to the next line when needed */
@@ -25,8 +34,7 @@ body{
 .servicesContainer > * {
     flex: 0 0 auto;             /* Prevents the child from growing or shrinking */
     width: 200px;               /* Set a fixed width for each child */
-    height: 150px;              /* Set a fixed height for each child */
-    background-color: lightgray; /* Background color for better visibility */
+    height: 150px;
     border: 1px solid #ccc;     /* Optional: border for visibility */
 }
 
@@ -103,4 +111,10 @@ body{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* edit service modal */
+.modal-backdrop {
+    backdrop-filter: blur(10px); /* Adjust blur intensity */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark overlay */
 }
