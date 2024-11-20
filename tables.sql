@@ -1,32 +1,27 @@
--- Drop tables without dependencies first
 DROP TABLE IF EXISTS Service_Service_Category;
 DROP TABLE IF EXISTS Service_Offered;
 DROP TABLE IF EXISTS Cart_Item;
 
--- Drop tables with dependencies next
 DROP TABLE IF EXISTS Booking;
 DROP TABLE IF EXISTS Active_Session;
 
--- Drop dependent tables' parents
 DROP TABLE IF EXISTS Service;
 DROP TABLE IF EXISTS Service_Category;
 
--- Drop users and related tables
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Role;
 
--- Finally, drop remaining independent tables
 DROP TABLE IF EXISTS Schedule;
 
 -- CREATE TABLES
 CREATE TABLE Role (
-    role_id INT PRIMARY KEY,
+    role_id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
     description TEXT
 );
 
 CREATE TABLE Users (
-    user_id INT PRIMARY KEY,
+    user_id SERIAL PRIMARY KEY,
     password VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
     profile_photo_url VARCHAR,
@@ -41,13 +36,13 @@ CREATE TABLE Active_Session (
 );
 
 CREATE TABLE Service_Category (
-    service_category_id INT PRIMARY KEY,
+    service_category_id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
     description VARCHAR
 );
 
 CREATE TABLE Service (
-    service_id INT PRIMARY KEY,
+    service_id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
     description TEXT,
     price DECIMAL NOT NULL,
@@ -66,13 +61,13 @@ CREATE TABLE Service_Offered (
 );
 
 CREATE TABLE Schedule (
-    schedule_id INT PRIMARY KEY,
+    schedule_id SERIAL PRIMARY KEY,
     start_time TIME NOT NULL,
     end_time TIME NOT NULL
 );
 
 CREATE TABLE Booking (
-    booking_id INT PRIMARY KEY,
+    booking_id SERIAL PRIMARY KEY,
     date DATE NOT NULL,
     creation_date TIMESTAMP NOT NULL,
     special_request TEXT,
@@ -81,11 +76,11 @@ CREATE TABLE Booking (
 );
 
 CREATE TABLE Cart_Item (
-    cart_item_id INT PRIMARY KEY,
+    cart_item_id SERIAL PRIMARY KEY,
     user_id INT
 );
 
--- CREATE FOREIGN KEYS
+-- define foreign key
 ALTER TABLE Users
 ADD CONSTRAINT fk_user_role
 FOREIGN KEY (role_id) REFERENCES Role(role_id);
