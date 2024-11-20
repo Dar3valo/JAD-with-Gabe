@@ -26,7 +26,7 @@ CREATE TABLE Role (
 );
 
 CREATE TABLE Users (
-    user_id INT PRIMARY KEY,
+    user_id SERIAL PRIMARY KEY,
     password VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
     profile_photo_url VARCHAR,
