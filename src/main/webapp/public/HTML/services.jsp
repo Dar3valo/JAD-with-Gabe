@@ -19,6 +19,11 @@
 	<%-- Navbar --%>
 	<jsp:include page="navbar.jsp" />
 	
+	<!-- Services Display Page -->
+	<section class="p-5">
+	
+	</section>
+	
 	<%-- Footer --%>
 	<jsp:include page="footer.jsp" />
 	

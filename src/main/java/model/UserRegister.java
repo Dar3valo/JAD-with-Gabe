@@ -11,6 +11,7 @@ public class UserRegister {
 		this.name = name;
 		this.email = email;
 		this.password = password;
+		this.gender = gender;
 	}
 
 	public String getName() {
