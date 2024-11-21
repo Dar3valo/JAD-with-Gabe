@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="model.Service" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,8 +21,11 @@
 <link rel="stylesheet" href="../CSS/dashboard.css" />
 </head>
 <body>
+	<%
+    	List<Service> services = (List<Service>) session.getAttribute("services");
+	%>
 	<%--Navbar --%>
-	<jsp:include page="navbar.jsp" />
+	<%@ include file="navbar.jsp" %>
 
 	<!-- Main content -->
 	<div class="container-fluid d-flex flex-column vh-100 mx-0">

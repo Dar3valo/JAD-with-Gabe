@@ -49,23 +49,25 @@ public class ServiceDAO {
 	// get all service (all information)
 	public static List<Service> getAllServiceInformation(int serviceCategoryId) {
 		List<Service> services = new ArrayList<>();
+	    Connection connection = null;
+	    PreparedStatement statement = null;
+	    ResultSet rs = null;
+	    
 		try {
 			// config
 			Class.forName("org.postgresql.Driver");
 			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
-			Connection connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
 
 			// query
-			String ps = "SELECT s.service_id, s.name, s.description, s.price, s.service_photo_url" +
-			             "FROM Service AS s " +
-			             "INNER JOIN Service_Service_Category AS ssc " +
-			             "ON s.service_id = ssc.service_id " +
-			             "WHERE ssc.service_category_id = ?";
+			String ps = "SELECT * FROM select_service_by_category(?)";
 			
-			PreparedStatement statement = connection.prepareStatement(ps);
+			statement = connection.prepareStatement(ps);
 			statement.setInt(1, serviceCategoryId);
-			ResultSet rs = statement.executeQuery();
+			rs = statement.executeQuery();
 
+			int i = 0;
+			
 			while(rs.next()) {
 				int serviceId = rs.getInt("service_id");
 				String serviceName = rs.getString("name");
@@ -80,7 +82,16 @@ public class ServiceDAO {
 			
 		} catch (Exception e) {
 			 e.printStackTrace(); 
-		}
+		} finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (statement != null) statement.close();
+	            if (connection != null) connection.close();
+	            
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 		
 		return services;
 	}
