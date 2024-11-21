@@ -37,13 +37,10 @@ public class GetServiceInformationServlet extends HttpServlet {
 		
 		try {
 //			ServiceDAO serviceDAO = new ServiceDAO();
-			List<Service> services = ServiceDAO.getAllServiceInformation(2);
+			List<Service> services = ServiceDAO.getAllServiceInformation(categories);
 
 			HttpSession session = request.getSession();
 	        session.setAttribute("services", services);
-			
-	        System.out.print("asyudjgjkas");
-	        System.out.println("asdasd");
 	        
 			response.sendRedirect(request.getContextPath() + "/public/HTML/dashboard.jsp");
 				
