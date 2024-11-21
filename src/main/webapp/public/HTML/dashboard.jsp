@@ -65,24 +65,23 @@
 					<h3 class="border-bottom mx-3 pb-5 mb-5 primaryFont">Services</h3>
 					<div class="mx-3 servicesContainer overflow-auto">
 						<!-- Services Offered Displayed Here -->
+						<% for (Service service : services) { %>
 						<%-- Dummy Modal Service --%>
 						<div class="serviceModal p-0">
 							<!-- overall -->
 							<!-- image -->
 							<div class="serviceModalImageWrapper">
 								<img class="serviceModalImageImg"
-									src="../Image/carouselImage1.jpg" alt="...">
+									src="../Image/carouselImage1.jpg" alt="..."> <%-- still need to add img --%>
 								<div class="serviceModalImageGradient h-100"></div>
 								<h5
-									class="serviceModalImagePrice text-end me-5 pt-2 pe-3 fw-bolder">$90</h5>
-								<h6 class="serviceModalImageText mb-0 pb-0 ps-3 text-start">Example
-									Name of Something</h6>
+									class="serviceModalImagePrice text-end me-5 pt-2 pe-3 fw-bolder"><%= service.getPrice() %></h5>
+								<h6 class="serviceModalImageText mb-0 pb-0 ps-3 text-start"><%= service.getName() %></h6>
 							</div>
 
 							<!-- description -->
 							<div class="d-flex flex-column">
-								<p class="text-start h-75 overflow-auto">Description goes
-									here here</p>
+								<p class="text-start h-75 overflow-auto"><%= service.getDescription() %></p>
 								<div class="d-flex align-items-end justify-content-end mt-auto">
 									<button class="btn-primary w-25 h-100" data-bs-toggle="modal"
 										data-bs-target="#editService">Edit</button>
@@ -111,17 +110,17 @@
 												</div>
 												<div class="col-9">
 													<input type="text" class="form-control" id="serviceName"
-														name="serviceName" required>
+														name="serviceName" placeholder="Write Name of Service Here"  value="<%= service.getName() %>" required>
 												</div>
 											</div>
 
 											<div class="row mb-3">
 												<div class="col-3">
-													<label for="servicePrice">Price:</label>
+													<label for="servicePrice">Price: $</label>
 												</div>
 												<div class="col-9">
 													<input type="number" class="form-control" id="servicePrice"
-														name="servicePrice" min="0" step="0.01" placeholder="0.00"
+														name="servicePrice" min="0" step="0.01" placeholder="0.00" value="<%= service.getPrice() %>"
 														required>
 												</div>
 											</div>
@@ -132,7 +131,7 @@
 												</div>
 												<div class="col-9">
 													<textarea id="serviceDescription" name="serviceDescription"
-														class="form-control" rows="4" cols="50">Example description</textarea>
+														class="form-control" rows="4" cols="50" placeholder="Write Description of Service Here"><%= service.getDescription() %></textarea>
 												</div>
 											</div>
 
@@ -173,7 +172,7 @@
 								</div>
 							</div>
 						</div>
-
+						<% } %>
 
 					</div>
 				</section>

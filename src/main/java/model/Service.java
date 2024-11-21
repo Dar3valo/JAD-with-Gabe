@@ -42,4 +42,28 @@ public class Service {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public double getPrice() {
+		return price;
+	}
+	
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	
+	public String getService_photo_url() {
+		return service_photo_url;
+	}
+	
+	public void setService_photo_url(String service_photo_url) {
+		this.service_photo_url = service_photo_url;
+	}
 }
