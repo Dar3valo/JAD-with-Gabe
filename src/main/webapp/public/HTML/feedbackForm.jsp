@@ -29,14 +29,14 @@
 					<h2 class="text-white">Feedback Form</h2>
 					<p class="text-white">We would love to hear from you!</p>
 					<hr class="bg-light">
-					<form>
+					<form method="POST" action="<%=request.getContextPath()%>/InsertFeedbackServlet">
 						<div id="rating-parent" class="form-group">
 							<div class="rating">
-								<input type="radio" name="rating" id="r1"><label for="r1"></label>
-								<input type="radio" name="rating" id="r2"><label for="r2"></label>
-								<input type="radio" name="rating" id="r3"><label for="r3"></label>
-								<input type="radio" name="rating" id="r4"><label for="r4"></label>
-								<input type="radio" name="rating" id="r5"> <label for="r5"></label>
+								<input type="radio" name="rating" id="r1" value="1"><label for="r1"></label>
+        						<input type="radio" name="rating" id="r2" value="2"><label for="r2"></label>
+        						<input type="radio" name="rating" id="r3" value="3"><label for="r3"></label>
+        						<input type="radio" name="rating" id="r4" value="4"><label for="r4"></label>
+        						<input type="radio" name="rating" id="r5" value="5"><label for="r5"></label>
 							</div>
 						</div>
 						
@@ -44,37 +44,37 @@
 
 						<div class="form-check text-white">
 							<%-- Social Media Checkbox --%>
-							<input type="checkbox" class="form-check-input" id="socialMedia">
+							<input type="checkbox" name="sources" class="form-check-input" id="socialMedia">
 							<label for="socialMedia" class="form-check-label text-light">Social
 								Media</label><br>
 
 							<%-- Friends Checkbox --%>
-							<input type="checkbox" class="form-check-input" id="friends">
+							<input type="checkbox" name="sources" class="form-check-input" id="friends">
 							<label for="friends" class="form-check-label text-light">Friends</label><br>
 
 							<%-- Internet Checkbox --%>
-							<input type="checkbox" class="form-check-input" id="internet">
+							<input type="checkbox" name="sources" class="form-check-input" id="internet">
 							<label for="internet" class="form-check-label text-light">Internet</label><br>
 
 							<%-- Others Checkbox --%>
-							<input type="checkbox" class="form-check-input" id="others">
+							<input type="checkbox" name="sources" class="form-check-input" id="others">
 							<label for="others" class="form-check-label text-light">Others:</label><br>
 
 							<%-- Textarea for Other's Checkbox --%>
-							<textarea id="otherSource" class="form-control mt-2"
+							<textarea id="otherSource" name="otherSources" class="form-control mt-2"
 								placeholder="Please specify"></textarea><br>
 						</div>
 
 						<div class="form-group mb-2">
 							<label class="form-label text-white">Comments on cleaning
 								services:</label>
-							<textarea rows="4" class="form-control" required></textarea>
+							<textarea rows="4" class="form-control" name="comments" required></textarea>
 							<br>
 						</div>
 						<div class="form-group mb-2">
 							<label class="form-label text-white">Improvements that we
 								can implement:</label>
-							<textarea rows="4" class="form-control" required></textarea>
+							<textarea rows="4" class="form-control" name="improvements" required></textarea>
 							<br>
 						</div>
 						
