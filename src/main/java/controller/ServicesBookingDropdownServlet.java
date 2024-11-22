@@ -39,11 +39,11 @@ public class ServicesBookingDropdownServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("serviceTypes", serviceDropdown);
             
-            request.getRequestDispatcher("/public/HTML/booking.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/public/HTML/booking.jsp");
 		}catch(Exception e) {
 			e.printStackTrace();
 			request.setAttribute("errorMessage", "An unexpected error occurred. Please try again.");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+			response.sendRedirect(request.getContextPath() + "error.jsp");
 		}
 	}
 
