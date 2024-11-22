@@ -90,7 +90,7 @@
 								<%-- still need to add img --%>
 								<div class="serviceModalImageGradient h-100"></div>
 								<h5
-									class="serviceModalImagePrice text-end me-5 pt-2 pe-3 fw-bolder"><%= service.getPrice() %></h5>
+									class="serviceModalImagePrice text-end me-5 pt-2 pe-3 fw-bolder">$<%= service.getPrice() %></h5>
 								<h6 class="serviceModalImageText mb-0 pb-0 ps-3 text-start"><%= service.getName() %></h6>
 							</div>
 
@@ -133,7 +133,7 @@
 
 											<div class="row mb-3">
 												<div class="col-3">
-													<label for="servicePrice">Price: $</label>
+													<label for="servicePrice">Price:</label>
 												</div>
 												<div class="col-9">
 													<input type="number" class="form-control" id="servicePrice"
