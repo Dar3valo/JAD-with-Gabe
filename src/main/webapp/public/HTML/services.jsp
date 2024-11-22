@@ -16,63 +16,53 @@
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
 <link rel="stylesheet" href="../CSS/service.css" />
-<title>AllCleanRegister</title>
+<title>AllClean Services</title>
 </head>
 <body>
 
 	<%-- Navbar --%>
 	<jsp:include page="navbar.jsp" />
-	
+
 	<!-- Services Display Page -->
 	<section class="p-5">
-		<div class="container">
-			<%
-        // Retrieve the list of services from the session
-        List<Service> services = (List<Service>) session.getAttribute("services");
+		<div class="container my-5">
+			<h1 class="text-center">Our Services</h1>
+			<div class="row">
+				<%
+                // Retrieve the list of services from the session
+                List<Service> services = (List<Service>) session.getAttribute("allServices");
+            
+            	if (services == null) {
+                    response.sendRedirect(request.getContextPath() + "/GetAllServicesServlet");
+                    return;
+           		    
+            	} else if (services.isEmpty()) { %>
+				<div class="col-12">
+					<p class="text-center">No services available.</p>
+				</div>
 
-        if (services != null && !services.isEmpty()) {
-    %>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Service ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Image</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%
-                    for (Service service : services) {
-                %>
-                    <tr>
-                        <td><%= service.getService_id() %></td>
-                        <td><%= service.getName() %></td>
-                        <td><%= service.getDescription() %></td>
-                        <td><%= service.getPrice() %></td>
-                        <td>
-                            <img src="<%= service.getService_photo_url() %>" alt="<%= service.getName() %>" width="100" />
-                        </td>
-                    </tr>
-                <%
-                    }
-                %>
-            </tbody>
-        </table>
-    <%
-        } else {
-    %>
-        <p>No services available at the moment.</p>
-    <%
-        }
-    %>
+				<% } else {
+                    for (Service service : services) { %>
+				<div class="col-md-4">
+					<div class="card mb-3">
+						<div class="card-body">
+							<h5 class="card-title"><%= service.getName() %></h5>
+							<p class="card-text"><%= service.getDescription() %></p>
+							<p class="card-text">
+								Price: $<%= service.getPrice() %></p>
+						</div>
+					</div>
+				</div>
+				<%
+                    }}
+           	 	%>
+			</div>
 		</div>
 	</section>
-	
+
 	<%-- Footer --%>
 	<jsp:include page="footer.jsp" />
-	
+
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

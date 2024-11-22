@@ -23,7 +23,7 @@
     <jsp:include page="navbar.jsp" />
 
     <%-- Booking Section with appointment form --%>
-    <section class="p-5">
+<section class="p-5">
         <div class="container my-2 bg-dark w-50 text-light p-2 rounded-3">
             <div class="container-fluid bg-dark text-light py-3">
                 <header class="text-center">
@@ -34,27 +34,29 @@
 
                 <!-- Personal Information -->
                 <div class="col-md-6">
-                    <label for="firstName" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="firstName" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="lastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" required>
+                    <label for="firstName" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="userName" required>
                 </div>
                 <div class="col-md-6">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" required>
                 </div>
-                
 
                 <!-- Appointment Details -->
                 <div class="col-md-6">
                     <label for="appointmentDate" class="form-label">Appointment Date</label>
-                    <input type="date" class="form-control" id="appointmentDate" required>
+                    <input type="date" class="form-control" id="appointmentDate" name="booking_date" required>
                 </div>
+
                 <div class="col-md-6">
-                    <label for="appointmentTime" class="form-label">Appointment Start Time</label>
-                    <input type="time" class="form-control" id="appointmentTime" required>
+                    <label for="schedule" class="form-label">Select Schedule</label>
+                    <select id="schedule" name="schedule_id" class="form-select" required>
+                        <option selected disabled>Choose...</option>
+                        <!-- Dummy Data for Schedule -->
+                        <option value="1">9:00 AM - 10:00 AM</option>
+                        <option value="2">10:00 AM - 11:00 AM</option>
+                        <option value="3">11:00 AM - 12:00 PM</option>
+                    </select>
                 </div>
 
                 <div class="col-md-6">
@@ -62,36 +64,38 @@
                     <select id="serviceType" name="serviceType" class="form-select" required>
                         <option selected disabled>Choose...</option>
                         <%
-                        	List<Service> services = ServiceDAO.getAllServices();
-                    		for(Service service: services){
+                        	List<Service> serviceDropdown = (List<Service>) session.getAttribute("serviceTypes");
+                    		
+                    		if (serviceDropdown == null) {
+                                response.sendRedirect(request.getContextPath() + "/ServicesBookingDropdownServlet");
+                                return;
+                        	}else if(serviceDropdown.isEmpty()){
+                        %>
+                        		<option disabled>No Services Available</option>
+                        <%
+                        	}else{
+                    			for(Service service: serviceDropdown){
                     	%>
-                    		<option value="<%= service.getService_id() %>" class="option-black"> <%=service.getName() %></option>
-                    	<%	
-                    		}
+                    				<option value="<%= service.getService_id() %>"><%=service.getName() %></option>
+                    	<%
+                    			}
+                        	}
                         %>
                     </select>
-                </div>
-                <div class="col-md-6">
-                    <label for="appointmentTime" class="form-label">Appointment End Time</label>
-                    <input type="time" class="form-control" id="appointmentTime" required>
                 </div>
 
                 <!-- Address Information -->
                 <div class="col-12">
-                    <label for="address" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+                    <label for="main_address" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="main_address" name="main_address" placeholder="1234 Main St" required>
                 </div>
-                <div class="col-12">
-                    <label for="address2" class="form-label">Address 2</label>
-                    <input type="text" class="form-control" id="address2" placeholder="Apartment, studio, or floor">
-                </div>
-                <div class="col-md-2">
-                    <label for="zip" class="form-label">Zip</label>
-                    <input type="text" class="form-control" id="zip" required>
+                <div class="col-6">
+                    <label for="postal_code" class="form-label">Postal Code</label>
+                    <input type="text" class="form-control" id="postal_code" name="postal_code" maxlength='6' placeholder="123456" required>
                 </div>
                 <div>
-                	<label for="specialRequest" class="form-label">Special Request</label>
-                	<textarea class="form-control" id="specialRequest" rows="4" placeholder="Enter your special request here" required></textarea>
+                    <label for="specialRequest" class="form-label">Special Request</label>
+                    <textarea class="form-control" id="specialRequest" name="special_request" rows="4" placeholder="Enter your special request here" required></textarea>
                 </div>
 
                 <!-- Terms and Conditions -->
