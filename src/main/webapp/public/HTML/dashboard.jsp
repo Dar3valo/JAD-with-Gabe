@@ -30,6 +30,7 @@
 		if (services == null || categories == null) {
 		    RequestDispatcher dispatcher = request.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
 		    dispatcher.forward(request, response);
+		    return;
 		}
 	%>
 	<%--Navbar --%>
