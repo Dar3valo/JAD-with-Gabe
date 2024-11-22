@@ -25,7 +25,8 @@
 	<%
     	List<Service> services = (List<Service>) session.getAttribute("services");
 		List<ServiceCategory> categories = (List<ServiceCategory>) session.getAttribute("serviceCategories");
-	
+		ServiceCategory currentCategory = (ServiceCategory) session.getAttribute("currentCategory");
+
 		if (services == null || categories == null) {
 		    RequestDispatcher dispatcher = request.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
 		    dispatcher.forward(request, response);
@@ -72,7 +73,13 @@
 			<%-- Display Services --%>
 			<div class="col-9 pr-5 ml-5">
 				<section id="services" class="h-100">
-					<h3 class="border-bottom mx-3 pb-5 mb-5 primaryFont">Services</h3>
+					<h3 class="border-bottom mx-3 pb-5 mb-5 primaryFont">
+						All 
+						<% if (currentCategory != null) {
+							out.print(currentCategory.getName() + " ");
+						} %>
+						Services
+					</h3>
 					<div class="mx-3 servicesContainer overflow-auto">
 						<!-- Services Offered Displayed Here -->
 						<% if (services.size() == 0) { %>

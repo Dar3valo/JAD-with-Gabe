@@ -45,12 +45,18 @@ public class GetServiceInformationServlet extends HttpServlet {
 			// get stored services
 			if (category == 0) {
 				List<Service> services = ServiceDAO.getServiceInformationByAll();
-	
+				
+				// set all current selected service category
+				session.setAttribute("currentCategory", null);
 		        session.setAttribute("services", services);
 				
 			} else if (category >= 1) {
 				List<Service> services = ServiceDAO.getServiceInformationByCategory(category);
+				
+				// set current selected service category
+				ServiceCategory serviceCategory = ServiceCategoryDAO.getServiceCategoryById(category);
 	
+				session.setAttribute("currentCategory", serviceCategory);
 		        session.setAttribute("services", services);
 				
 			}
