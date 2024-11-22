@@ -75,7 +75,7 @@
 			<div class="col-9 pr-5 ml-5">
 				<section id="services" class="h-100">
 					<h3 class="border-bottom mx-3 pb-5 mb-5 primaryFont">
-						All 
+						All
 						<% if (currentCategory != null) {
 							out.print(currentCategory.getName() + " ");
 						} %>
@@ -98,7 +98,8 @@
 								<%-- still need to add img --%>
 								<div class="serviceModalImageGradient h-100"></div>
 								<h5
-									class="serviceModalImagePrice text-end me-5 pt-2 pe-3 fw-bolder">$<%= service.getPrice() %></h5>
+									class="serviceModalImagePrice text-end me-5 pt-2 pe-3 fw-bolder">
+									$<%= service.getPrice() %></h5>
 								<h6 class="serviceModalImageText mb-0 pb-0 ps-3 text-start"><%= service.getName() %></h6>
 							</div>
 
@@ -107,13 +108,13 @@
 								<p class="text-start h-75 overflow-auto"><%= service.getDescription() %></p>
 								<div class="d-flex align-items-end justify-content-end mt-auto">
 									<button class="btn-primary w-25 h-100" data-bs-toggle="modal"
-										data-bs-target="#editService">Edit</button>
+										data-bs-target="#editService<%= service.getService_id() %>">Edit</button>
 								</div>
 							</div>
 						</div>
 
 						<%-- Edit Service Popup Modal --%>
-						<div class="modal fade" id="editService" tabindex="-1"
+						<div class="modal fade" id="editService<%= service.getService_id() %>" tabindex="-1"
 							aria-labelledby="exampleModalLabel" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
