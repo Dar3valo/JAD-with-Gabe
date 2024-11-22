@@ -94,49 +94,48 @@ public class ServiceDAO {
 		return services;
 	}
 	
-	public static List<Service> getServiceInformationByAll() {
-		List<Service> services = new ArrayList<>();
-	    Connection connection = null;
-	    Statement statement = null;
-	    ResultSet rs = null;
-	    
-		try {
-			// config
-			Class.forName("org.postgresql.Driver");
-			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
-			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+	
+	 // Get all services
+    public static List<Service> getServiceInformationByAll() {
+        List<Service> services = new ArrayList<>();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
 
-			// query
-			String sql = "SELECT * FROM Service";
-			
-			statement = connection.createStatement();
-			rs = statement.executeQuery(sql);
-			
-			while(rs.next()) {
-				int serviceId = rs.getInt("service_id");
-				String serviceName = rs.getString("name");
-				String serviceDescription = rs.getString("description");
-				double servicePrice = rs.getDouble("price");
-				String serviceImage = rs.getString("service_photo_url");
-				
-				services.add(new Service(serviceId, serviceName, serviceDescription, servicePrice, serviceImage));
-			}
-			
-			connection.close();
-			
-		} catch (Exception e) {
-			 e.printStackTrace(); 
-		} finally {
-	        try {
-	            if (rs != null) rs.close();
-	            if (statement != null) statement.close();
-	            if (connection != null) connection.close();
-	            
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
-		
-		return services;
-	}
+        try {
+            // Database configuration
+            Class.forName("org.postgresql.Driver");
+            String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+            connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+            // SQL query
+            String sql = "SELECT * FROM Service";
+
+            statement = connection.createStatement();
+            rs = statement.executeQuery(sql);
+
+            // Iterate through results
+            while (rs.next()) {
+                int serviceId = rs.getInt("service_id");
+                String serviceName = rs.getString("name");
+                String serviceDescription = rs.getString("description");
+                double servicePrice = rs.getDouble("price");
+                String serviceImage = rs.getString("service_photo_url");
+
+                services.add(new Service(serviceId, serviceName, serviceDescription, servicePrice, serviceImage));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return services;
+    }
 }
