@@ -47,7 +47,7 @@ public class ServiceDAO {
 	}
 	
 	// get all service (all information)
-	public static List<Service> getAllServiceInformation(int serviceCategoryId) {
+	public static List<Service> getServiceInformationByCategory(int serviceCategoryId) {
 		List<Service> services = new ArrayList<>();
 	    Connection connection = null;
 	    PreparedStatement statement = null;
@@ -65,8 +65,52 @@ public class ServiceDAO {
 			statement = connection.prepareStatement(ps);
 			statement.setInt(1, serviceCategoryId);
 			rs = statement.executeQuery();
+			
+			while(rs.next()) {
+				int serviceId = rs.getInt("service_id");
+				String serviceName = rs.getString("name");
+				String serviceDescription = rs.getString("description");
+				double servicePrice = rs.getDouble("price");
+				String serviceImage = rs.getString("service_photo_url");
+				
+				services.add(new Service(serviceId, serviceName, serviceDescription, servicePrice, serviceImage));
+			}
+			
+			connection.close();
+			
+		} catch (Exception e) {
+			 e.printStackTrace(); 
+		} finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (statement != null) statement.close();
+	            if (connection != null) connection.close();
+	            
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		
+		return services;
+	}
+	
+	public static List<Service> getServiceInformationByAll() {
+		List<Service> services = new ArrayList<>();
+	    Connection connection = null;
+	    Statement statement = null;
+	    ResultSet rs = null;
+	    
+		try {
+			// config
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
 
-			int i = 0;
+			// query
+			String sql = "SELECT * FROM Service";
+			
+			statement = connection.createStatement();
+			rs = statement.executeQuery(sql);
 			
 			while(rs.next()) {
 				int serviceId = rs.getInt("service_id");

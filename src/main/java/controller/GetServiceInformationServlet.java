@@ -33,16 +33,28 @@ public class GetServiceInformationServlet extends HttpServlet {
 	@SuppressWarnings("null")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int categories = Integer.parseInt(request.getParameter("serviceCategories"));
+		String categoryParam = request.getParameter("serviceCategory");
+		int category = Integer.parseInt(categoryParam);
 		
 		try {
 //			ServiceDAO serviceDAO = new ServiceDAO();
-			List<Service> services = ServiceDAO.getAllServiceInformation(categories);
-
-			HttpSession session = request.getSession();
-	        session.setAttribute("services", services);
-	        
-			response.sendRedirect(request.getContextPath() + "/public/HTML/dashboard.jsp");
+			if (category == 0) {
+				List<Service> services = ServiceDAO.getServiceInformationByAll();
+	
+				HttpSession session = request.getSession();
+		        session.setAttribute("services", services);
+		        
+				response.sendRedirect(request.getContextPath() + "/public/HTML/dashboard.jsp");
+				
+			} else if (category >= 1) {
+				List<Service> services = ServiceDAO.getServiceInformationByCategory(category);
+	
+				HttpSession session = request.getSession();
+		        session.setAttribute("services", services);
+		        
+				response.sendRedirect(request.getContextPath() + "/public/HTML/dashboard.jsp");
+				
+			}
 				
 		} catch (Exception e) {
 			e.printStackTrace();

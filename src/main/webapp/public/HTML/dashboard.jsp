@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="model.Service" %>
+<%@ page import="java.util.List"%>
+<%@ page import="model.Service"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,9 +23,14 @@
 <body>
 	<%
     	List<Service> services = (List<Service>) session.getAttribute("services");
+	
+		if (services.isEmpty()) {
+		    RequestDispatcher dispatcher = request.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
+		    dispatcher.forward(request, response);
+		}
 	%>
 	<%--Navbar --%>
-	<%@ include file="navbar.jsp" %>
+	<%@ include file="navbar.jsp"%>
 
 	<!-- Main content -->
 	<div class="container-fluid d-flex flex-column vh-100 mx-0">
@@ -65,6 +70,10 @@
 					<h3 class="border-bottom mx-3 pb-5 mb-5 primaryFont">Services</h3>
 					<div class="mx-3 servicesContainer overflow-auto">
 						<!-- Services Offered Displayed Here -->
+						<% if (services.size() == 0) { %>
+						<p class="p-2 text-danger">No services in system. Please try again or add
+							a new service.</p>
+						<% } else { %>
 						<% for (Service service : services) { %>
 						<%-- Dummy Modal Service --%>
 						<div class="serviceModal p-0">
@@ -72,7 +81,8 @@
 							<!-- image -->
 							<div class="serviceModalImageWrapper">
 								<img class="serviceModalImageImg"
-									src="../Image/carouselImage1.jpg" alt="..."> <%-- still need to add img --%>
+									src="../Image/carouselImage1.jpg" alt="...">
+								<%-- still need to add img --%>
 								<div class="serviceModalImageGradient h-100"></div>
 								<h5
 									class="serviceModalImagePrice text-end me-5 pt-2 pe-3 fw-bolder"><%= service.getPrice() %></h5>
@@ -110,7 +120,9 @@
 												</div>
 												<div class="col-9">
 													<input type="text" class="form-control" id="serviceName"
-														name="serviceName" placeholder="Write Name of Service Here"  value="<%= service.getName() %>" required>
+														name="serviceName"
+														placeholder="Write Name of Service Here"
+														value="<%= service.getName() %>" required>
 												</div>
 											</div>
 
@@ -120,8 +132,8 @@
 												</div>
 												<div class="col-9">
 													<input type="number" class="form-control" id="servicePrice"
-														name="servicePrice" min="0" step="0.01" placeholder="0.00" value="<%= service.getPrice() %>"
-														required>
+														name="servicePrice" min="0" step="0.01" placeholder="0.00"
+														value="<%= service.getPrice() %>" required>
 												</div>
 											</div>
 
@@ -131,7 +143,8 @@
 												</div>
 												<div class="col-9">
 													<textarea id="serviceDescription" name="serviceDescription"
-														class="form-control" rows="4" cols="50" placeholder="Write Description of Service Here"><%= service.getDescription() %></textarea>
+														class="form-control" rows="4" cols="50"
+														placeholder="Write Description of Service Here"><%= service.getDescription() %></textarea>
 												</div>
 											</div>
 
@@ -172,7 +185,7 @@
 								</div>
 							</div>
 						</div>
-						<% } %>
+						<% }} %>
 
 					</div>
 				</section>
