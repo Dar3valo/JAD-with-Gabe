@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
 <%@ page import="model.Service"%>
+<%@ page import="model.ServiceCategory"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,8 +24,9 @@
 <body>
 	<%
     	List<Service> services = (List<Service>) session.getAttribute("services");
+		List<ServiceCategory> categories = (List<ServiceCategory>) session.getAttribute("serviceCategories");
 	
-		if (services.isEmpty()) {
+		if (services == null || categories == null) {
 		    RequestDispatcher dispatcher = request.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
 		    dispatcher.forward(request, response);
 		}
@@ -43,22 +45,25 @@
 					<div class="mx-3">
 						<!-- Filter Categories Form Here -->
 						<h4 class="secondaryFont">Categories</h4>
-						<form class="lh-lg d-flex flex-column filterCategories">
+						<form class="lh-lg d-flex flex-column filterCategories"
+							action="${pageContext.request.contextPath}/GetServiceInformationServlet"
+							method="GET">
 							<div class="overflow-auto h-75 mb-5 filters">
-								<input type="radio" id="home" name=selectedFilter value="home"><label
-									for="home">Home Cleaning</label> <br> <input type="radio"
-									id="office" name="selectedFilter" value="office"><label
-									for="office">Office Cleaning</label><br> <input
-									type="radio" id="tapestry" name="selectedFilter"
-									value="tapestry"><label for="tapestry">Tapestry
-									Cleaning</label><br> <br>
+								<% for (ServiceCategory category : categories) { %>
+								<input type="radio"
+									id="category_<%= category.getService_category_id() %>"
+									name="serviceCategory"
+									value="<%= category.getService_category_id() %>"> <label
+									for="category_<%= category.getService_category_id() %>">
+									<%= category.getName() %>
+								</label> <br>
+								<% } %>
 							</div>
 
 							<div class="d-flex align-items-end mt-auto">
 								<input type="submit" class="btn btn-primary"
 									value="Search Filters">
 							</div>
-
 						</form>
 					</div>
 				</section>
@@ -71,8 +76,8 @@
 					<div class="mx-3 servicesContainer overflow-auto">
 						<!-- Services Offered Displayed Here -->
 						<% if (services.size() == 0) { %>
-						<p class="p-2 text-danger">No services in system. Please try again or add
-							a new service.</p>
+						<p class="p-2 text-danger">No services in system. Please try
+							again or add a new service.</p>
 						<% } else { %>
 						<% for (Service service : services) { %>
 						<%-- Dummy Modal Service --%>

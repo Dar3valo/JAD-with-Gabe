@@ -15,16 +15,16 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Servlet implementation class GetServiceInformationServlet
+ * Servlet implementation class GetServiceCategoryServlet
  */
-@WebServlet("/GetServiceInformationServlet")
-public class GetServiceInformationServlet extends HttpServlet {
+@WebServlet("/GetServiceCategoryServlet")
+public class ServiceCategoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetServiceInformationServlet() {
+    public ServiceCategoryServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,36 +32,16 @@ public class GetServiceInformationServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	@SuppressWarnings("null")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String categoryParam = request.getParameter("serviceCategory");
-		int category = Integer.parseInt(categoryParam);
-		
 		try {
-			// define session
-			HttpSession session = request.getSession();
-			
-			// get stored services
-			if (category == 0) {
-				List<Service> services = ServiceDAO.getServiceInformationByAll();
-	
-		        session.setAttribute("services", services);
-				
-			} else if (category >= 1) {
-				List<Service> services = ServiceDAO.getServiceInformationByCategory(category);
-	
-		        session.setAttribute("services", services);
-				
-			}
-			
-			// get stored service categories
-			List<ServiceCategory> serviceCategories = ServiceCategoryDAO.getServiceCategoryByAll();
+			List<ServiceCategory> services = ServiceCategoryDAO.getServiceCategoryByAll();
 
-	        session.setAttribute("serviceCategories", serviceCategories);
-			
-	        // go back to dashboard
+			HttpSession session = request.getSession();
+	        session.setAttribute("services", services);
+	        
 			response.sendRedirect(request.getContextPath() + "/public/HTML/dashboard.jsp");
+				
 				
 		} catch (Exception e) {
 			e.printStackTrace();
