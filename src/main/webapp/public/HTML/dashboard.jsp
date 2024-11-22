@@ -13,8 +13,7 @@
 	rel="stylesheet"
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous" />
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <!-- Corrected Google Fonts link -->
 <link
 	href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
@@ -76,10 +75,54 @@
 							<div class="d-flex align-items-end mt-auto">
 								<input type="submit" class="btn btn-primary"
 									value="Search Filters">
-								<button class="btn btn-secondary ml-2" type="button">Edit Category</button>
+								<button class="btn btn-secondary ms-2" type="button"
+									data-bs-toggle="modal" data-bs-target="#categoryModel">
+									Edit Category</button>
 							</div>
 						</form>
 					</div>
+
+					<%-- edit category information --%>
+					<div class="modal fade" id="categoryModel" tabindex="-1"
+						aria-labelledby="categoryModelLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="categoryModelLabel">Edit
+										Category Information</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close"></button>
+								</div>
+
+								<form>
+									<div class="modal-body container">
+										<div class="row align-items-center">
+											<div class="col-1 d-flex justify-content-center align-items-center">
+												<i class="bi bi-trash3-fill text-danger"></i>
+											</div>
+											<div class="col-10 d-flex justify-content-center align-items-center">
+												<input type="text" class="form-control" id="categoryName"
+													name="categoryName"
+													placeholder="Write Name of Category Here"
+													value="Home Cleaning" required>
+											</div>
+											<div class="col-1 d-flex justify-content-center align-items-center">
+												<i class="bi bi-floppy-fill text-success"></i>
+											</div>
+										</div>
+									</div>
+
+									<div class="modal-footer">
+										<button type="button" class="btn btn-primary">Save
+											changes</button>
+										<button type="button" class="btn btn-secondary"
+											data-bs-dismiss="modal">Close</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
 				</section>
 			</div>
 
