@@ -23,15 +23,15 @@
 </head>
 <body>
 	<%
-    	List<Service> services = (List<Service>) session.getAttribute("services");
-		List<ServiceCategory> categories = (List<ServiceCategory>) session.getAttribute("serviceCategories");
-		ServiceCategory currentCategory = (ServiceCategory) session.getAttribute("currentCategory");
+	List<Service> services = (List<Service>) session.getAttribute("services");
+	List<ServiceCategory> categories = (List<ServiceCategory>) session.getAttribute("serviceCategories");
+	ServiceCategory currentCategory = (ServiceCategory) session.getAttribute("currentCategory");
 
-		if (services == null || categories == null) {
-		    RequestDispatcher dispatcher = request.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
-		    dispatcher.forward(request, response);
-		    return;
-		}
+	if (services == null || categories == null) {
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
+		dispatcher.forward(request, response);
+		return;
+	}
 	%>
 	<%--Navbar --%>
 	<%@ include file="navbar.jsp"%>
@@ -51,25 +51,32 @@
 							action="${pageContext.request.contextPath}/GetServiceInformationServlet"
 							method="GET">
 							<div class="overflow-auto h-75 mb-5 filters">
-    							<input type="radio" id="category_0" name="serviceCategory" value="0" <%= currentCategory == null ? "checked" : "" %>>
-    							<label for="category_0">
-									All Categories
-								</label> <br>
-								
-								<% for (ServiceCategory category : categories) { %>
+								<input type="radio" id="category_0" name="serviceCategory"
+									value="0" <%=currentCategory == null ? "checked" : ""%>>
+								<label for="category_0"> All Categories </label> <br>
+
+								<%
+								for (ServiceCategory category : categories) {
+								%>
 								<input type="radio"
-									id="category_<%= category.getService_category_id() %>"
+									id="category_<%=category.getService_category_id()%>"
 									name="serviceCategory"
-									value="<%= category.getService_category_id() %>" <%= currentCategory != null && currentCategory.getService_category_id() == category.getService_category_id() ? "checked" : "" %>> <label
-									for="category_<%= category.getService_category_id() %>">
-									<%= category.getName() %>
+									value="<%=category.getService_category_id()%>"
+									<%=currentCategory != null && currentCategory.getService_category_id() == category.getService_category_id()
+		? "checked"
+		: ""%>>
+								<label for="category_<%=category.getService_category_id()%>">
+									<%=category.getName()%>
 								</label> <br>
-								<% } %>
+								<%
+								}
+								%>
 							</div>
 
 							<div class="d-flex align-items-end mt-auto">
 								<input type="submit" class="btn btn-primary"
 									value="Search Filters">
+								<button class="btn btn-secondary ml-2" type="button">Edit Category</button>
 							</div>
 						</form>
 					</div>
@@ -79,22 +86,40 @@
 			<%-- Display Services --%>
 			<div class="col-9 pr-5 ml-5">
 				<section id="services" class="h-100">
-					<h3 class="border-bottom mx-3 pb-5 mb-5 primaryFont">
-						All
-						<% if (currentCategory != null) {
+					<div
+						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
+						<h3 class="m-0 p-0 primaryFont">
+							All
+							<%
+						if (currentCategory != null) {
 							out.print(currentCategory.getName() + " ");
-						} %>
-						Services
-					</h3>
+						}
+						%>
+							Services
+						</h3>
+
+						<%-- Add Service Button --%>
+						<button type="button"
+							class="btn btn-primary d-flex align-items-center rounded">
+							Add Service <span class="ms-2"><i
+								class="m-0 p-0 bi bi-plus-circle"></i></span>
+						</button>
+					</div>
 					<div class="mx-3 servicesContainer overflow-auto">
 						<!-- Services Offered Displayed Here -->
-						<% if (services.size() == 0) { %>
+						<%
+						if (services.size() == 0) {
+						%>
 						<p class="p-2 text-danger">No services in system. Please try
 							again or add a new service.</p>
-						<% } else { %>
-						<% for (Service service : services) { %>
+						<%
+						} else {
+						%>
+						<%
+						for (Service service : services) {
+						%>
 						<%-- Dummy Modal Service --%>
-						<div class="serviceModal p-0">
+						<div class="serviceModal p-0 rounded">
 							<!-- overall -->
 							<!-- image -->
 							<div class="serviceModalImageWrapper">
@@ -104,22 +129,23 @@
 								<div class="serviceModalImageGradient h-100"></div>
 								<h5
 									class="serviceModalImagePrice text-end me-5 pt-2 pe-3 fw-bolder">
-									$<%= service.getPrice() %></h5>
-								<h6 class="serviceModalImageText mb-0 pb-0 ps-3 text-start"><%= service.getName() %></h6>
+									$<%=service.getPrice()%></h5>
+								<h6 class="serviceModalImageText mb-0 pb-0 ps-3 text-start"><%=service.getName()%></h6>
 							</div>
 
 							<!-- description -->
 							<div class="d-flex flex-column">
-								<p class="text-start h-75 overflow-auto"><%= service.getDescription() %></p>
+								<p class="text-start h-75 overflow-auto"><%=service.getDescription()%></p>
 								<div class="d-flex align-items-end justify-content-end mt-auto">
 									<button class="btn-primary w-25 h-100" data-bs-toggle="modal"
-										data-bs-target="#editService<%= service.getService_id() %>">Edit</button>
+										data-bs-target="#editService<%=service.getService_id()%>">Edit</button>
 								</div>
 							</div>
 						</div>
 
 						<%-- Edit Service Popup Modal --%>
-						<div class="modal fade" id="editService<%= service.getService_id() %>" tabindex="-1"
+						<div class="modal fade"
+							id="editService<%=service.getService_id()%>" tabindex="-1"
 							aria-labelledby="exampleModalLabel" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
@@ -141,7 +167,7 @@
 													<input type="text" class="form-control" id="serviceName"
 														name="serviceName"
 														placeholder="Write Name of Service Here"
-														value="<%= service.getName() %>" required>
+														value="<%=service.getName()%>" required>
 												</div>
 											</div>
 
@@ -152,7 +178,7 @@
 												<div class="col-9">
 													<input type="number" class="form-control" id="servicePrice"
 														name="servicePrice" min="0" step="0.01" placeholder="0.00"
-														value="<%= service.getPrice() %>" required>
+														value="<%=service.getPrice()%>" required>
 												</div>
 											</div>
 
@@ -163,7 +189,7 @@
 												<div class="col-9">
 													<textarea id="serviceDescription" name="serviceDescription"
 														class="form-control" rows="4" cols="50"
-														placeholder="Write Description of Service Here"><%= service.getDescription() %></textarea>
+														placeholder="Write Description of Service Here"><%=service.getDescription()%></textarea>
 												</div>
 											</div>
 
@@ -204,14 +230,16 @@
 								</div>
 							</div>
 						</div>
-						<% }} %>
+						<%
+						}
+						}
+						%>
 
 					</div>
 				</section>
 			</div>
 		</div>
-		
-		<%-- Add Service --%>
+
 	</div>
 
 	<%-- Footer --%>

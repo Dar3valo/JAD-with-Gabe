@@ -25,20 +25,31 @@ input[type="radio"] {
     margin-right: 10px;
 }
 
+/* add service icon */
+.servicesContainer > i {
+	border: none;
+	width: 0px;
+	height: 0px;
+	font-size: 60px;
+	z-index: 1000;
+	margin: 0;
+	transform: scale(3);
+}
+
 /* Services */
 .servicesContainer {
-    display: flex;              /* Enables flexbox */
-    flex-wrap: wrap;            /* Allow children to wrap to the next line when needed */
-    overflow-x: auto;           /* Enables horizontal scrollbar when content overflows */
-    gap: 10px;                  /* Adds spacing between children */
+    display: flex;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    gap: 10px;
     max-height: 75vh;
 }
 
 .servicesContainer > * {
-    flex: 0 0 auto;             /* Prevents the child from growing or shrinking */
-    width: 200px;               /* Set a fixed width for each child */
+    flex: 0 0 auto;
+    width: 200px;
     height: 150px;
-    border: 1px solid #ccc;     /* Optional: border for visibility */
+    border: 1px solid #ccc;
 }
 
 .serviceModal {
