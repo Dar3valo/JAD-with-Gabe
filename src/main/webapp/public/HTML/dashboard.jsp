@@ -51,11 +51,16 @@
 							action="${pageContext.request.contextPath}/GetServiceInformationServlet"
 							method="GET">
 							<div class="overflow-auto h-75 mb-5 filters">
+    							<input type="radio" id="category_0" name="serviceCategory" value="0" <%= currentCategory == null ? "checked" : "" %>>
+    							<label for="category_0">
+									All Categories
+								</label> <br>
+								
 								<% for (ServiceCategory category : categories) { %>
 								<input type="radio"
 									id="category_<%= category.getService_category_id() %>"
 									name="serviceCategory"
-									value="<%= category.getService_category_id() %>"> <label
+									value="<%= category.getService_category_id() %>" <%= currentCategory != null && currentCategory.getService_category_id() == category.getService_category_id() ? "checked" : "" %>> <label
 									for="category_<%= category.getService_category_id() %>">
 									<%= category.getName() %>
 								</label> <br>
@@ -205,6 +210,8 @@
 				</section>
 			</div>
 		</div>
+		
+		<%-- Add Service --%>
 	</div>
 
 	<%-- Footer --%>
