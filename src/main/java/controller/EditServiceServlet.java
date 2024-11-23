@@ -91,7 +91,7 @@ public class EditServiceServlet extends HttpServlet {
 				// general config
 				int rowsAffected = 0;
 				
-				// process data
+				// process data - service
 				String input_serviceId = request.getParameter("serviceId");
 				String input_servicePrice = request.getParameter("servicePrice");
 				
@@ -100,6 +100,9 @@ public class EditServiceServlet extends HttpServlet {
 				String serviceName = request.getParameter("serviceName");
 				String serviceDescription = request.getParameter("serviceDescription");
 				String addServicePhotoUrl = "../Image/carouselImage1.jpg";
+				
+				// process data - service category
+				String[] 
 				
 				rowsAffected = ServiceDAO.updateServiceById(serviceId, serviceName, serviceDescription, servicePrice, addServicePhotoUrl);
 				

@@ -283,12 +283,9 @@
 														style="max-height: 150px; border: 1px solid #ced4da; padding: 10px; border-radius: 4px;">
 														<% for (ServiceCategory category: categories) { %>
 														<div>
-															<%
-															//boolean isRelationship = ServiceServiceCategoryDAO.checkServiceServiceCategoryRelationship(1, 1);
-															%>
 															<input type="checkbox" id="addServiceCategory<%= category.getService_category_id() %>"
-																name="addServiceCategory" value="<%= category.getService_category_id() %>"> <label
-																for="addServiceCategory<%= category.getService_category_id() %>"><%= category.getName() %></label>
+																name="addServiceCategory" value="addServiceCategory<%= category.getService_category_id() %>"> <label
+																for="addServiceCategory<%= category.getService_category_id() %>">Home Cleaning</label>
 														</div>
 														<% } %>
 													</div>
@@ -410,21 +407,16 @@
 												<div class="col-9">
 													<div class="overflow-auto"
 														style="max-height: 150px; border: 1px solid #ced4da; padding: 10px; border-radius: 4px;">
+														<% for (ServiceCategory category: categories) { %>
+														<% boolean isRelationship = ServiceServiceCategoryDAO.checkServiceServiceCategoryRelationship(service.getService_id(), category.getService_category_id()); %>
+														<%= isRelationship ? "<input type='hidden' name='serviceCategoryRelationship' value='" + category.getService_category_id() + "'>" : ""%>
 														<div>
-															<input type="checkbox" id="home" name="serviceCategory"
-																value="home"> <label for="home">Home
-																Cleaning</label>
+															
+															<input type="checkbox" id="serviceCategory<%= category.getService_category_id() %>" name="serviceCategory"
+																value="<%= category.getService_category_id() %>" <%= isRelationship ? "checked" : "" %>> <label for="home"><%= category.getName() %></label>
 														</div>
-														<div>
-															<input type="checkbox" id="office" name="serviceCategory"
-																value="office"> <label for="office">Office
-																Cleaning</label>
-														</div>
-														<div>
-															<input type="checkbox" id="tapestry"
-																name="serviceCategory" value="tapestry"> <label
-																for="tapestry">Tapestry Cleaning</label>
-														</div>
+														<% } %>
+														
 													</div>
 												</div>
 											</div>

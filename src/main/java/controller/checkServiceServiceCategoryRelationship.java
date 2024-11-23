@@ -1,5 +1,6 @@
 package controller;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -38,7 +39,11 @@ public class checkServiceServiceCategoryRelationship extends HttpServlet {
 		
 		boolean isRelationship = ServiceServiceCategoryDAO.checkServiceServiceCategoryRelationship(service_id, service_category_id);
 		
-		
+		request.setAttribute("isRelationship", isRelationship);
+
+        // Forward the request to the JSP for rendering
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/result.jsp");
+        dispatcher.forward(request, response);
 	}
 
 	/**
