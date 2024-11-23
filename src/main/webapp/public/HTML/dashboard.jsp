@@ -89,7 +89,7 @@
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title text-bold" id="categoryModelLabel">Edit
+									<h5 class="modal-title primaryFont" id="categoryModelLabel">Edit
 										Category Information</h5>
 									<button type="button" class="btn-close" data-bs-dismiss="modal"
 										aria-label="Close"></button>
@@ -99,6 +99,7 @@
 								<div class="modal-body p-0">
 									<div class="container-fluid"
 										style="max-height: 70vh; overflow-y: auto;">
+										<div class="mt-3 secondaryFont">Add Category</div>
 										<!-- Add new category -->
 										<form class="category-form py-3 border-bottom" method="POST">
 											<!-- Category Name Row -->
@@ -131,7 +132,9 @@
 											</div>
 										</form>
 										<!-- End of add category -->
-										
+
+										<div class="mt-3 secondaryFont">Edit Categories</div>
+										<%-- List of categories available to edit --%>
 										<%
 										for (ServiceCategory category : categories) {
 										%>
@@ -213,10 +216,100 @@
 
 						<%-- Add Service Button --%>
 						<button type="button"
-							class="btn btn-primary d-flex align-items-center rounded">
+							class="btn btn-primary d-flex align-items-center rounded"
+							data-bs-toggle="modal" data-bs-target="#addServiceModal">
 							Add Service <span class="ms-2"><i
 								class="m-0 p-0 bi bi-plus-circle"></i></span>
 						</button>
+
+						<%-- Add Service Modal --%>
+						<div class="modal fade" id="addServiceModal" tabindex="-1"
+							aria-labelledby="addServiceModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title primaryFont" id="exampleModalLabel">Add
+											Service</h5>
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+
+									<!-- Add Service Modal Body Here -->
+									<form id="addServiceForm">
+										<div class="modal-body">
+											<div class="row mb-3">
+												<div class="col-3">
+													<label for="addServiceName">Name:</label>
+												</div>
+												<div class="col-9">
+													<input type="text" class="form-control" id="addServiceName"
+														name="addServiceName"
+														placeholder="Write Name of Service Here"
+														value="Example Default Name" required>
+												</div>
+											</div>
+
+											<div class="row mb-3">
+												<div class="col-3">
+													<label for="addServicePrice">Price:</label>
+												</div>
+												<div class="col-9">
+													<input type="number" class="form-control"
+														id="addServicePrice" name="addServicePrice" min="0"
+														step="0.01" placeholder="0.00" value="0.00" required>
+												</div>
+											</div>
+
+											<div class="row mb-3">
+												<div class="col-3">
+													<label for="addServiceDescription">Description:</label>
+												</div>
+												<div class="col-9">
+													<textarea id="addServiceDescription"
+														name="addServiceDescription" class="form-control" rows="4"
+														cols="50" placeholder="Write Description of Service Here">Example Default Description</textarea>
+												</div>
+											</div>
+
+											<!-- add Service Form, select which categories to associate -->
+											<div class="row mb-3">
+												<div class="col-3">
+													<label>Categories:</label>
+												</div>
+												<div class="col-9">
+													<div class="overflow-auto"
+														style="max-height: 150px; border: 1px solid #ced4da; padding: 10px; border-radius: 4px;">
+														<div>
+															<input type="checkbox" id="addServiceCategory1" name="addServiceCategory"
+																value="1"> <label for="addServiceCategory1">Home
+																Cleaning</label>
+														</div>
+														<div>
+															<input type="checkbox" id="addServiceCategory6" name="addServiceCategory"
+																value="6"> <label for="addServiceCategory6">Cow Cleaning</label>
+														</div>
+														<div>
+															<input type="checkbox" id="addServiceCategory4"
+																name="addServiceCategory" value="4"> <label
+																for="addServiceCategory4">Tapestry Cleaning</label>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">Close</button>
+											<button type="submit" id="addServiceCreate"
+												class="btn btn-primary">Create</button>
+										</div>
+									</form>
+									<%-- End of add service form --%>
+
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="mx-3 servicesContainer overflow-auto">
 						<!-- Services Offered Displayed Here -->
@@ -237,7 +330,7 @@
 							<!-- image -->
 							<div class="serviceModalImageWrapper">
 								<img class="serviceModalImageImg"
-									src="<%= service.getService_photo_url() %>" alt="...">
+									src="<%=service.getService_photo_url()%>" alt="...">
 								<%-- still need to add img --%>
 								<div class="serviceModalImageGradient h-100"></div>
 								<h5
@@ -263,7 +356,7 @@
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h1 class="modal-title fs-5" id="exampleModalLabel">Edit
+										<h1 class="modal-title fs-5 primaryFont" id="exampleModalLabel">Edit
 											Service</h1>
 										<button type="button" class="btn-close"
 											data-bs-dismiss="modal" aria-label="Close"></button>
