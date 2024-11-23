@@ -4,6 +4,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="model.Service" %>
 <%@ page import="model.ServiceDAO" %>
+<%@ page import="model.Schedule" %>
+<%@ page import="model.ScheduleDAO" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,10 +54,24 @@
                     <label for="schedule" class="form-label">Select Schedule</label>
                     <select id="schedule" name="schedule_id" class="form-select" required>
                         <option selected disabled>Choose...</option>
-                        <!-- Dummy Data for Schedule -->
-                        <option value="1">9:00 AM - 10:00 AM</option>
-                        <option value="2">10:00 AM - 11:00 AM</option>
-                        <option value="3">11:00 AM - 12:00 PM</option>
+                        <%
+                        	List<Schedule> scheduleDropdown = (List<Schedule>) session.getAttribute("scheduleTimings");
+                    		
+                    		if (scheduleDropdown == null) {
+                                response.sendRedirect(request.getContextPath() + "/ScheduleDropdownServlet");
+                                return;
+                        	}else if(scheduleDropdown.isEmpty()){
+                        %>
+                        		<option disabled>No Services Available</option>
+                        <%
+                        	}else{
+                    			for(Schedule schedule: scheduleDropdown){
+                    	%>
+                    				<option value="<%= schedule.getSchedule_id() %>"><%=schedule.getStart_time() %> - <%=schedule.getEnd_time() %></option>
+                    	<%
+                    			}
+                        	}
+                        %>
                     </select>
                 </div>
 
