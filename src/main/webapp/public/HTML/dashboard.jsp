@@ -280,21 +280,13 @@
 												<div class="col-9">
 													<div class="overflow-auto"
 														style="max-height: 150px; border: 1px solid #ced4da; padding: 10px; border-radius: 4px;">
+														<% for (ServiceCategory category: categories) { %>
 														<div>
-															<input type="checkbox" id="addServiceCategory1"
-																name="addServiceCategory" value="1"> <label
-																for="addServiceCategory1">Home Cleaning</label>
+															<input type="checkbox" id="addServiceCategory<%= category.getService_category_id() %>"
+																name="addServiceCategory" value="<%= category.getService_category_id() %>"> <label
+																for="addServiceCategory<%= category.getService_category_id() %>"><%= category.getName() %></label>
 														</div>
-														<div>
-															<input type="checkbox" id="addServiceCategory6"
-																name="addServiceCategory" value="6"> <label
-																for="addServiceCategory6">Cow Cleaning</label>
-														</div>
-														<div>
-															<input type="checkbox" id="addServiceCategory4"
-																name="addServiceCategory" value="4"> <label
-																for="addServiceCategory4">Tapestry Cleaning</label>
-														</div>
+														<% } %>
 													</div>
 												</div>
 											</div>
@@ -337,7 +329,7 @@
 								<div class="serviceModalImageGradient h-100"></div>
 								<h5
 									class="serviceModalImagePrice text-end me-5 pt-2 pe-3 fw-bolder">
-									$<%=service.getPrice()%></h5>
+									$<%= String.format("%.2f", service.getPrice()) %></h5>
 								<h6 class="serviceModalImageText mb-0 pb-0 ps-3 text-start"><%=service.getName()%></h6>
 							</div>
 
@@ -365,7 +357,7 @@
 									</div>
 
 									<!-- edit service modal contents -->
-									<form class="editServiceForm" action="EditServiceServlet" method="POST">
+									<form class="editServiceForm" action="<%=request.getContextPath()%>/EditServiceServlet?action=update" method="POST">
 										<input type="hidden" name="serviceId"
 											value="<%=service.getService_id()%>">
 										<div class="modal-body">

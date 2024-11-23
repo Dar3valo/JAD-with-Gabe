@@ -6,10 +6,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.ServiceCategory;
 import model.ServiceCategoryDAO;
 import model.ServiceDAO;
+import model.ServiceServiceCategoryDAO;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Servlet implementation class EditServiceServlet
@@ -47,30 +51,47 @@ public class EditServiceServlet extends HttpServlet {
 		try {
 			String formAction = request.getParameter("action");
 			
-			// general config
-			int rowsAffected = 0;
-			
 			if (formAction.equals("create")) {
+				// general config
+				int insertedAt = 0;
+				
+				// process data
 				String input_addServicePrice = request.getParameter("addServicePrice");
+				String[] input_addServiceCategories = request.getParameterValues("addServiceCategory");
 
 				String addServiceName = request.getParameter("addServiceName");
 				String addServiceDescription = request.getParameter("addServiceDescription");
 				double addServicePrice = Double.parseDouble(input_addServicePrice != null ? input_addServicePrice : "0");
 				String addServicePhotoUrl = "../Image/carouselImage1.jpg";
+				int[] addServiceCategories = new int[input_addServiceCategories.length];
+				
+				for (int i = 0; i < input_addServiceCategories.length; i++) {
+					int addServiceCategory = Integer.parseInt(input_addServiceCategories[i]);
+					addServiceCategories[i] = addServiceCategory;
+				}
 
-				rowsAffected = ServiceDAO.createService(addServiceName, addServiceDescription, addServicePrice,
+				// use data
+				insertedAt = ServiceDAO.createService(addServiceName, addServiceDescription, addServicePrice,
 						addServicePhotoUrl);
 				
-				if (rowsAffected == 0) {
+				if (insertedAt == 0) {
 					throw new Exception(
 							"For some reason no rows changed :| maybe theres no data associated with the id? here is the information given in request:"
 									+ "\naddServiceName: " + addServiceName + "\naddServiceDescription: "
 									+ addServiceDescription + "\naddServicePrice: " + addServicePrice
 									+ "\naddServicePhotoUrl: " + addServicePhotoUrl + "\n");
+				} else {
+					// successfully inserted
+					ServiceServiceCategoryDAO.createServiceServiceCategory(insertedAt, addServiceCategories);
 				}
 				
 			} else if (formAction.equals("update")) {
 				// update service data
+				
+				// general config
+				int rowsAffected = 0;
+				
+				// process data
 				String input_serviceId = request.getParameter("serviceId");
 				String input_servicePrice = request.getParameter("servicePrice");
 				
@@ -95,6 +116,7 @@ public class EditServiceServlet extends HttpServlet {
                 throw new Exception("No appropriate associated form action found in parameter. \nform action given: " + formAction);
 			}
 			
+			// redirect user to dashboard
 			RequestDispatcher dispatcher = request
 					.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
 			dispatcher.forward(request, response);
