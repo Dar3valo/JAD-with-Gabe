@@ -26,9 +26,10 @@
 	<%
 	List<Service> services = (List<Service>) session.getAttribute("services");
 	List<ServiceCategory> categories = (List<ServiceCategory>) session.getAttribute("serviceCategories");
-	List<ServiceServiceCategory> relationships = (List<ServiceServiceCategory>) session.getAttribute("allServiceServiceCategories");
+	List<ServiceServiceCategory> relationships = (List<ServiceServiceCategory>) session
+			.getAttribute("allServiceServiceCategories");
 	ServiceCategory currentCategory = (ServiceCategory) session.getAttribute("currentCategory");
-	
+
 	if (relationships == null) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllServiceServiceCategoryServlet");
 		dispatcher.forward(request, response);
@@ -288,13 +289,20 @@
 												<div class="col-9">
 													<div class="overflow-auto"
 														style="max-height: 150px; border: 1px solid #ced4da; padding: 10px; border-radius: 4px;">
-														<% for (ServiceCategory category: categories) { %>
+														<%
+														for (ServiceCategory category : categories) {
+														%>
 														<div>
-															<input type="checkbox" id="addServiceCategory<%= category.getService_category_id() %>"
-																name="addServiceCategory" value="<%= category.getService_category_id() %>"> <label
-																for="addServiceCategory<%= category.getService_category_id() %>"><%= category.getName() %></label>
+															<input type="checkbox"
+																id="addServiceCategory<%=category.getService_category_id()%>"
+																name="addServiceCategory"
+																value="<%=category.getService_category_id()%>">
+															<label
+																for="addServiceCategory<%=category.getService_category_id()%>"><%=category.getName()%></label>
 														</div>
-														<% } %>
+														<%
+														}
+														%>
 													</div>
 												</div>
 											</div>
@@ -337,7 +345,7 @@
 								<div class="serviceModalImageGradient h-100"></div>
 								<h5
 									class="serviceModalImagePrice text-end me-5 pt-2 pe-3 fw-bolder">
-									$<%= String.format("%.2f", service.getPrice()) %></h5>
+									$<%=String.format("%.2f", service.getPrice())%></h5>
 								<h6 class="serviceModalImageText mb-0 pb-0 ps-3 text-start"><%=service.getName()%></h6>
 							</div>
 
@@ -365,7 +373,9 @@
 									</div>
 
 									<!-- edit service modal contents -->
-									<form class="editServiceForm" action="<%=request.getContextPath()%>/EditServiceServlet?action=update" method="POST">
+									<form class="editServiceForm"
+										action="<%=request.getContextPath()%>/EditServiceServlet?action=update"
+										method="POST">
 										<input type="hidden" name="serviceId"
 											value="<%=service.getService_id()%>">
 										<div class="modal-body">
@@ -414,23 +424,34 @@
 												<div class="col-9">
 													<div class="overflow-auto"
 														style="max-height: 150px; border: 1px solid #ced4da; padding: 10px; border-radius: 4px;">
-														<% for (ServiceCategory category: categories) { %>
 														<%
-															boolean isRelationship = false;
-															for (ServiceServiceCategory relationship : relationships) {
-																if (relationship.getService_id() == service.getService_id() && relationship.getService_category_id() == category.getService_category_id()) {
-																	isRelationship = true;
-																}
-															}
+														for (ServiceCategory category : categories) {
 														%>
-														<%= isRelationship ? "<input type='hidden' name='serviceCategoryRelationship' value='" + category.getService_category_id() + "'>" : "" %>
+														<%
+														boolean isRelationship = false;
+														for (ServiceServiceCategory relationship : relationships) {
+															if (relationship.getService_id() == service.getService_id()
+															&& relationship.getService_category_id() == category.getService_category_id()) {
+																isRelationship = true;
+															}
+														}
+														%>
+														<%=isRelationship
+		? "<input type='hidden' name='serviceCategoryRelationship' value='" + category.getService_category_id() + "'>"
+		: ""%>
 														<div>
-															
-															<input type="checkbox" id="serviceCategory<%= category.getService_category_id() %>" name="serviceCategory"
-																value="<%= category.getService_category_id() %>" <%= isRelationship ? "checked" : "" %>> <label for="home"><%= category.getName() %></label>
+
+															<input type="checkbox"
+																id="serviceCategory<%=category.getService_category_id()%>"
+																name="serviceCategory"
+																value="<%=category.getService_category_id()%>"
+																<%=isRelationship ? "checked" : ""%>> <label
+																for="home"><%=category.getName()%></label>
 														</div>
-														<% } %>
-														
+														<%
+														}
+														%>
+
 													</div>
 												</div>
 											</div>
@@ -438,7 +459,11 @@
 										</div>
 
 										<div class="modal-footer justify-content-between">
-											<button type="submit" class="btn btn-danger" formaction="<%=request.getContextPath()%>/EditServiceServlet?action=delete">Delete</button>
+											<button type="submit"
+												class="btn btn-danger d-flex text-center align-items-center rounded" formaction="<%=request.getContextPath()%>/EditServiceServlet?action=delete">
+												<span class="me-2"><i
+													class="m-0 p-0 bi bi-trash3-fill"></i></span> Delete
+											</button>
 											<input type="submit" class="btn btn-primary"
 												data-bs-dismiss="modal" value="Save Changes">
 										</div>
