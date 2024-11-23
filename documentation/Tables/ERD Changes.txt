@@ -9,3 +9,8 @@
 	updated tables to handle errors where some tables weren't properly linked to each other
 	updated tables to handle additional feature of freelance cleaners
 	updated tables to handle cart logic, where users can store bookings in cart
+	
+- ERD V3.2
+	added trigger to handle service_service_category relationship
+	added feedback table to store user feedback
+	misc improvements
