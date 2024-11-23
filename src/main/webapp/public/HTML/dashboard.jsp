@@ -13,7 +13,8 @@
 	rel="stylesheet"
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <!-- Corrected Google Fonts link -->
 <link
 	href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
@@ -94,31 +95,99 @@
 										aria-label="Close"></button>
 								</div>
 
-								<form>
-									<div class="modal-body container">
-										<div class="row align-items-center">
-											<div class="col-1 d-flex justify-content-center align-items-center">
-												<i class="bi bi-trash3-fill text-danger"></i>
+								<%-- Edit Category Modal --%>
+								<div class="modal-body p-0">
+									<div class="container-fluid"
+										style="max-height: 70vh; overflow-y: auto;">
+										<!-- Add new category -->
+										<form class="category-form py-3 border-bottom" method="POST">
+											<!-- Category Name Row -->
+											<div class="row align-items-center mb-3">
+												<div class="col-1 d-flex justify-content-center"></div>
+												<div class="col-10">
+													<input type="text" class="form-control bg-light"
+														id="categoryName0" name="categoryName"
+														placeholder="Write Name of Category Here"
+														value="Example Default Name" required>
+												</div>
+												<div class="col-1 d-flex justify-content-center">
+													<button type="submit" name="action" value="update"
+														class="btn btn-link p-0 save-btn"
+														formaction="<%=request.getContextPath()%>/EditServiceCategoryServlet?action=create">
+														<i class="bi bi-plus-circle text-primary fs-5"></i>
+													</button>
+												</div>
 											</div>
-											<div class="col-10 d-flex justify-content-center align-items-center">
-												<input type="text" class="form-control" id="categoryName"
-													name="categoryName"
-													placeholder="Write Name of Category Here"
-													value="Home Cleaning" required>
-											</div>
-											<div class="col-1 d-flex justify-content-center align-items-center">
-												<i class="bi bi-floppy-fill text-success"></i>
-											</div>
-										</div>
-									</div>
 
-									<div class="modal-footer">
-										<button type="button" class="btn btn-primary">Save
-											changes</button>
-										<button type="button" class="btn btn-secondary"
-											data-bs-dismiss="modal">Close</button>
+											<!-- Category Description Row -->
+											<div class="row">
+												<div class="col-1"></div>
+												<div class="col-10">
+													<textarea class="form-control bg-light"
+														id="categoryDescription0%>" name="categoryDescription"
+														placeholder="Write Description Here" rows="4" required>Example Default Description</textarea>
+												</div>
+												<div class="col-1"></div>
+											</div>
+										</form>
+										<!-- End of add category -->
+										<%
+										for (ServiceCategory category : categories) {
+										%>
+										<!-- Individual Category Form -->
+										<form class="category-form py-3 border-bottom" method="POST">
+											<input type="hidden"
+												id="categoryId<%=category.getService_category_id()%>"
+												name="categoryId"
+												value="<%=category.getService_category_id()%>">
+											<!-- Category Name Row -->
+											<div class="row align-items-center mb-3">
+												<div class="col-1 d-flex justify-content-center">
+													<button type="submit" name="action" value="delete"
+														class="btn btn-link p-0 delete-btn"
+														formaction="<%=request.getContextPath()%>/EditServiceCategoryServlet?action=delete">
+														<i class="bi bi-trash3-fill text-danger fs-5"></i>
+													</button>
+												</div>
+												<div class="col-10">
+													<input type="text" class="form-control"
+														id="categoryName<%=category.getService_category_id()%>"
+														name="categoryName"
+														placeholder="Write Name of Category Here"
+														value="<%=category.getName()%>" required>
+												</div>
+												<div class="col-1 d-flex justify-content-center">
+													<button type="submit" name="action" value="update"
+														class="btn btn-link p-0 save-btn"
+														formaction="<%=request.getContextPath()%>/EditServiceCategoryServlet?action=update">
+														<i class="bi bi-floppy-fill text-success fs-5"></i>
+													</button>
+												</div>
+											</div>
+
+											<!-- Category Description Row -->
+											<div class="row">
+												<div class="col-1"></div>
+												<div class="col-10">
+													<textarea class="form-control"
+														id="categoryDescription<%=category.getService_category_id()%>"
+														name="categoryDescription"
+														placeholder="Write Description Here" rows="4" required><%=category.getDescription()%></textarea>
+												</div>
+												<div class="col-1"></div>
+											</div>
+										</form>
+										<!-- End of Individual Category Form -->
+										<%
+										}
+										%>
 									</div>
-								</form>
+								</div>
+
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary"
+										data-bs-dismiss="modal">Close</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -167,7 +236,7 @@
 							<!-- image -->
 							<div class="serviceModalImageWrapper">
 								<img class="serviceModalImageImg"
-									src="../Image/carouselImage1.jpg" alt="...">
+									src="<%= service.getService_photo_url() %>" alt="...">
 								<%-- still need to add img --%>
 								<div class="serviceModalImageGradient h-100"></div>
 								<h5

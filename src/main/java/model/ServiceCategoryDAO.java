@@ -101,4 +101,127 @@ public class ServiceCategoryDAO {
 		
 		return category;
 	}
+	
+	public static int updateServiceCategoryById(int input_service_category_id, String input_service_category_name, String input_service_category_description) {
+		ServiceCategory category = null;
+	    Connection connection = null;
+	    PreparedStatement statement = null;
+	    
+		try {			
+			// config
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+			// query
+			String ps = "UPDATE Service_Category SET name = ?, description = ? WHERE service_category_id = ?";
+			
+			statement = connection.prepareStatement(ps);
+			statement.setString(1, input_service_category_name);
+			statement.setString(2, input_service_category_description);
+			statement.setInt(3, input_service_category_id);
+			int rowsAffected = statement.executeUpdate();
+			
+			if (rowsAffected > 0) {
+				return rowsAffected;
+                
+            } else {
+                throw new SQLException("No category found with ID: " + input_service_category_id);
+            }
+			
+		} catch (Exception e) {
+			 e.printStackTrace(); 
+		} finally {
+	        try {
+	            if (statement != null) statement.close();
+	            if (connection != null) connection.close();
+	            
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		
+		return 0;
+	}
+	
+	public static int deleteServiceCategoryById(int input_service_category_id) {
+	    Connection connection = null;
+	    PreparedStatement statement = null;
+	    
+		try {
+			// config
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+			// query
+			String ps = "DELETE FROM Service_Category WHERE service_category_id = ?";
+			
+			statement = connection.prepareStatement(ps);
+			statement.setInt(1, input_service_category_id);
+			int rowsAffected = statement.executeUpdate();
+			
+			if (rowsAffected > 0) {
+				return rowsAffected;
+                
+            } else {
+                throw new SQLException("No category found with ID: " + input_service_category_id);
+            }
+			
+		} catch (Exception e) {
+			 e.printStackTrace(); 
+		} finally {
+	        try {
+	            if (statement != null) statement.close();
+	            if (connection != null) connection.close();
+	            
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		
+		return 0;
+	}
+	
+	public static int createServiceCategory(String input_name, String input_description) {
+	    Connection connection = null;
+	    PreparedStatement statement = null;
+	    
+		try {
+			// config
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+			// query
+			String ps = "INSERT INTO Service_Category (name, description) VALUES (?, ?)";
+			
+			statement = connection.prepareStatement(ps);
+			statement.setString(1, input_name);
+			statement.setString(2, input_description);
+			int rowsAffected = statement.executeUpdate();
+			
+			if (rowsAffected > 0) {
+				return rowsAffected;
+                
+            } else {
+                throw new SQLException("for some reason, nothing was inserted LOL\nHere are the information received:" +
+               "\nName: " + input_name +
+               "\nDescription: " + input_description);
+            }
+			
+		} catch (Exception e) {
+			 e.printStackTrace(); 
+		} finally {
+	        try {
+	            if (statement != null) statement.close();
+	            if (connection != null) connection.close();
+	            
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		
+		return 0;
+	}
 }
