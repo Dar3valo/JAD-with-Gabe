@@ -246,23 +246,35 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="content">
-                                            <p>
-                                                <span><i class="bi bi-chat-right-quote-fill"></i></span>
-                                                <%= feedback.getComments() != null ? feedback.getComments() : "No comments provided" %>
-                                            </p>
-                                            <% if (feedback.getImprovements() != null && !feedback.getImprovements().trim().isEmpty()) { %>
-                                                <p class="suggestions">
-                                                    <small>Suggestions for improvement: <%= feedback.getImprovements() %></small>
-                                                </p>
-                                            <% } %>
-                                            <% if (feedback.getSources() != null && !feedback.getSources().trim().isEmpty()) { %>
-                                                <p class="source">
-                                                    <small>How did you hear about us? <%= feedback.getSources() %></small>
-                                                </p>
-                                            <% } %>
-                                        </div>
-                                    </div>
+										<div class="content">
+											<p>
+												<span><i class="bi bi-chat-right-quote-fill"></i></span>
+												<%=feedback.getComments() != null ? feedback.getComments() : "No comments provided"%>
+											</p>
+
+											<%
+											// Check if improvements are not null and not empty after trimming
+											if (feedback.getImprovements() != null && !feedback.getImprovements().trim().isEmpty()) {
+											%>
+											<p class="suggestions">
+												<small>Suggestions for improvement: <%=feedback.getImprovements()%></small>
+											</p>
+											<%
+											}
+											%>
+
+											<%
+											// Check if sources are not null and not empty after trimming
+											if (feedback.getSources() != null && !feedback.getSources().trim().isEmpty()) {
+											%>
+											<p class="source">
+												<small>How did you hear about us? <br> <%=feedback.getSources()%></small>
+											</p>
+											<% 
+    										} 
+   										 	%>
+										</div>
+									</div>
                                 </div>
                             </div>
                         </div>
