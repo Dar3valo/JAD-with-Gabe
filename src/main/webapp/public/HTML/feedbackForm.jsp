@@ -30,34 +30,43 @@
 					<p class="text-white">We would love to hear from you!</p>
 					<hr class="bg-light">
 					<form method="POST" action="<%=request.getContextPath()%>/InsertFeedbackServlet">
-						<div id="rating-parent" class="form-group">
-							<div class="rating">
-								<input type="radio" name="rating" id="r1" value="1"><label for="r1"></label>
-        						<input type="radio" name="rating" id="r2" value="2"><label for="r2"></label>
-        						<input type="radio" name="rating" id="r3" value="3"><label for="r3"></label>
-        						<input type="radio" name="rating" id="r4" value="4"><label for="r4"></label>
-        						<input type="radio" name="rating" id="r5" value="5"><label for="r5"></label>
-							</div>
-						</div>
+						<div class="form-group mb-4" id="rating-parent">
+                            <div class="rating">
+                                <input type="radio" name="rating" id="star5" value="5">
+                                <label for="star5" title="5 stars"></label>
+                                
+                                <input type="radio" name="rating" id="star4" value="4">
+                                <label for="star4" title="4 stars"></label>
+                                
+                                <input type="radio" name="rating" id="star3" value="3">
+                                <label for="star3" title="3 stars"></label>
+                                
+                                <input type="radio" name="rating" id="star2" value="2">
+                                <label for="star2" title="2 stars"></label>
+                                
+                                <input type="radio" name="rating" id="star1" value="1">
+                                <label for="star1" title="1 star"></label>
+                            </div>
+                        </div>
 						
 						<hr class="bg-light">
 
 						<div class="form-check text-white">
 							<%-- Social Media Checkbox --%>
-							<input type="checkbox" name="sources" class="form-check-input" id="socialMedia">
+							<input type="checkbox" name="sources" class="form-check-input" id="socialMedia" value="SocialMedia">
 							<label for="socialMedia" class="form-check-label text-light">Social
 								Media</label><br>
 
 							<%-- Friends Checkbox --%>
-							<input type="checkbox" name="sources" class="form-check-input" id="friends">
+							<input type="checkbox" name="sources" class="form-check-input" id="friends" value="Friends">
 							<label for="friends" class="form-check-label text-light">Friends</label><br>
 
 							<%-- Internet Checkbox --%>
-							<input type="checkbox" name="sources" class="form-check-input" id="internet">
+							<input type="checkbox" name="sources" class="form-check-input" id="internet" value="Internet">
 							<label for="internet" class="form-check-label text-light">Internet</label><br>
 
 							<%-- Others Checkbox --%>
-							<input type="checkbox" name="sources" class="form-check-input" id="others">
+							<input type="checkbox" name="sources" class="form-check-input" id="others" value="Others">
 							<label for="others" class="form-check-label text-light">Others:</label><br>
 
 							<%-- Textarea for Other's Checkbox --%>
