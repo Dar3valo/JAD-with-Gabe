@@ -3,7 +3,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="model.Service"%>
 <%@ page import="model.ServiceCategory"%>
-<%@ page import="model.ServiceServiceCategoryDAO"%>
+<%@ page import="model.ServiceServiceCategory"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,7 +26,14 @@
 	<%
 	List<Service> services = (List<Service>) session.getAttribute("services");
 	List<ServiceCategory> categories = (List<ServiceCategory>) session.getAttribute("serviceCategories");
+	List<ServiceServiceCategory> relationships = (List<ServiceServiceCategory>) session.getAttribute("allServiceServiceCategories");
 	ServiceCategory currentCategory = (ServiceCategory) session.getAttribute("currentCategory");
+	
+	if (relationships == null) {
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllServiceServiceCategoryServlet");
+		dispatcher.forward(request, response);
+		return;
+	}
 
 	if (services == null || categories == null) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
@@ -284,8 +291,8 @@
 														<% for (ServiceCategory category: categories) { %>
 														<div>
 															<input type="checkbox" id="addServiceCategory<%= category.getService_category_id() %>"
-																name="addServiceCategory" value="addServiceCategory<%= category.getService_category_id() %>"> <label
-																for="addServiceCategory<%= category.getService_category_id() %>">Home Cleaning</label>
+																name="addServiceCategory" value="<%= category.getService_category_id() %>"> <label
+																for="addServiceCategory<%= category.getService_category_id() %>"><%= category.getName() %></label>
 														</div>
 														<% } %>
 													</div>
@@ -408,8 +415,15 @@
 													<div class="overflow-auto"
 														style="max-height: 150px; border: 1px solid #ced4da; padding: 10px; border-radius: 4px;">
 														<% for (ServiceCategory category: categories) { %>
-														<% boolean isRelationship = ServiceServiceCategoryDAO.checkServiceServiceCategoryRelationship(service.getService_id(), category.getService_category_id()); %>
-														<%= isRelationship ? "<input type='hidden' name='serviceCategoryRelationship' value='" + category.getService_category_id() + "'>" : ""%>
+														<%
+															boolean isRelationship = false;
+															for (ServiceServiceCategory relationship : relationships) {
+																if (relationship.getService_id() == service.getService_id() && relationship.getService_category_id() == category.getService_category_id()) {
+																	isRelationship = true;
+																}
+															}
+														%>
+														<%= isRelationship ? "<input type='hidden' name='serviceCategoryRelationship' value='" + category.getService_category_id() + "'>" : "" %>
 														<div>
 															
 															<input type="checkbox" id="serviceCategory<%= category.getService_category_id() %>" name="serviceCategory"
@@ -424,8 +438,7 @@
 										</div>
 
 										<div class="modal-footer">
-											<button type="button" class="btn btn-danger"
-												data-bs-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-danger" formaction="<%=request.getContextPath()%>/EditServiceServlet?action=delete">Delete</button>
 											<input type="submit" class="btn btn-primary"
 												data-bs-dismiss="modal" value="Save Changes">
 										</div>

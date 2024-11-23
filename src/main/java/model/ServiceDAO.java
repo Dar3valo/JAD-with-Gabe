@@ -241,4 +241,43 @@ public class ServiceDAO {
 		
 		return 0;
 	}
+	
+	public static int deleteServiceById(int input_service_id) {
+	    Connection connection = null;
+	    PreparedStatement statement = null;
+	    
+		try {			
+			// config
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+			// query
+			String ps = "DELETE FROM Service WHERE service_id = ?";
+			
+			statement = connection.prepareStatement(ps);
+			statement.setInt(1, input_service_id);
+			int rowsAffected = statement.executeUpdate();
+			
+			if (rowsAffected > 0) {
+				return rowsAffected;
+                
+            } else {
+                throw new SQLException("(probably) No category found with ID: " + input_service_id);
+            }
+			
+		} catch (Exception e) {
+			 e.printStackTrace(); 
+		} finally {
+	        try {
+	            if (statement != null) statement.close();
+	            if (connection != null) connection.close();
+	            
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		
+		return 0;
+	}
 }

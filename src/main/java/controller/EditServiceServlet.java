@@ -94,15 +94,29 @@ public class EditServiceServlet extends HttpServlet {
 				// process data - service
 				String input_serviceId = request.getParameter("serviceId");
 				String input_servicePrice = request.getParameter("servicePrice");
+				String[] input_serviceCategories = request.getParameterValues("serviceCategory");
+				String[] input_serviceCategoryRelationships = request.getParameterValues("serviceCategoryRelationship");
 				
 				int serviceId = Integer.parseInt(input_serviceId != null ? input_serviceId : "0");
 				double servicePrice = Double.parseDouble(input_servicePrice != null ? input_servicePrice : "0");
 				String serviceName = request.getParameter("serviceName");
 				String serviceDescription = request.getParameter("serviceDescription");
 				String addServicePhotoUrl = "../Image/carouselImage1.jpg";
+				int[] serviceCategories = new int[input_serviceCategories.length];
+				int[] serviceCategoryRelationships = new int[input_serviceCategoryRelationships.length];
+				
+				for (int i = 0; i < input_serviceCategories.length; i++) {
+					int serviceCategory = Integer.parseInt(input_serviceCategories[i]);
+					serviceCategories[i] = serviceCategory;
+				}
+
+				for (int i = 0; i < input_serviceCategoryRelationships.length; i++) {
+					int serviceCategoryRelationship = Integer.parseInt(input_serviceCategoryRelationships[i]);
+					serviceCategoryRelationships[i] = serviceCategoryRelationship;
+				}
 				
 				// process data - service category
-				String[] 
+				// String[] 
 				
 				rowsAffected = ServiceDAO.updateServiceById(serviceId, serviceName, serviceDescription, servicePrice, addServicePhotoUrl);
 				
@@ -113,6 +127,58 @@ public class EditServiceServlet extends HttpServlet {
 				"\nserviceDescription: " + serviceDescription +
 				"\nservicePrice: " + servicePrice +
 				"\naddServicePhotoUrl: " + addServicePhotoUrl + "\n");
+				} else {
+					
+					// first loop: check for new relationships to add
+					for (int i = 0; i < serviceCategories.length; i++) {
+					    int categoryIdToCheck = serviceCategories[i];
+					    boolean exists = false;
+					    
+					    // check if this category already has a relationship
+					    for (int j = 0; j < serviceCategoryRelationships.length; j++) {
+					        int existingCategoryId = serviceCategoryRelationships[j];
+					        if (categoryIdToCheck == existingCategoryId) {
+					            exists = true;
+					            break;
+					        }
+					    }
+					    
+					    // if relationship doesn't exist yet, add it using current index (categoryIdToCheck)
+					    if (!exists) {
+					    	ServiceServiceCategoryDAO.createServiceServiceCategorySingle(serviceId, categoryIdToCheck);
+					    }
+					}
+
+					// second loop: check for relationships to delete
+					for (int i = 0; i < serviceCategoryRelationships.length; i++) {
+					    int existingCategoryId = serviceCategoryRelationships[i];
+					    boolean shouldKeep = false;
+					    
+					    // check if this relationship should be kept
+					    for (int j = 0; j < serviceCategories.length; j++) {
+					        int categoryIdFromInput = serviceCategories[j];
+					        if (existingCategoryId == categoryIdFromInput) {
+					            shouldKeep = true;
+					            break;
+					        }
+					    }
+					    
+					    // If relationship isn't in user input, delete it using current index (existingCategoryId)
+					    if (!shouldKeep) {
+					        ServiceServiceCategoryDAO.deleteServiceServiceCategory(serviceId, existingCategoryId);
+					    }
+					}
+					
+				}
+			} else if (formAction.equals("delete")) {
+				String input_serviceId = request.getParameter("serviceId");
+				
+				int serviceId = Integer.parseInt(input_serviceId);
+				
+				int rowsAffected = ServiceDAO.deleteServiceById(serviceId);
+				
+				if (rowsAffected == 0) {
+					throw new Exception("No rows were affected by delete");
 				}
 				
 			} else {
@@ -121,14 +187,13 @@ public class EditServiceServlet extends HttpServlet {
 			
 			// redirect user to dashboard
 			RequestDispatcher dispatcher = request
-					.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
+					.getRequestDispatcher("/");
 			dispatcher.forward(request, response);
 			return;
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			RequestDispatcher dispatcher = request
-					.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
 			dispatcher.forward(request, response);
 			return;
 		}
