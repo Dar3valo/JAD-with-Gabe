@@ -47,6 +47,10 @@ body:before{
                         <li class="nav-item">
                             <a id="logoutButton" href="logout.jsp" class="nav-link">Logout</a>
                         </li>
+                        
+                        <li class="nav-item">
+                            <a id="viewCart" href="checkOut.jsp" class="nav-link">Your Cart</a>
+                        </li>
                     <% } else { %>
 					
 					<li class="nav-item"><a class="nav-link" href="login.jsp">Login</a>
