@@ -32,22 +32,12 @@
                     <h1 class="display-6">Book Your Appointment</h1>
                 </header>
             </div>
-            <form class="row g-3" action="#" method="POST">
-
-                <!-- Personal Information -->
-                <div class="col-md-6">
-                    <label for="firstName" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="userName" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" required>
-                </div>
+            <form class="row g-3" action="<%=request.getContextPath()%>/BookingServlet" method="POST">
 
                 <!-- Appointment Details -->
                 <div class="col-md-6">
                     <label for="appointmentDate" class="form-label">Appointment Date</label>
-                    <input type="date" class="form-control" id="appointmentDate" name="booking_date" required>
+                    <input type="date" class="form-control" id="appointmentDate" name="bookingDate" required>
                 </div>
 
                 <div class="col-md-6">
@@ -117,7 +107,7 @@
                 <!-- Terms and Conditions -->
                 <div class="col-12">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                        <input class="form-check-input" type="checkbox" id="termsCheck" name="terms" required>
                         <label class="form-check-label" for="termsCheck">I agree to the terms and conditions</label>
                     </div>
                 </div>
