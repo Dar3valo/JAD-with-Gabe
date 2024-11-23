@@ -235,7 +235,7 @@
 									</div>
 
 									<!-- Add Service Modal Body Here -->
-									<form id="addServiceForm">
+									<form id="addServiceForm" method="POST" action="${pageContext.request.contextPath}/EditServiceServlet">
 										<div class="modal-body">
 											<div class="row mb-3">
 												<div class="col-3">

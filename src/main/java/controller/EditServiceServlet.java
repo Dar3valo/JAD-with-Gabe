@@ -7,21 +7,21 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ServiceCategoryDAO;
+import model.ServiceDAO;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 /**
- * Servlet implementation class EditServiceCategoryServlet
+ * Servlet implementation class EditServiceServlet
  */
-@WebServlet("/EditServiceCategoryServlet")
-public class EditServiceCategoryServlet extends HttpServlet {
+@WebServlet("/EditServiceServlet")
+public class EditServiceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EditServiceCategoryServlet() {
+    public EditServiceServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,44 +39,33 @@ public class EditServiceCategoryServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
 		try {
-			// read request parameters
-			String formAction = request.getParameter("action");
+			String input_addServicePrice = request.getParameter("addServicePrice");
 			
-			String category_id = request.getParameter("categoryId");
-			int input_category_id = category_id != null ? Integer.parseInt(category_id) : 0;
-			String input_category_name = request.getParameter("categoryName");
-			String input_category_description = request.getParameter("categoryDescription");
-			
+			String addServiceName = request.getParameter("addServiceName");
+			String addServiceDescription = request.getParameter("addServiceDescription");
+			double addServicePrice = Double.parseDouble(input_addServicePrice);
+			String addServicePhotoUrl = "../Image/carouselImage1.jpg";
+
 			// general config
 			int rowsAffected = 0;
 			
-			if (formAction.equals("update")) {
-				rowsAffected = ServiceCategoryDAO.updateServiceCategoryById(input_category_id, input_category_name, input_category_description);
-				
-			} else if (formAction.equals("delete")) {
-				rowsAffected = ServiceCategoryDAO.deleteServiceCategoryById(input_category_id);
-				
-			} else if (formAction.equals("create")) {
-				rowsAffected = ServiceCategoryDAO.createServiceCategory(input_category_name, input_category_description);
-				
-			} else {
-                throw new Exception("No appropriate associated form action found in parameter. \nform action given: " + formAction);
-                
-			}
+			rowsAffected = ServiceDAO.createService(addServiceName, addServiceDescription, addServicePrice, addServicePhotoUrl);
 			
 			if (rowsAffected == 0) {
 				throw new Exception("For some reason no rows changed :| maybe theres no data associated with the id? here is the information given in request:" +
-			"\ncategoryId: " + input_category_id +
-			"\ncategoryName: " + input_category_name +
-			"\ncategoryDescription: " + input_category_description + "\n");
+			"\naddServiceName: " + addServiceName +
+			"\naddServiceDescription: " + addServiceDescription +
+			"\naddServicePrice: " + addServicePrice + 
+			"\naddServicePhotoUrl: " + addServicePhotoUrl + "\n");
 			}
 			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
 			dispatcher.forward(request, response);
 			return;
 			
-		} catch (Exception e) {
+		} catch (Exception e){
             e.printStackTrace();
             RequestDispatcher dispatcher = request.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
     		dispatcher.forward(request, response);
