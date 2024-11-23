@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="model.Feedback" %>
+<%@ page import="model.FeedbackGetDAO" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -188,6 +191,11 @@
 			</div>
 		</div>
 	</section>
+	
+	<%-- Logic for Testimonial Carousel --%>
+	<%
+		List<Feedback> feedbackList = (List<Feedback>) request.getAttribute("topFeedback");
+	%>
 
 	<%-- Testimonial carousel --%>
 	<section class="p-5 bg-dark" id="testimonialCarousel">
