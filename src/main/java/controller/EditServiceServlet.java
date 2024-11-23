@@ -186,8 +186,7 @@ public class EditServiceServlet extends HttpServlet {
 			}
 			
 			// redirect user to dashboard
-			RequestDispatcher dispatcher = request
-					.getRequestDispatcher("/");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
 			dispatcher.forward(request, response);
 			return;
 
