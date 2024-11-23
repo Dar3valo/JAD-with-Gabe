@@ -80,7 +80,7 @@
 										for="female">&nbsp;Female</label>
 								</div>
 								<div class="me-3">
-									<input type="radio" name="gender" id="ratherNotSay" value="Rather Not Say"><label
+									<input type="radio" name="gender" id="ratherNotSay" value="N"><label
 										for="ratherNotSay">&nbsp;Rather not say</label>
 								</div>
 							</div>
