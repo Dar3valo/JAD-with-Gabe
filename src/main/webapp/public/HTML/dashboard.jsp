@@ -3,6 +3,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="model.Service"%>
 <%@ page import="model.ServiceCategory"%>
+<%@ page import="model.ServiceServiceCategoryDAO"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -282,6 +283,9 @@
 														style="max-height: 150px; border: 1px solid #ced4da; padding: 10px; border-radius: 4px;">
 														<% for (ServiceCategory category: categories) { %>
 														<div>
+															<%
+															//boolean isRelationship = ServiceServiceCategoryDAO.checkServiceServiceCategoryRelationship(1, 1);
+															%>
 															<input type="checkbox" id="addServiceCategory<%= category.getService_category_id() %>"
 																name="addServiceCategory" value="<%= category.getService_category_id() %>"> <label
 																for="addServiceCategory<%= category.getService_category_id() %>"><%= category.getName() %></label>

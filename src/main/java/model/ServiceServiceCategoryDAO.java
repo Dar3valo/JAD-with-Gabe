@@ -33,6 +33,7 @@ public class ServiceServiceCategoryDAO {
 					System.out.println("relationship established. Yipee!");
 					
 	            } else {
+					statement.close();
 	                throw new SQLException("for some reason, nothing was inserted LOL\nHere is the information received:" +
 	               "\nserviceId: " + serviceId +
 	               "\nserviceServiceCategories: " + serviceServiceCategories);
@@ -52,4 +53,32 @@ public class ServiceServiceCategoryDAO {
 	        }
 	    }
 	}
+	
+	public static boolean checkServiceServiceCategoryRelationship(int serviceId, int categoryId) {
+        try {
+        	// config
+			Class.forName("org.postgresql.Driver");
+			String query = "SELECT COUNT(*) FROM Service_Service_Category WHERE service_id = ? AND service_category_id = ?";
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			
+        	try (
+        			Connection connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+        			PreparedStatement statement = connection.prepareStatement(query);
+    			) {
+                statement.setInt(1, serviceId);
+                statement.setInt(2, categoryId);
+                
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt(1) > 0;
+                    }
+                }
+        	}
+        	
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
+        
+    	return false; // if true was not returned in the previous code, something has gone wrong and it is false
+    }
 }
