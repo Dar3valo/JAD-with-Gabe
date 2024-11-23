@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Feedback;
 import model.FeedbackDAO;
-
+import model.User;
 
 import java.io.IOException;
 
@@ -41,15 +41,15 @@ public class InsertFeedbackServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		 HttpSession session = request.getSession();
-	        Object userIdObj = session.getAttribute("userId");
+        User userIdObj = (User) session.getAttribute("loggedInUser");
 
-	        if (userIdObj == null) {
-	            request.setAttribute("errorMessage", "You must be logged in to submit feedback.");
-	            response.sendRedirect(request.getContextPath() + "/public/HTML/feedbackForm.jsp");
-	            return;
-	        }
-		
-		int userId = Integer.parseInt(request.getSession().getAttribute("loggedInUser").toString()); // Assuming logged-in user
+        if (userIdObj == null) {
+            request.setAttribute("errorMessage", "You must be logged in to submit feedback.");
+            response.sendRedirect(request.getContextPath() + "/public/HTML/feedbackForm.jsp");
+            return;
+        }
+	
+		int userId = userIdObj.getUser_id(); // Assuming logged-in user
 		int rating = Integer.parseInt(request.getParameter("rating"));
 		String[] sourcesArray = request.getParameterValues("sources");
 		String sources = sourcesArray != null ? String.join(", ", sourcesArray) : "";
@@ -60,7 +60,7 @@ public class InsertFeedbackServlet extends HttpServlet {
 		try {
 			FeedbackDAO feedbackDAO = new FeedbackDAO();
 			
-				Feedback insertFeedback = feedbackDAO.insertUserFeedback(userId, rating, otherSources, sources, comments, improvements);
+				Feedback insertFeedback = feedbackDAO.insertUserFeedback(userId, rating, sources, otherSources, comments, improvements);
 				
 				if(insertFeedback != null) {
 					response.sendRedirect(request.getContextPath() + "/public/HTML/feedbackForm.jsp");

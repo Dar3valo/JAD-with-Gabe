@@ -12,7 +12,7 @@ public class UserDAO {
 			Class.forName("org.postgresql.Driver");
 			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
 			conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
-			String sql = "SELECT email, password FROM users WHERE email = ? AND password = ?";
+			String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
 			
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
@@ -20,7 +20,16 @@ public class UserDAO {
 			
 			rs = stmt.executeQuery();
 			if(rs.next()) {
-				user = new User(rs.getString("email"), rs.getString("password"));
+				int user_id = rs.getInt("user_id");
+				String user_password = rs.getString("password");
+				String user_email = rs.getString("email");
+				char gender = (char) rs.getString("gender").charAt(0);
+				String name = rs.getString("name");
+				String profile_photo_url = rs.getString("profile_photo_url");
+				int role_id = rs.getInt("role_id");
+				
+				
+				user = new User(user_id, user_password, user_email, gender, name, profile_photo_url, role_id);
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
