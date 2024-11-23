@@ -3,6 +3,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.Feedback" %>
 <%@ page import="model.FeedbackGetDAO" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +20,10 @@
 <link rel="stylesheet" href="../CSS/homeStyle.css">
 </head>
 <body>
+	<!-- Add this at the start of your homePage.jsp to verify the servlet is being called -->
+	<%
+	request.getRequestDispatcher("/TopThreeFeedbackServlet").include(request, response);
+	%>
 	<%--Navbar --%>
 	<jsp:include page="navbar.jsp" />
 
@@ -192,123 +197,111 @@
 		</div>
 	</section>
 	
-	<%-- Logic for Testimonial Carousel --%>
-	<%
-		List<Feedback> feedbackList = (List<Feedback>) request.getAttribute("topFeedback");
-	%>
-
-	<%-- Testimonial carousel --%>
 	<section class="p-5 bg-dark" id="testimonialCarousel">
-		<div class="container">
-			<h1 class="section-header">
-				Client Review <span>AllClean Services Feedback</span>
-			</h1>
+    <div class="container">
+        <h1 class="section-header">
+            Client Review <span>AllClean Services Feedback</span>
+        </h1>
 
-			<div class="testimonials text-light">
-				<div id="carouselExampleControls" class="carousel slide"
-					data-bs-ride="carousel">
-					<div class="carousel-inner">
-						<div class="carousel-item active">
-							<div class="single-item">
-								<div class="row">
-									<div class="col-md-5">
-										<div class="profile">
-											<div class="img-area">
-												<img src="../Image/defaultpic.png" alt="">
-											</div>
-											<div class="bio">
-												<h2>Dave Wood</h2>
-												<h4>Web Developer</h4>
-											</div>
-										</div>
-									</div>
-
-									<div class="col-md-6">
-										<div class="content">
-											<p>
-												<span><i class="bi bi-chat-right-quote-fill"></i></span> I'm
-												so busy coding nowadays for my company project that I barely
-												have time to clean up my house. Thanks for AllClean, my
-												house is well-maintained and cleaned every week. I'm so
-												grateful to AllClean services as this has saved me a lot of
-												time and trouble!
-											</p>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="carousel-item">
-							<div class="single-item">
-								<div class="row">
-									<div class="col-md-5">
-										<div class="profile">
-											<div class="img-area">
-												<img src="../Image/defaultpic.png" alt="">
-											</div>
-											<div class="bio">
-												<h2>John Doe</h2>
-												<h4>Oracle CEO</h4>
-											</div>
-										</div>
-									</div>
-
-									<div class="col-md-6">
+        <div class="testimonials text-light">
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <%
+                    List<Feedback> feedbackList = (List<Feedback>) request.getAttribute("topFeedback");
+                    System.out.println("JSP - Feedback List: " + (feedbackList != null ? feedbackList.size() : "null")); // Debug line
+                    
+                    if (feedbackList == null || feedbackList.isEmpty()) {
+                        System.out.println("Feedback list is null or empty");
+                    %>
+                        <div class="carousel-item active">
+                            <div class="single-item">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="text-center">No testimonials available at this time.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <%
+                    } else {
+                        System.out.println("Number of feedback items: " + feedbackList.size());
+                        boolean isFirst = true;
+                        for (Feedback feedback : feedbackList) {
+                            System.out.println("Processing feedback for user ID: " + feedback.getUser_id());
+                    %>
+                        <div class="carousel-item <%= isFirst ? "active" : "" %>">
+                            <div class="single-item">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="profile">
+                                            <div class="img-area">
+                                                <img src="${pageContext.request.contextPath}/public/Image/defaultpic.png" 
+                                                     alt="Profile Picture" 
+                                                     class="img-fluid rounded-circle">
+                                            </div>
+                                            <div class="bio">
+                                                <h2>User ID: <%= feedback.getUser_id() %></h2>
+                                                <h4>Rating: <%= feedback.getRating() %>/5</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
 										<div class="content">
 											<p>
 												<span><i class="bi bi-chat-right-quote-fill"></i></span>
-												AllClean services is the best cleaning service I have ever
-												heard of. The maid is so friendly and does everything I tell
-												her to do. Will recommend!
+												<%=feedback.getComments() != null ? feedback.getComments() : "No comments provided"%>
 											</p>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="carousel-item">
-							<div class="single-item">
-								<div class="row">
-									<div class="col-md-5">
-										<div class="profile">
-											<div class="img-area">
-												<img src="../Image/defaultpic.png" alt="">
-											</div>
-											<div class="bio">
-												<h2>Sarah Leo</h2>
-												<h4>Pre-School Teacher</h4>
-											</div>
-										</div>
-									</div>
 
-									<div class="col-md-6">
-										<div class="content">
-											<p>
-												<span><i class="bi bi-chat-right-quote-fill"></i></span>
-												AllClean services saves a lot of time for me since I'm out
-												majority of the day and always come back tired. The maid
-												helps do all the housework and tidying and I can just rest
-												and have some alone time. Will recommend 10/10!
+											<%
+											// Check if improvements are not null and not empty after trimming
+											if (feedback.getImprovements() != null && !feedback.getImprovements().trim().isEmpty()) {
+											%>
+											<p class="suggestions">
+												<small>Suggestions for improvement: <%=feedback.getImprovements()%></small>
+											</p>
+											<%
+											}
+											%>
+
+											<%
+											// Check if sources are not null and not empty after trimming
+											if (feedback.getSources() != null && !feedback.getSources().trim().isEmpty()) {
+											%>
+											<p class="source">
+												<small>How did you hear about us? <br> <%=feedback.getSources()%></small>
+											</p>
+											<% 
+    										} 
+   										 	%>
 										</div>
 									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<button class="carousel-control-prev" type="button"
-						data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">Previous</span>
-					</button>
-					<button class="carousel-control-next" type="button"
-						data-bs-target="#carouselExampleControls" data-bs-slide="next">
-						<span class="carousel-control-next-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">Next</span>
-					</button>
-				</div>
-			</div>
-		</div>
-	</section>
+                                </div>
+                            </div>
+                        </div>
+                    <%
+                            isFirst = false;
+                        }
+                    }
+                    %>
+                </div>
+
+                <!-- Carousel Controls -->
+                <% if (feedbackList != null && feedbackList.size() > 1) { %>
+                    <button class="carousel-control-prev" type="button" 
+                            data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" 
+                            data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</section>
 
 	<%-- Question Accordion --%>
 	<section id="questions" class="p-5">

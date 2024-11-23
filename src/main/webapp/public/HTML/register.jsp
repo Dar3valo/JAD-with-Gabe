@@ -72,15 +72,15 @@
 						<div id="gender-parent" class="form-group my-2">
 							<div class="gender d-flex justify-content-center">
 								<div class="me-3">
-									<input type="radio" name="gender" id="male"><label
+									<input type="radio" name="gender" id="male" value="M"><label
 										for="male">&nbsp;Male</label>
 								</div>
 								<div class="me-3">
-									<input type="radio" name="gender" id="female"><label
+									<input type="radio" name="gender" id="female" value="F"><label
 										for="female">&nbsp;Female</label>
 								</div>
 								<div class="me-3">
-									<input type="radio" name="gender" id="ratherNotSay"><label
+									<input type="radio" name="gender" id="ratherNotSay" value="N"><label
 										for="ratherNotSay">&nbsp;Rather not say</label>
 								</div>
 							</div>
