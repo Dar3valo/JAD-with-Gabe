@@ -3,6 +3,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="model.Service"%>
 <%@ page import="model.ServiceCategory"%>
+<%@ page import="model.ServiceServiceCategoryDAO"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -280,21 +281,13 @@
 												<div class="col-9">
 													<div class="overflow-auto"
 														style="max-height: 150px; border: 1px solid #ced4da; padding: 10px; border-radius: 4px;">
+														<% for (ServiceCategory category: categories) { %>
 														<div>
-															<input type="checkbox" id="addServiceCategory1"
-																name="addServiceCategory" value="1"> <label
-																for="addServiceCategory1">Home Cleaning</label>
+															<input type="checkbox" id="addServiceCategory<%= category.getService_category_id() %>"
+																name="addServiceCategory" value="addServiceCategory<%= category.getService_category_id() %>"> <label
+																for="addServiceCategory<%= category.getService_category_id() %>">Home Cleaning</label>
 														</div>
-														<div>
-															<input type="checkbox" id="addServiceCategory6"
-																name="addServiceCategory" value="6"> <label
-																for="addServiceCategory6">Cow Cleaning</label>
-														</div>
-														<div>
-															<input type="checkbox" id="addServiceCategory4"
-																name="addServiceCategory" value="4"> <label
-																for="addServiceCategory4">Tapestry Cleaning</label>
-														</div>
+														<% } %>
 													</div>
 												</div>
 											</div>
@@ -337,7 +330,7 @@
 								<div class="serviceModalImageGradient h-100"></div>
 								<h5
 									class="serviceModalImagePrice text-end me-5 pt-2 pe-3 fw-bolder">
-									$<%=service.getPrice()%></h5>
+									$<%= String.format("%.2f", service.getPrice()) %></h5>
 								<h6 class="serviceModalImageText mb-0 pb-0 ps-3 text-start"><%=service.getName()%></h6>
 							</div>
 
@@ -365,7 +358,7 @@
 									</div>
 
 									<!-- edit service modal contents -->
-									<form class="editServiceForm" action="EditServiceServlet" method="POST">
+									<form class="editServiceForm" action="<%=request.getContextPath()%>/EditServiceServlet?action=update" method="POST">
 										<input type="hidden" name="serviceId"
 											value="<%=service.getService_id()%>">
 										<div class="modal-body">
@@ -414,21 +407,16 @@
 												<div class="col-9">
 													<div class="overflow-auto"
 														style="max-height: 150px; border: 1px solid #ced4da; padding: 10px; border-radius: 4px;">
+														<% for (ServiceCategory category: categories) { %>
+														<% boolean isRelationship = ServiceServiceCategoryDAO.checkServiceServiceCategoryRelationship(service.getService_id(), category.getService_category_id()); %>
+														<%= isRelationship ? "<input type='hidden' name='serviceCategoryRelationship' value='" + category.getService_category_id() + "'>" : ""%>
 														<div>
-															<input type="checkbox" id="home" name="serviceCategory"
-																value="home"> <label for="home">Home
-																Cleaning</label>
+															
+															<input type="checkbox" id="serviceCategory<%= category.getService_category_id() %>" name="serviceCategory"
+																value="<%= category.getService_category_id() %>" <%= isRelationship ? "checked" : "" %>> <label for="home"><%= category.getName() %></label>
 														</div>
-														<div>
-															<input type="checkbox" id="office" name="serviceCategory"
-																value="office"> <label for="office">Office
-																Cleaning</label>
-														</div>
-														<div>
-															<input type="checkbox" id="tapestry"
-																name="serviceCategory" value="tapestry"> <label
-																for="tapestry">Tapestry Cleaning</label>
-														</div>
+														<% } %>
+														
 													</div>
 												</div>
 											</div>
