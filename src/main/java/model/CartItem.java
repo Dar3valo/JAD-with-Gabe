@@ -12,6 +12,8 @@ public class CartItem {
 	private int user_id;
 	private int schedule_id;
 	private int service_id;
+	private String serviceName;  // New field for service name
+    private double servicePrice;
 	
 	
 	public CartItem(int cart_item_id, Date booking_date, String special_request, String main_address, int postal_code,
@@ -26,8 +28,38 @@ public class CartItem {
 		this.schedule_id = schedule_id;
 		this.service_id = service_id;
 	}
+	
+	public CartItem(int cart_item_id, Date booking_date, String special_request, String main_address, int postal_code,
+			int user_id, int schedule_id, int service_id, String serviceName, double servicePrice) {
+		this.cart_item_id = cart_item_id;
+		this.booking_date = booking_date;
+		this.special_request = special_request;
+		this.main_address = main_address;
+		this.postal_code = postal_code;
+		this.user_id = user_id;
+		this.schedule_id = schedule_id;
+		this.service_id = service_id;
+		this.serviceName = serviceName;
+		this.servicePrice = servicePrice;
+	}
 
 
+	public String getServiceName() {
+		return serviceName;
+	}
+
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+
+	public double getServicePrice() {
+		return servicePrice;
+	}
+
+	public void setServicePrice(double servicePrice) {
+		this.servicePrice = servicePrice;
+	}
+	
 	public int getCart_item_id() {
 		return cart_item_id;
 	}
