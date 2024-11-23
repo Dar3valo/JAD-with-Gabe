@@ -437,7 +437,7 @@
 											<!-- end of categories stuff -->
 										</div>
 
-										<div class="modal-footer">
+										<div class="modal-footer justify-content-between">
 											<button type="submit" class="btn btn-danger" formaction="<%=request.getContextPath()%>/EditServiceServlet?action=delete">Delete</button>
 											<input type="submit" class="btn btn-primary"
 												data-bs-dismiss="modal" value="Save Changes">
