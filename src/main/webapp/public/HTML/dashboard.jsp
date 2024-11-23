@@ -365,7 +365,7 @@
 									</div>
 
 									<!-- edit service modal contents -->
-									<form class="editServiceForm">
+									<form class="editServiceForm" action="EditServiceServlet" method="POST">
 										<input type="hidden" name="serviceId"
 											value="<%=service.getService_id()%>">
 										<div class="modal-body">
