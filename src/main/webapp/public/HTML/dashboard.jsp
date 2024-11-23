@@ -89,7 +89,7 @@
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="categoryModelLabel">Edit
+									<h5 class="modal-title text-bold" id="categoryModelLabel">Edit
 										Category Information</h5>
 									<button type="button" class="btn-close" data-bs-dismiss="modal"
 										aria-label="Close"></button>
@@ -112,7 +112,7 @@
 												</div>
 												<div class="col-1 d-flex justify-content-center">
 													<button type="submit" name="action" value="update"
-														class="btn btn-link p-0 save-btn"
+														class="btn btn-link p-0 add-btn"
 														formaction="<%=request.getContextPath()%>/EditServiceCategoryServlet?action=create">
 														<i class="bi bi-plus-circle text-primary fs-5"></i>
 													</button>
@@ -124,13 +124,14 @@
 												<div class="col-1"></div>
 												<div class="col-10">
 													<textarea class="form-control bg-light"
-														id="categoryDescription0%>" name="categoryDescription"
+														id="categoryDescription0" name="categoryDescription"
 														placeholder="Write Description Here" rows="4" required>Example Default Description</textarea>
 												</div>
 												<div class="col-1"></div>
 											</div>
 										</form>
 										<!-- End of add category -->
+										
 										<%
 										for (ServiceCategory category : categories) {
 										%>

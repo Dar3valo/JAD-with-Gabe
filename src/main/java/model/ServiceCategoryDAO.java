@@ -201,6 +201,12 @@ public class ServiceCategoryDAO {
 			statement.setString(2, input_description);
 			int rowsAffected = statement.executeUpdate();
 			
+			System.out.println(input_name);
+			System.out.println("\n");
+			System.out.println(input_description);
+			System.out.println("\n");
+			System.out.println(rowsAffected);
+			
 			if (rowsAffected > 0) {
 				return rowsAffected;
                 

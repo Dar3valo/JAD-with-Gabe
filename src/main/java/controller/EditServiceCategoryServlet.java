@@ -43,7 +43,8 @@ public class EditServiceCategoryServlet extends HttpServlet {
 			// read request parameters
 			String formAction = request.getParameter("action");
 			
-			int input_category_id = Integer.parseInt(request.getParameter("categoryId"));
+			String category_id = request.getParameter("categoryId");
+			int input_category_id = category_id != null ? Integer.parseInt(category_id) : 0;
 			String input_category_name = request.getParameter("categoryName");
 			String input_category_description = request.getParameter("categoryDescription");
 			
