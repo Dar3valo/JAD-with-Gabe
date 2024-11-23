@@ -235,7 +235,8 @@
 									</div>
 
 									<!-- Add Service Modal Body Here -->
-									<form id="addServiceForm" method="POST" action="${pageContext.request.contextPath}/EditServiceServlet">
+									<form id="addServiceForm" method="POST"
+										action="${pageContext.request.contextPath}/EditServiceServlet?action=create">
 										<div class="modal-body">
 											<div class="row mb-3">
 												<div class="col-3">
@@ -280,13 +281,14 @@
 													<div class="overflow-auto"
 														style="max-height: 150px; border: 1px solid #ced4da; padding: 10px; border-radius: 4px;">
 														<div>
-															<input type="checkbox" id="addServiceCategory1" name="addServiceCategory"
-																value="1"> <label for="addServiceCategory1">Home
-																Cleaning</label>
+															<input type="checkbox" id="addServiceCategory1"
+																name="addServiceCategory" value="1"> <label
+																for="addServiceCategory1">Home Cleaning</label>
 														</div>
 														<div>
-															<input type="checkbox" id="addServiceCategory6" name="addServiceCategory"
-																value="6"> <label for="addServiceCategory6">Cow Cleaning</label>
+															<input type="checkbox" id="addServiceCategory6"
+																name="addServiceCategory" value="6"> <label
+																for="addServiceCategory6">Cow Cleaning</label>
 														</div>
 														<div>
 															<input type="checkbox" id="addServiceCategory4"
@@ -356,21 +358,24 @@
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h1 class="modal-title fs-5 primaryFont" id="exampleModalLabel">Edit
-											Service</h1>
+										<h1 class="modal-title fs-5 primaryFont"
+											id="exampleModalLabel">Edit Service</h1>
 										<button type="button" class="btn-close"
 											data-bs-dismiss="modal" aria-label="Close"></button>
 									</div>
 
 									<!-- edit service modal contents -->
-									<form>
+									<form class="editServiceForm" action="EditServiceServlet" method="POST">
+										<input type="hidden" name="serviceId"
+											value="<%=service.getService_id()%>">
 										<div class="modal-body">
 											<div class="row mb-3">
 												<div class="col-3">
 													<label for="serviceName">Name:</label>
 												</div>
 												<div class="col-9">
-													<input type="text" class="form-control" id="serviceName"
+													<input type="text" class="form-control"
+														id="serviceName<%=service.getService_id()%>"
 														name="serviceName"
 														placeholder="Write Name of Service Here"
 														value="<%=service.getName()%>" required>
@@ -382,7 +387,8 @@
 													<label for="servicePrice">Price:</label>
 												</div>
 												<div class="col-9">
-													<input type="number" class="form-control" id="servicePrice"
+													<input type="number" class="form-control"
+														id="servicePrice<%=service.getService_id()%>"
 														name="servicePrice" min="0" step="0.01" placeholder="0.00"
 														value="<%=service.getPrice()%>" required>
 												</div>
@@ -393,12 +399,14 @@
 													<label for="serviceDescription">Description:</label>
 												</div>
 												<div class="col-9">
-													<textarea id="serviceDescription" name="serviceDescription"
-														class="form-control" rows="4" cols="50"
-														placeholder="Write Description of Service Here"><%=service.getDescription()%></textarea>
+													<textarea
+														id="serviceDescription<%=service.getService_id()%>"
+														name="serviceDescription" class="form-control" rows="4"
+														cols="50" placeholder="Write Description of Service Here"><%=service.getDescription()%></textarea>
 												</div>
 											</div>
 
+											<!-- categories stuff -->
 											<div class="row mb-3">
 												<div class="col-3">
 													<label>Categories:</label>
@@ -424,6 +432,7 @@
 													</div>
 												</div>
 											</div>
+											<!-- end of categories stuff -->
 										</div>
 
 										<div class="modal-footer">
@@ -433,6 +442,7 @@
 												data-bs-dismiss="modal" value="Save Changes">
 										</div>
 									</form>
+									<!-- end of edit service modal contents -->
 								</div>
 							</div>
 						</div>

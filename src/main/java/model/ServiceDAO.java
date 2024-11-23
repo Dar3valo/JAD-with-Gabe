@@ -196,4 +196,48 @@ public class ServiceDAO {
 		
 		return 0;
 	}
+	
+	public static int updateServiceById(int input_service_id, String input_name, String input_description, double input_price, String input_service_photo_url) {
+		ServiceCategory category = null;
+	    Connection connection = null;
+	    PreparedStatement statement = null;
+	    
+		try {			
+			// config
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+			// query
+			String ps = "UPDATE Service SET name = ?, description = ?, price = ?, service_photo_url = ? WHERE service_id = ?";
+			
+			statement = connection.prepareStatement(ps);
+			statement.setString(1, input_name);
+			statement.setString(2, input_description);
+			statement.setDouble(3, input_price);
+			statement.setString(4, input_service_photo_url);
+			statement.setInt(5, input_service_id);
+			int rowsAffected = statement.executeUpdate();
+			
+			if (rowsAffected > 0) {
+				return rowsAffected;
+                
+            } else {
+                throw new SQLException("(probably) No category found with ID: " + input_service_id);
+            }
+			
+		} catch (Exception e) {
+			 e.printStackTrace(); 
+		} finally {
+	        try {
+	            if (statement != null) statement.close();
+	            if (connection != null) connection.close();
+	            
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		
+		return 0;
+	}
 }
