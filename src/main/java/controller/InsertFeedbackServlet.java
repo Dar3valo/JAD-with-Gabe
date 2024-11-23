@@ -45,7 +45,7 @@ public class InsertFeedbackServlet extends HttpServlet {
 
         if (userIdObj == null) {
             request.setAttribute("errorMessage", "You must be logged in to submit feedback.");
-            response.sendRedirect(request.getContextPath() + "/public/HTML/feedbackForm.jsp");
+            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
             return;
         }
 	
