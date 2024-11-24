@@ -14,18 +14,21 @@ public class UserRegisterDAO {
 			Class.forName("org.postgresql.Driver");
 			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
 			conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+			
+			String hashedPassword = PasswordBcrypt.hashPassword(password);
+			
 			String sql = "INSERT INTO users (name, email, password, gender) VALUES (?, ?, ?, ?);";
 			
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, name);
 			stmt.setString(2, email);
-			stmt.setString(3, password);
+			stmt.setString(3, hashedPassword);
 			stmt.setString(4, gender);
 			
 			int rowsAffected = stmt.executeUpdate();
 			
 			if(rowsAffected > 0) {
-				userInfo = new UserRegister(name, email, password, gender);
+				userInfo = new UserRegister(name, email, hashedPassword, gender);
 			}else {
 				System.out.println("User registered unsuccessfully, no rows affected");
 			}

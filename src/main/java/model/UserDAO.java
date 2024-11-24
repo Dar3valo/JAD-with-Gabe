@@ -14,16 +14,18 @@ public class UserDAO {
 			Class.forName("org.postgresql.Driver");
 			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
 			conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
-			String sql = "SELECT * FROM Users WHERE email = ? AND password = ?";
+			String sql = "SELECT * FROM Users WHERE email = ?";
 			
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
-			stmt.setString(2, password);
+//			stmt.setString(2, plainPassword);
 			
 			rs = stmt.executeQuery();
 			if(rs.next()) {
+				String hashedPassword = rs.getString("password");
+				
+				if(PasswordBcrypt.verifyPassword(password, hashedPassword)) {
 				int user_id = rs.getInt("user_id");
-				String user_password = rs.getString("password");
 				String user_email = rs.getString("email");
 				char gender = (char) rs.getString("gender").charAt(0);
 				String name = rs.getString("name");
@@ -31,7 +33,10 @@ public class UserDAO {
 				int role_id = rs.getInt("role_id");
 				
 				
-				user = new User(user_id, user_password, user_email, gender, name, profile_photo_url, role_id);
+				user = new User(user_id, hashedPassword, user_email, gender, name, profile_photo_url, role_id);
+				}else {
+					System.out.println("Invalid Password");
+				}
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
