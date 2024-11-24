@@ -11,6 +11,8 @@ public class Booking {
 	private int user_id;
 	private int schedule_id;
 	private int service_id;
+	private String serviceName;  // New field for service name
+    private double servicePrice;
 	
 	public Booking(int booking_id, Date booking_date, String special_request, String main_address, int postal_code,
 			int user_id, int schedule_id, int service_id) {
@@ -23,6 +25,39 @@ public class Booking {
 		this.user_id = user_id;
 		this.schedule_id = schedule_id;
 		this.service_id = service_id;
+	}
+	
+	public Booking(int booking_id, Date booking_date, String special_request, String main_address, int postal_code,
+			int user_id, int schedule_id, int service_id, String serviceName, double servicePrice) {
+		super();
+		this.booking_id = booking_id;
+		this.booking_date = booking_date;
+		this.special_request = special_request;
+		this.main_address = main_address;
+		this.postal_code = postal_code;
+		this.user_id = user_id;
+		this.schedule_id = schedule_id;
+		this.service_id = service_id;
+		this.serviceName = serviceName;
+		this.servicePrice = servicePrice;
+	}
+
+	
+	
+	public String getServiceName() {
+		return serviceName;
+	}
+
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+
+	public double getServicePrice() {
+		return servicePrice;
+	}
+
+	public void setServicePrice(double servicePrice) {
+		this.servicePrice = servicePrice;
 	}
 
 	public int getBooking_id() {
