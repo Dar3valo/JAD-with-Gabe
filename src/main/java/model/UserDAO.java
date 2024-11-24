@@ -15,48 +15,30 @@ public class UserDAO {
 			Class.forName("org.postgresql.Driver");
 			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
 			conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
-<<<<<<< HEAD
-			String sql = "SELECT * FROM Users WHERE email = ? AND password = ?";
-
-=======
-			String sql = "SELECT * FROM Users WHERE email = ?";
 			
->>>>>>> branch 'main' of https://github.com/Dar3valo/JAD-with-Gabe
+			String sql = "SELECT * FROM Users WHERE email = ?";
+
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
-<<<<<<< HEAD
-			stmt.setString(2, password);
 
-=======
-//			stmt.setString(2, plainPassword);
-			
->>>>>>> branch 'main' of https://github.com/Dar3valo/JAD-with-Gabe
 			rs = stmt.executeQuery();
-<<<<<<< HEAD
-			if (rs.next()) {
-=======
+
 			if(rs.next()) {
 				String hashedPassword = rs.getString("password");
 				
 				if(PasswordBcrypt.verifyPassword(password, hashedPassword)) {
->>>>>>> branch 'main' of https://github.com/Dar3valo/JAD-with-Gabe
-				int user_id = rs.getInt("user_id");
-				String user_email = rs.getString("email");
-				char gender = (char) rs.getString("gender").charAt(0);
-				String name = rs.getString("name");
-				String profile_photo_url = rs.getString("profile_photo_url");
-				int role_id = rs.getInt("role_id");
-<<<<<<< HEAD
-
-				user = new User(user_id, user_password, user_email, gender, name, profile_photo_url, role_id);
-=======
-				
-				
-				user = new User(user_id, hashedPassword, user_email, gender, name, profile_photo_url, role_id);
-				}else {
+					int user_id = rs.getInt("user_id");
+					String user_email = rs.getString("email");
+					char gender = (char) rs.getString("gender").charAt(0);
+					String name = rs.getString("name");
+					String profile_photo_url = rs.getString("profile_photo_url");
+					int role_id = rs.getInt("role_id");
+					
+					user = new User(user_id, hashedPassword, user_email, gender, name, profile_photo_url, role_id);
+				} else {
 					System.out.println("Invalid Password");
 				}
->>>>>>> branch 'main' of https://github.com/Dar3valo/JAD-with-Gabe
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
