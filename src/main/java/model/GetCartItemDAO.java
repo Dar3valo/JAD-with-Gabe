@@ -5,7 +5,7 @@ import java.util.List;
 import java.sql.*;
 
 public class GetCartItemDAO {
-	public List<CartItem> getCartItems(){
+	public List<CartItem> getCartItems(int user_id){
 		List<CartItem> cartItems = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -19,10 +19,11 @@ public class GetCartItemDAO {
                     "c.main_address, c.postal_code, c.user_id, c.schedule_id, " +
                     "c.service_id, s.name AS service_name, s.price AS service_price " +
                     "FROM cart_item c " +
-                    "JOIN service s ON c.service_id = s.service_id " +
+                    "JOIN service s ON c.service_id = s.service_id WHERE c.user_id = ? " +
                     "ORDER BY c.booking_date DESC";
 			
 			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, user_id);
 			
 			
 			rs = stmt.executeQuery();

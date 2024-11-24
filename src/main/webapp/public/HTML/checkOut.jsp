@@ -6,15 +6,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="../CSS/checkout.css" />
     <title>AllClean Checkout</title>
 </head>
 <body>
-
-	<%
-	request.getRequestDispatcher("/GetBookingServlet").include(request, response);
-	%>
 
     <%-- Include Navbar --%>
     <jsp:include page="navbar.jsp" />
@@ -24,15 +20,20 @@
             <h1>Shopping Cart</h1>
             <div class="project">
                 <div class="shop">
-                    <%-- Iterate over cart items and display them dynamically --%>
                     <% 
                         List<CartItem> allCartItems = (List<CartItem>) session.getAttribute("allCartItems");
-                        double subtotal = 0;
-                        for (CartItem item : allCartItems) {
-                            subtotal += item.getServicePrice();
+                        if (allCartItems == null) {
+                            response.sendRedirect(request.getContextPath() + "/GetBookingServlet");
+                        }else if(allCartItems.isEmpty()) {
+                        	out.println("<p>Your cart is empty. Please add some items.</p>");
+                        }
+                        else {
+                            double subtotal = 0;
+                            for (CartItem item : allCartItems) {
+                                subtotal += item.getServicePrice();
                     %>
                     <div class="box">
-                        <img src="#" alt="Service Image">
+                        <img src="#" alt="<%= item.getServiceName() %>">
                         <div class="content">
                             <h3><%= item.getServiceName() %></h3>
                             <h4>Price: $<%= item.getServicePrice() %></h4>
@@ -42,17 +43,15 @@
                             </p>
                         </div>
                     </div>
-                    <% } %>
+                    <% 
+                            } // End for loop
+                            double tax = subtotal * 0.10;
+                            double shipping = 15;
+                            double total = subtotal + tax + shipping;
+                    %>
                 </div>
 
                 <div class="right-bar">
-                    <%-- Calculate tax (10%) and shipping costs (fixed at $15) --%>
-                    <% 
-                        double tax = subtotal * 0.10;
-                        double shipping = 15;
-                        double total = subtotal + tax + shipping;
-                    %>
-
                     <p><span>Subtotal</span> <span>$<%= String.format("%.2f", subtotal) %></span></p>
                     <hr>
                     <p><span>Tax (10%)</span> <span>$<%= String.format("%.2f", tax) %></span></p>
@@ -61,13 +60,13 @@
                     <hr>
                     <p><span>Total</span> <span>$<%= String.format("%.2f", total) %></span></p>
 
-					<form action="<%=request.getContextPath() %>/TransferServlet" method="post">
-						<button type="submit" class="btn btn-success">
-							<i class="bi bi-cart"></i> Pay
-						</button>
-					</form>
-
-					<hr>
+                    <form action="<%= request.getContextPath() %>/TransferServlet" method="post">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-cart"></i> Pay
+                        </button>
+                    </form>
+                    <% } // End if-else %>
+                    <hr>
                 </div>
             </div>
         </div>
@@ -75,6 +74,5 @@
 
     <%-- Footer --%>
     <jsp:include page="footer.jsp" />
-
 </body>
 </html>
