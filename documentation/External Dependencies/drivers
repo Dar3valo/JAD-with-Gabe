@@ -4,8 +4,11 @@
 
 - Please include drivers in WEBINF/lib/[store drivers in this folder]
 
-- V2.0
-	PostgreSQL for backend logic, driver used is version:
+1. PostgreSQL for backend logic, driver used is version:
 	Java 8
 	42.7.4
 	install link: https://jdbc.postgresql.org/download/postgresql-42.7.4.jar
+	
+2. jbcrypt for password hashing, driver used is version: 
+	v0.4
+	install link: https://central.sonatype.com/artifact/org.mindrot/jbcrypt/0.4/versions
