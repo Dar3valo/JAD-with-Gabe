@@ -1,10 +1,8 @@
 package model;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookingDAO {
 	public Booking transferCartData(int user_id) {
@@ -92,4 +90,63 @@ public class BookingDAO {
 			}
 		}
 	}
+	
+	//Get Booking Information
+	public List<Booking> getBookingInfo(){
+		List<Booking> bookedInfo = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+			String selectSQL = "SELECT b.booking_id, b.booking_date, b.special_request, b.main_address, b.postal_code,"
+					+ "b.user_id, b.schedule_id, b.service_id, s.name AS service_name, s.price AS service_price FROM booking b"
+					+ "JOIN Service s"
+					+ "ON b.service_id = s.service_id"
+					+ "ORDER BY b.booking_date DESC";
+			
+			stmt = conn.prepareStatement(selectSQL);
+			
+			
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				int bookingId = rs.getInt("booking_id");
+                Date bookingDate = rs.getDate("booking_date");
+                String specialRequest = rs.getString("special_request");
+                String mainAddress = rs.getString("main_address");
+                int postalCode = rs.getInt("postal_code");
+                int userId = rs.getInt("user_id");
+                int scheduleId = rs.getInt("schedule_id");
+                int serviceId = rs.getInt("service_id");
+                String serviceName = rs.getString("service_name");
+                double servicePrice = rs.getDouble("service_price");
+                
+                Booking bookedItem = new Booking(bookingId, bookingDate, specialRequest, mainAddress, postalCode, userId,
+                		scheduleId, serviceId, serviceName, servicePrice);
+                bookedInfo.add(bookedItem);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(stmt != null) {
+					stmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return bookedInfo;
+	};
 }
