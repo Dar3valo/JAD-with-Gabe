@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
 <%@ page import="model.Service"%>
+<%@ page import="model.ServiceCategory"%>
 <%@ page import="model.ServiceDAO"%>
 <!DOCTYPE html>
 <html>
@@ -36,6 +37,38 @@
 	
 	<%-- Navbar --%>
 	<jsp:include page="navbar.jsp" />
+	
+	<section class="p-5">
+			<h1 class="text-center">Our Service Categories</h1>
+			<div class="row">
+				<%
+				List<ServiceCategory> categories = (List<ServiceCategory>) session.getAttribute("allCategories");
+				
+				if (categories == null) {
+			        RequestDispatcher rd = request.getRequestDispatcher("/GetAllCategoriesServlet");
+			        rd.include(request, response);
+				} else if (categories.isEmpty()) {
+				%>
+				<p>Unfortunately, no categories were found. This is probably a bug. Please contact an Admin.</p>
+				<% } else { 
+					for (ServiceCategory category : categories) { %>
+					<div class="col-md-4">
+						<div class="card mb-3">
+							<div class="card-body">
+								<h5 class="card-title"><%= category.getName() %></h5>
+								<p class="card-text"><%= category.getDescription() %></p>
+							</div>
+						</div>
+					</div>
+				
+				<% }} %>
+				
+				
+			</div>
+		<div class="container my-5">
+		</div>
+	
+	</section>
 
 	<!-- Services Display Page -->
 	<section class="p-5">
@@ -45,7 +78,7 @@
 				<%
                 // Retrieve the list of services from the session
                 List<Service> services = (List<Service>) session.getAttribute("allServices");
-            
+				
             	if (services == null) {
                     response.sendRedirect(request.getContextPath() + "/GetAllServicesServlet");
                     return;
