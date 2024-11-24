@@ -71,8 +71,7 @@ public class GetServiceInformationServlet extends HttpServlet {
 				
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("errorMessage", "An unexpected error occurred. Please try again.");
-			request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+			response.sendRedirect("dashboard.jsp");
 		}
 	}
 
