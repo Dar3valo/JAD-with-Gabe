@@ -48,3 +48,4 @@ VALUES
 
 INSERT INTO Users (password, email, gender, name, profile_photo_url, role_id)
 VALUES ('$2a$10$OvWddNDAplmdFHwBGP8DnuSro35HcJ3seclfhW9b/SQfqhZIegAbK', 'mrTan@gmail.com', 'M', 'Mr Tan', '../Image/defaultpic.png', 1);
+--password: 1234 (unhashed version)
