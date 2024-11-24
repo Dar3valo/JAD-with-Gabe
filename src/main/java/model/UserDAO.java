@@ -50,6 +50,7 @@ public class UserDAO {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
+		
 		try {
 			Class.forName("org.postgresql.Driver");
 			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
