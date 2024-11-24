@@ -11,6 +11,7 @@ import model.BookingDAO;
 import model.User;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Servlet implementation class TransferServlet
@@ -32,7 +33,26 @@ public class TransferServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		try {
+			BookingDAO bookedDAO = new BookingDAO();
+			List<Booking> bookedItems = bookedDAO.getBookingInfo();
+			
+			if(bookedItems.isEmpty()) {
+				request.setAttribute("errorMessage", "Your payment is unsuccessful.");
+                request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
+                return;
+			}
+			
+			HttpSession session = request.getSession();
+			session.setAttribute("allBookedItems", bookedItems);
+			
+			response.sendRedirect(request.getContextPath() + "/public/HTML/invoice.jsp");
+
+		}catch(Exception e) {
+			e.printStackTrace();
+			request.setAttribute("errorMessage", "An unexpected error occured! Please try again later.");
+			request.getRequestDispatcher("error.jsp").forward(request, response);
+		}
 	}
 
 	/**
