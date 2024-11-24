@@ -5,6 +5,7 @@
 <%@ page import="model.ServiceCategory"%>
 <%@ page import="model.ServiceServiceCategory"%>
 <%@ page import="model.User"%>
+<%@ page import="model.Role"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,10 +40,17 @@
 	List<ServiceServiceCategory> relationships = (List<ServiceServiceCategory>) session
 			.getAttribute("allServiceServiceCategories");
 	List<User> users = (List<User>) session.getAttribute("users");
+	List<Role> roles = (List<Role>) session.getAttribute("roles");
 	ServiceCategory currentCategory = (ServiceCategory) session.getAttribute("currentCategory");
 
 	if (users == null) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllUsersServlet");
+		dispatcher.forward(request, response);
+		return;
+	}
+	
+	if (roles == null) {
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllRolesServlet");
 		dispatcher.forward(request, response);
 		return;
 	}
@@ -567,7 +575,15 @@
 									<td><%= user.getName() %></td>
 									<td><%= user.getEmail() %></td>
 									<td><%= user.getGender() %></td>
-									<td>Worry About Role Later</td>
+									<td>
+										<%
+											for (Role role : roles) {
+												if (role.getRole_id() == user.getRole_id()) {
+													out.print(role.getName());
+												}
+											}
+										%>
+									</td>
 									<td><span class="badge bg-success">Active</span></td>
 									<td>
 										<button class="btn btn-sm btn-outline-secondary me-2"
