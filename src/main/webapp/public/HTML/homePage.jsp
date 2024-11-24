@@ -20,6 +20,22 @@
 <link rel="stylesheet" href="../CSS/homeStyle.css">
 </head>
 <body>
+
+	<%
+    { // check permission
+    	request.setAttribute("pageAccessLevel", "3");
+        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
+        rd.include(request, response);
+        
+        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+        
+        if (hasAccess == null || !hasAccess) {
+            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+            return;
+        }
+    }
+	%>
+	
 	<!-- Add this at the start of your homePage.jsp to verify the servlet is being called -->
 	<%
 	request.getRequestDispatcher("/TopThreeFeedbackServlet").include(request, response);
@@ -34,9 +50,8 @@
 				<div>
 					<h1>Book Now For Professional Cleaning!</h1>
 					<p class="lead my-4">Professional house cleaning services with
-						flexible schedule and booking slots Sign up for our yearly
-						subscription now!</p>
-					<button class="btn btn-primary btn-lg rounded">Subscribe</button>
+						flexible schedule and booking slots Sign up to book our services now!</p>
+					<a class="btn btn-primary btn-lg rounded" href="register.jsp">Register</a>
 				</div>
 				<img class="img-fluid w-50 d-none d-sm-block rounded" alt=""
 					src="../Image/types-of-house-cleaning-services-to-offer.jpg">
@@ -123,8 +138,7 @@
 							surfaces <br> - Vacuuming and mopping of floor <br> -
 							Emptying and wiping sinks
 						</p>
-						<button class="btn btn-primary px-4 py-2 fs-5 mt-5"
-							onclick="window.location.href='services.jsp'">Services</button>
+						<a href="services.jsp" class="btn btn-primary px-4 py-2 fs-5 mt-5">Services</a>
 					</div>
 				</div>
 				<div class="carousel-item c-item">
@@ -136,8 +150,7 @@
 							- Scrubbing toilets,showers and sinks <br> - Wiping down
 							mirrors and glass <br> - Mopping and scrubbing floors
 						</p>
-						<button class="btn btn-primary px-4 py-2 fs-5 mt-5"
-							onclick="window.location.href='services.jsp'">Services</button>
+						<a href="services.jsp" class="btn btn-primary px-4 py-2 fs-5 mt-5">Services</a>
 					</div>
 				</div>
 				<div class="carousel-item c-item">
@@ -149,8 +162,7 @@
 							Wiping down cabinets and doors<br> - Sanitizing remotes and
 							buttons
 						</p>
-						<button class="btn btn-primary px-4 py-2 fs-5 mt-5"
-							onclick="window.location.href='services.jsp'">Services</button>
+						<a href="services.jsp" class="btn btn-primary px-4 py-2 fs-5 mt-5">Services</a>
 					</div>
 				</div>
 			</div>
@@ -189,7 +201,7 @@
 					<p>Choose the type of service you need, select a convenient
 						time, and let us handle the rest. Our vetted professionals are
 						ready to deliver quality service tailored to your needs.</p>
-					<a href="#" class="btn btn-light mt-3"> <i
+					<a href="booking.jsp" class="btn btn-light mt-3"> <i
 						class="bi bi-chevron-right">Book Now</i>
 					</a>
 				</div>

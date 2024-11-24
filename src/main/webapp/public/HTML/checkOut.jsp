@@ -12,6 +12,21 @@
 </head>
 <body>
 
+	<%
+    { // check permission
+    	request.setAttribute("pageAccessLevel", "2");
+        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
+        rd.include(request, response);
+        
+        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+        
+        if (hasAccess == null || !hasAccess) {
+            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+            return;
+        }
+    }
+	%>
+
     <%-- Include Navbar --%>
     <jsp:include page="navbar.jsp" />
 
@@ -37,11 +52,16 @@
                         <div class="content">
                             <h3><%= item.getServiceName() %></h3>
                             <h4>Price: $<%= item.getServicePrice() %></h4>
-                            <p class="btn-area">
-                                <i class="bi bi-trash"></i>
-                                <span class="btn2">Remove</span>
-                            </p>
-                        </div>
+							<form
+								action="<%=request.getContextPath()%>/DeleteCartItemServlet"
+								method="POST">
+								<input type="hidden" name="cart_item_id"
+									value="<%=item.getCart_item_id()%>">
+								<button type="submit" class="btn-area">
+									<i class="bi bi-trash"></i> <span class="btn2">Remove</span>
+								</button>
+							</form>
+						</div>
                     </div>
                     <% 
                             } // End for loop

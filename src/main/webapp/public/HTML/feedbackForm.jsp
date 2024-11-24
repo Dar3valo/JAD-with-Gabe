@@ -17,6 +17,22 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
 </head>
 <body>
+
+	<%
+    { // check permission
+    	request.setAttribute("pageAccessLevel", "2");
+        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
+        rd.include(request, response);
+        
+        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+        
+        if (hasAccess == null || !hasAccess) {
+            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+            return;
+        }
+    }
+	%>
+
 	<%--Navbar --%>
 	<jsp:include page="navbar.jsp" />
 
