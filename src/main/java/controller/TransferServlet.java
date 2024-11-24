@@ -45,13 +45,12 @@ public class TransferServlet extends HttpServlet {
 			
 			HttpSession session = request.getSession();
 			session.setAttribute("allBookedItems", bookedItems);
-			
 			response.sendRedirect(request.getContextPath() + "/public/HTML/invoice.jsp");
 
 		}catch(Exception e) {
 			e.printStackTrace();
 			request.setAttribute("errorMessage", "An unexpected error occured! Please try again later.");
-			request.getRequestDispatcher("error.jsp").forward(request, response);
+			request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
 		}
 	}
 
