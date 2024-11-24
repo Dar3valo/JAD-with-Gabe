@@ -1,5 +1,6 @@
 package controller;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -28,6 +29,20 @@ public class GetBookingServlet extends HttpServlet {
      * Handles GET requests to fetch cart items for a logged-in user.
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        { // check permission
+        	request.setAttribute("pageAccessLevel", "2");
+	        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
+	        rd.include(request, response);
+	        
+	        HttpSession session = request.getSession();
+	        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+	        
+	        if (hasAccess == null || !hasAccess) {
+	            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+	            return;
+	        }
+        }
+        
         try {
             HttpSession session = request.getSession(false); // Avoid creating a new session unnecessarily
             if (session == null) {

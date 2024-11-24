@@ -1,5 +1,6 @@
 package controller;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException; 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -41,10 +42,24 @@ public class BookingServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+        { // check permission
+        	request.setAttribute("pageAccessLevel", "2");
+	        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
+	        rd.include(request, response);
+	        
+	        HttpSession session = request.getSession();
+	        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+	        
+	        if (hasAccess == null || !hasAccess) {
+	            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+	            return;
+	        }
+        }
+        
 		HttpSession session = request.getSession();
+		
         User userIdObj = (User) session.getAttribute("loggedInUser");
-
+        
         if (userIdObj == null) {
             request.setAttribute("errorMessage", "You must be logged in to make a booking.");
             response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");

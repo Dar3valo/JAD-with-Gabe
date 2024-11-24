@@ -59,6 +59,21 @@
 </head>
 <body>
 	<%
+    { // check permission
+    	request.setAttribute("pageAccessLevel", "1");
+        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
+        rd.include(request, response);
+        
+        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+        
+        if (hasAccess == null || !hasAccess) {
+            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+            return;
+        }
+    }
+	%>
+	
+	<%
 	// handle tab
 	String dashboardCurrentFocus = (String) session.getAttribute("dashboardCurrentFocus");
 

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="model.User"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +37,16 @@ body:before{
         }
     }
 	%>
-
+	
+	<%
+	User loggedInUser = (User) session.getAttribute("loggedInUser");
+	int pageAccessLevel = 3;
+	
+	if (loggedInUser != null) {
+		pageAccessLevel = loggedInUser.getRole_id();
+	}
+	%>
+	
 	<%--Navbar --%>
 	<nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 fixed-top">
 		<div class="container">
@@ -55,9 +65,7 @@ body:before{
 				<ul class="navbar-nav ms-auto">
 				
 					<% 
-                        // Check if the user is logged in
-                        Object loggedInUser = session.getAttribute("loggedInUser");
-                        if (loggedInUser != null) {
+                        if (pageAccessLevel <= 2) {
                     %>
                         <li class="nav-item">
                             <a id="logoutButton" href="logout.jsp" class="nav-link">Logout</a>
@@ -68,19 +76,31 @@ body:before{
                         </li>
                     <% } else { %>
 					
-					<li class="nav-item"><a class="nav-link" href="login.jsp">Login</a>
-					</li>
-					<li class="nav-item"><a class="nav-link" href="register.jsp">Register</a>
-					</li>
+						<li class="nav-item"><a class="nav-link" href="login.jsp">Login</a>
+						</li>
+						<li class="nav-item"><a class="nav-link" href="register.jsp">Register</a>
+						</li>
 					<% } %>
-					<li class="nav-item"><a class="nav-link" href="booking.jsp">BookNow</a>
-					</li>
+					
+					<% if (pageAccessLevel <= 2) { %>
+						<li class="nav-item"><a class="nav-link" href="booking.jsp">BookNow</a>
+						</li>
+					<% } %>
+					
 					<li class="nav-item"><a class="nav-link" href="homePage.jsp#questions">Questions</a>
 					</li>
 					<li class="nav-item"><a class="nav-link" href="contact.jsp">Contact Us</a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="feedbackForm.jsp">Feedback</a>
-					</li>
+					
+					<% if (pageAccessLevel <= 2) { %>
+						<li class="nav-item"><a class="nav-link" href="feedbackForm.jsp">Feedback</a>
+						</li>
+					<% } %>
+					
+					<% if (pageAccessLevel <= 1) { %>
+						<li class="nav-item"><a class="nav-link" href="dashboard.jsp">Dashboard</a>
+						</li>
+					<% } %>
 				</ul>
 			</div>
 		</div>

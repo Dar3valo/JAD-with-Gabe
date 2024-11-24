@@ -36,6 +36,21 @@
     </style>
 </head>
 <body>
+	<%
+    { // check permission
+    	request.setAttribute("pageAccessLevel", "3");
+        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
+        rd.include(request, response);
+        
+        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+        
+        if (hasAccess == null || !hasAccess) {
+            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+            return;
+        }
+    }
+	%>
+	
 	<% 
 	String errorMessage = (String) session.getAttribute("errorMessage"); 
 	if (errorMessage == null || errorMessage.isEmpty()) {

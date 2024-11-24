@@ -31,31 +31,25 @@ public class checkAccessServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession();
-		
-		String input_pageAccessLevel = (String) request.getAttribute("pageAccessLevel");
-		User loggedInUser = (User) session.getAttribute("loggedInUser");
-		
-		if (input_pageAccessLevel == null) {
-			session.setAttribute("errorMessage", "Unidentified access level. Please inform an admin of this issue");
-			response.sendRedirect(request.getContextPath() + "/public/HTML/error.jsp");
-			return;
-		}
-
-		if (loggedInUser == null) {
-			response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
-			return;
-		}
-		
-		int pageAccessLevel = Integer.parseInt(input_pageAccessLevel);
-		
-		boolean hasAccess = RoleDAO.userRoleAccess(loggedInUser, pageAccessLevel);
-		
-		if (!hasAccess) {
-			session.setAttribute("errorMessage", "You are unauthorized to enter this page");
-			response.sendRedirect(request.getContextPath() + "/public/HTML/error.jsp");
-			return;
-		}
+        
+        HttpSession session = request.getSession();
+        String input_pageAccessLevel = (String) request.getAttribute("pageAccessLevel");
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        
+        if (input_pageAccessLevel == null) {
+            session.setAttribute("accessCheckResult", false);
+            return;
+        }
+        
+        int pageAccessLevel = Integer.parseInt(input_pageAccessLevel);
+        if (loggedInUser == null && pageAccessLevel != 3) {
+            session.setAttribute("accessCheckResult", false);
+            return;
+        }
+        
+        boolean hasAccess = RoleDAO.userRoleAccess(loggedInUser, pageAccessLevel);
+        session.setAttribute("accessCheckResult", hasAccess);
+    
 	}
 
 	/**
