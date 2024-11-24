@@ -577,10 +577,15 @@
 									<td><%= user.getGender() %></td>
 									<td>
 										<%
+											boolean roleExists = false;
 											for (Role role : roles) {
 												if (role.getRole_id() == user.getRole_id()) {
 													out.print(role.getName());
+													roleExists = true;
 												}
+											}
+											if (!roleExists) {
+												out.print("<div class='text-danger'>Unassigned<div>");
 											}
 										%>
 									</td>
