@@ -52,8 +52,10 @@ public class GetBookingServlet extends HttpServlet {
                 request.setAttribute("errorMessage", "Your cart is empty.");
                 request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
                 return;
-            } // Store cart items in session
-            response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
+            } else {
+            	// Store cart items in session
+                response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "An unexpected error occurred. Please try again.");
