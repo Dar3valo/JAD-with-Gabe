@@ -4,6 +4,8 @@
 <%@ page import="model.Service"%>
 <%@ page import="model.ServiceCategory"%>
 <%@ page import="model.ServiceServiceCategory"%>
+<%@ page import="model.User"%>
+<%@ page import="model.Role"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,12 +26,35 @@
 </head>
 <body>
 	<%
+	// handle tab
+	String dashboardCurrentFocus = (String) session.getAttribute("dashboardCurrentFocus");
+	
+	if (dashboardCurrentFocus == null) {
+		session.setAttribute("dashboardCurrentFocus", "services-content");
+		dashboardCurrentFocus = "services-content";
+	}
+	
+	// handle data
 	List<Service> services = (List<Service>) session.getAttribute("services");
 	List<ServiceCategory> categories = (List<ServiceCategory>) session.getAttribute("serviceCategories");
 	List<ServiceServiceCategory> relationships = (List<ServiceServiceCategory>) session
 			.getAttribute("allServiceServiceCategories");
+	List<User> users = (List<User>) session.getAttribute("users");
+	List<Role> roles = (List<Role>) session.getAttribute("roles");
 	ServiceCategory currentCategory = (ServiceCategory) session.getAttribute("currentCategory");
 
+	if (users == null) {
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllUsersServlet");
+		dispatcher.forward(request, response);
+		return;
+	}
+	
+	if (roles == null) {
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllRolesServlet");
+		dispatcher.forward(request, response);
+		return;
+	}
+	
 	if (relationships == null) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllServiceServiceCategoryServlet");
 		dispatcher.forward(request, response);
@@ -49,13 +74,29 @@
 	<div class="container-fluid d-flex flex-column vh-100 mx-0">
 		<div class="row my-5 h-100">
 			<%-- Filter Sidepanel --%>
-			<div class="col-3">
+			<div class="col-4">
 				<section id="filter" class="border-end h-100">
-					<h3 class="border-bottom mx-3 pb-5 mb-5 primaryFont">Filter By
-						Category</h3>
+					<div class="border-bottom mx-3 pb-5 mb-5">
+						<ul class="nav nav-pills" id="managementTabs" role="tablist">
+							<li class="nav-item" role="presentation">
+								<button class="nav-link <%= dashboardCurrentFocus == "services-content" ? "active" : "" %>" id="services-tab"
+									data-bs-toggle="pill" data-bs-target="#services-content"
+									type="button" role="tab">
+									<i class="bi bi-gear-fill me-2"></i>Service Management
+								</button>
+							</li>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link <%= dashboardCurrentFocus == "users-content" ? "active" : "" %>" id="users-tab" data-bs-toggle="pill"
+									data-bs-target="#users-content" type="button" role="tab">
+									<i class="bi bi-people-fill me-2"></i>User Management
+								</button>
+							</li>
+						</ul>
+					</div>
+
 					<div class="mx-3">
 						<!-- Filter Categories Form Here -->
-						<h4 class="secondaryFont">Categories</h4>
+						<h4 class="secondaryFont">Service Categories</h4>
 						<form class="lh-lg d-flex flex-column filterCategories"
 							action="${pageContext.request.contextPath}/GetServiceInformationServlet"
 							method="GET">
@@ -209,8 +250,13 @@
 			</div>
 
 			<%-- Display Services --%>
-			<div class="col-9 pr-5 ml-5">
-				<section id="services" class="h-100">
+			<div class="col-8 pr-5 ml-5 tab-content">
+				<%-- =================
+					Services Section 
+					================== --%>
+				<section class="h-100 tab-pane fade <%= dashboardCurrentFocus == "services-content" ? "show active" : "" %>"
+					id="services-content" role="tabpanel">
+					<!-- Service Title -->
 					<div
 						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
 						<h3 class="m-0 p-0 primaryFont">
@@ -321,6 +367,8 @@
 							</div>
 						</div>
 					</div>
+
+					<!-- Display Service -->
 					<div class="mx-3 servicesContainer overflow-auto">
 						<!-- Services Offered Displayed Here -->
 						<%
@@ -460,7 +508,8 @@
 
 										<div class="modal-footer justify-content-between">
 											<button type="submit"
-												class="btn btn-danger d-flex text-center align-items-center rounded" formaction="<%=request.getContextPath()%>/EditServiceServlet?action=delete">
+												class="btn btn-danger d-flex text-center align-items-center rounded"
+												formaction="<%=request.getContextPath()%>/EditServiceServlet?action=delete">
 												<span class="me-2"><i
 													class="m-0 p-0 bi bi-trash3-fill"></i></span> Delete
 											</button>
@@ -478,6 +527,87 @@
 						%>
 
 					</div>
+				</section>
+
+				<%-- =================
+					Users Section 
+					================== --%>
+				<section class="h-100 tab-pane fade <%= dashboardCurrentFocus == "users-content" ? "show active" : "" %>" id="users-content"
+					role="tabpanel">
+					<div
+						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
+						<h3 class="m-0 p-0 primaryFont">All Users</h3>
+
+						<%-- Add User Button --%>
+						<button class="btn btn-primary" data-bs-toggle="modal"
+							data-bs-target="#addUserModal">
+							<i class="bi bi-person-plus-fill me-2"></i>Add User
+						</button>
+					</div>
+
+					<!-- User Table -->
+					<div class="table-container"
+						style="height: 70vh; overflow-y: auto;">
+						<table class="table table-striped table-hover">
+							<thead class="sticky-top border">
+								<tr>
+									<th class="bg-white"
+										style="position: sticky; top: 0; z-index: 1;">ID</th>
+									<th class="bg-white"
+										style="position: sticky; top: 0; z-index: 1;">Name</th>
+									<th class="bg-white"
+										style="position: sticky; top: 0; z-index: 1;">Email</th>
+									<th class="bg-white"
+										style="position: sticky; top: 0; z-index: 1;">Gender</th>
+									<th class="bg-white"
+										style="position: sticky; top: 0; z-index: 1;">Role</th>
+									<th class="bg-white"
+										style="position: sticky; top: 0; z-index: 1;">Status</th>
+									<th class="bg-white"
+										style="position: sticky; top: 0; z-index: 1;">Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- dummy row -->
+								<% for (User user : users) { %>
+								<tr>
+									<td><%= user.getUser_id() %></td>
+									<td><%= user.getName() %></td>
+									<td><%= user.getEmail() %></td>
+									<td><%= user.getGender() %></td>
+									<td>
+										<%
+											boolean roleExists = false;
+											for (Role role : roles) {
+												if (role.getRole_id() == user.getRole_id()) {
+													out.print(role.getName());
+													roleExists = true;
+												}
+											}
+											if (!roleExists) {
+												out.print("<div class='text-danger'>Unassigned<div>");
+											}
+										%>
+									</td>
+									<td><span class="badge bg-success">Active</span></td>
+									<td>
+										<button class="btn btn-sm btn-outline-secondary me-2"
+											data-bs-toggle="modal" data-bs-target="#userPhotoModal">
+											<i class="bi bi-person-bounding-box"></i>
+										</button>
+										<button class="btn btn-sm btn-outline-primary me-2">
+											<i class="bi bi-pencil-fill"></i>
+										</button>
+										<button class="btn btn-sm btn-outline-danger">
+											<i class="bi bi-trash-fill"></i>
+										</button>
+									</td>
+								</tr>
+								<% } %>
+							</tbody>
+						</table>
+					</div>
+
 				</section>
 			</div>
 		</div>
