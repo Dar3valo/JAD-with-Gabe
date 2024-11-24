@@ -23,6 +23,39 @@
 	href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
 	rel="stylesheet">
 <link rel="stylesheet" href="../CSS/dashboard.css" />
+<script defer>
+	document.addEventListener('DOMContentLoaded', () => {
+	    const servicesbutton = document.getElementById('services-tab');
+	    const usersbutton = document.getElementById('users-tab');
+	    
+        const servicesFilter = document.getElementById('services-filter');
+        const usersFilter = document.getElementById('users-filter');
+        
+        const filterOptions = document.querySelectorAll('.filterOption');
+        
+	    servicesbutton.addEventListener('click', () => {
+	        alert('Button was clicked!');
+            servicesFilter.classList.remove('d-none');
+            
+            filterOptions.forEach(option => {
+                option.classList.add('d-none');
+            });
+            
+            servicesFilter.classList.remove('d-none');
+	    });
+	    
+	    usersbutton.addEventListener('click', () => {
+	        alert('Button was clicked!');
+	        usersFilter.classList.remove('d-none');
+            
+            filterOptions.forEach(option => {
+                option.classList.add('d-none');
+            });
+            
+            usersFilter.classList.remove('d-none');
+	    });
+	});
+</script>
 </head>
 <body>
 	<%
@@ -42,6 +75,7 @@
 	List<User> users = (List<User>) session.getAttribute("users");
 	List<Role> roles = (List<Role>) session.getAttribute("roles");
 	ServiceCategory currentCategory = (ServiceCategory) session.getAttribute("currentCategory");
+	Role currentRole = (Role) session.getAttribute("currentRole");
 
 	if (users == null) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllUsersServlet");
@@ -83,7 +117,7 @@
 									class="nav-link <%=dashboardCurrentFocus == "services-content" ? "active" : ""%>"
 									id="services-tab" data-bs-toggle="pill"
 									data-bs-target="#services-content" type="button" role="tab">
-									<i class="bi bi-gear-fill me-2"></i>Service Management
+									<i class="bi bi-gear-fill me-2"></i>Services
 								</button>
 							</li>
 							<li class="nav-item" role="presentation">
@@ -91,49 +125,83 @@
 									class="nav-link <%=dashboardCurrentFocus == "users-content" ? "active" : ""%>"
 									id="users-tab" data-bs-toggle="pill"
 									data-bs-target="#users-content" type="button" role="tab">
-									<i class="bi bi-people-fill me-2"></i>User Management
+									<i class="bi bi-people-fill me-2"></i>Users
 								</button>
 							</li>
 						</ul>
 					</div>
 
+					<!-- this is container -->
 					<div class="mx-3">
+					
 						<!-- Filter Categories Form Here -->
-						<h4 class="secondaryFont">Service Categories</h4>
-						<form class="lh-lg d-flex flex-column filterCategories"
-							action="${pageContext.request.contextPath}/GetServiceInformationServlet"
-							method="GET">
-							<div class="overflow-auto h-75 mb-5 filters">
-								<input type="radio" id="category_0" name="serviceCategory"
-									value="0" <%=currentCategory == null ? "checked" : ""%>>
-								<label for="category_0"> All Categories </label> <br>
-
-								<%
-								for (ServiceCategory category : categories) {
-								%>
-								<input type="radio"
-									id="category_<%=category.getService_category_id()%>"
-									name="serviceCategory"
-									value="<%=category.getService_category_id()%>"
-									<%=currentCategory != null && currentCategory.getService_category_id() == category.getService_category_id()
-		? "checked"
-		: ""%>>
-								<label for="category_<%=category.getService_category_id()%>">
-									<%=category.getName()%>
-								</label> <br>
-								<%
-								}
-								%>
-							</div>
-
-							<div class="d-flex align-items-end mt-auto">
-								<input type="submit" class="btn btn-primary"
-									value="Search Filters">
-								<button class="btn btn-secondary ms-2" type="button"
-									data-bs-toggle="modal" data-bs-target="#categoryModel">
-									Edit Category</button>
-							</div>
-						</form>
+						<div id="services-filter" class="m-0 p-0 <%= dashboardCurrentFocus == "services-content" ? "d-block" : "d-none" %> filterOption">
+							<h4 class="secondaryFont">Service Categories</h4>
+							<form class="lh-lg d-flex flex-column filterCategories"
+								action="${pageContext.request.contextPath}/GetServiceInformationServlet"
+								method="GET">
+								<div class="overflow-auto h-75 mb-5 filters">
+									<!-- filter for service category -->
+									<input type="radio" id="category_0" name="serviceCategory"
+										value="0" <%= currentCategory == null ? "checked" : ""%>>
+									<label for="category_0"> All Categories </label> <br>
+	
+									<%
+									for (ServiceCategory category : categories) {
+									%>
+										<input type="radio"
+											id="category_<%=category.getService_category_id()%>"
+											name="serviceCategory"
+											value="<%=category.getService_category_id()%>"
+											<%= currentCategory != null && currentCategory.getService_category_id() == category.getService_category_id() ? "checked" : ""%>>
+										<label for="category_<%=category.getService_category_id()%>">
+											<%=category.getName()%>
+										</label> <br>
+										<%
+									}
+									%>
+								</div>
+	
+								<div class="d-flex align-items-end mt-auto">
+									<input type="submit" class="btn btn-primary"
+										value="Search Filters">
+									<button class="btn btn-secondary ms-2" type="button"
+										data-bs-toggle="modal" data-bs-target="#categoryModel">
+										Edit Category</button>
+								</div>
+							</form>
+						</div>
+						
+						<!-- for user role -->
+						<div id="users-filter" class="m-0 p-0 <%= dashboardCurrentFocus == "users-content" ? "d-block" : "d-none" %> filterOption">
+							<h4 class="secondaryFont">User Roles</h4>
+							<form class="lh-lg d-flex flex-column filterCategories"
+								action="${pageContext.request.contextPath}/GetUsersByRoleServlet"
+								method="GET">
+								<div class="overflow-auto h-75 mb-5 filters">
+									<!-- filter for user role -->
+									<%
+									for (Role role : roles) {
+									%>
+										<input type="radio"
+											id="role_<%=role.getRole_id()%>"
+											name="selectedRole"
+											value="<%=role.getRole_id()%>"
+											<%=currentRole != null && currentRole.getRole_id() == role.getRole_id() ? "checked" : ""%>>
+										<label for="role_<%=role.getRole_id()%>">
+											<%=role.getName()%>
+										</label> <br>
+									<%
+									}
+									%>
+								</div>
+	
+								<div class="d-flex align-items-end mt-auto">
+									<input type="submit" class="btn btn-primary"
+										value="Search Filters">
+								</div>
+							</form>
+						</div>
 					</div>
 
 					<%-- edit category information --%>
@@ -609,8 +677,10 @@
 											data-bs-target="#editUser<%=user.getUser_id()%>">
 											<i class="bi bi-pencil-fill"></i>
 										</button>
-										<form method="POST" action="<%=request.getContextPath()%>/DeleteUserServlet">
-											<input type="hidden" name="input_user_id" value="<%=user.getUser_id()%>">
+										<form class="m-0 d-inline" method="POST"
+											action="<%=request.getContextPath()%>/DeleteUserServlet">
+											<input type="hidden" name="input_user_id"
+												value="<%=user.getUser_id()%>">
 											<button type="submit" class="btn btn-sm btn-outline-danger">
 												<i class="bi bi-trash-fill"></i>
 											</button>
@@ -625,7 +695,9 @@
 					</div>
 
 					<!-- User Content Modals -->
-					<% for (User user : users) { %>
+					<%
+					for (User user : users) {
+					%>
 					<!-- profile photo modal -->
 					<div class="modal fade" id="profilePhoto<%=user.getUser_id()%>"
 						tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -703,8 +775,17 @@
 										<!-- Role ID Field -->
 										<div class="mb-3">
 											<label for="input_role_id" class="form-label">Role ID</label>
-											<input type="text" class="form-control" id="input_role_id"
-												name="input_role_id" value="<%=user.getRole_id()%>" required>
+											<select class="form-control" id="input_role_id"
+												name="input_role_id" required>
+												<%
+												for (Role role : roles) {
+												%>
+												<option value="<%=role.getRole_id()%>"
+													<%=user.getRole_id() == role.getRole_id() ? "selected" : ""%>><%=role.getName()%></option>
+												<%
+												}
+												%>
+											</select>
 										</div>
 
 										<!-- Profile Photo URL Field -->
@@ -717,7 +798,8 @@
 									</div>
 
 									<div class="modal-footer justify-content-between">
-										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button type="button" class="btn btn-secondary"
+											data-bs-dismiss="modal">Close</button>
 										<input type="submit" class="btn btn-primary"
 											data-bs-dismiss="modal" value="Save Changes">
 									</div>
@@ -726,7 +808,9 @@
 						</div>
 					</div>
 					<!-- end of edit user modal contents -->
-					<% } %>
+					<%
+					}
+					%>
 				</section>
 			</div>
 		</div>

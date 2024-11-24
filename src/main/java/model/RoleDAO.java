@@ -2,6 +2,7 @@ package model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -49,5 +50,46 @@ public class RoleDAO {
 		}
 		
 		return roles;
+	}
+	
+	public static Role getRoleById(int input_role_id) {
+		Role role = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+			
+			String sql = "SELECT * FROM Role WHERE role_id = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, input_role_id);
+			rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				int role_id = rs.getInt("role_id");
+				String name = rs.getString("name");
+				String description = rs.getString("description");
+				
+				role = new Role(role_id, name, description);
+			
+			} else {
+				throw new Exception("No role found with role id: " + input_role_id);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			try {
+				conn.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return role;
 	}
 }
