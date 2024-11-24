@@ -102,10 +102,10 @@ public class BookingDAO {
 			Class.forName("org.postgresql.Driver");
 			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
 			conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
-			String selectSQL = "SELECT b.booking_id, b.booking_date, b.special_request, b.main_address, b.postal_code,"
-					+ "b.user_id, b.schedule_id, b.service_id, s.name AS service_name, s.price AS service_price FROM booking b"
-					+ "JOIN Service s"
-					+ "ON b.service_id = s.service_id"
+			String selectSQL = "SELECT b.booking_id, b.booking_date, b.special_request, b.main_address, b.postal_code, "
+					+ "b.user_id, b.schedule_id, b.service_id, s.name AS service_name, s.price AS service_price FROM booking b "
+					+ "JOIN Service s "
+					+ "ON b.service_id = s.service_id "
 					+ "ORDER BY b.booking_date DESC";
 			
 			stmt = conn.prepareStatement(selectSQL);
