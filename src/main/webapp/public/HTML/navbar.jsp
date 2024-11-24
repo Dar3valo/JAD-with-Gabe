@@ -97,6 +97,8 @@ body:before{
 					<% if (pageAccessLevel <= 2) { %>
 						<li class="nav-item"><a class="nav-link" href="feedbackForm.jsp">Feedback</a>
 						</li>
+						<li class="nav-item"><a class="nav-link" href="UserCRUD.jsp">Profile</a>
+						</li>
 					<% } %>
 					
 					<% if (pageAccessLevel <= 1) { %>

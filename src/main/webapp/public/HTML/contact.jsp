@@ -29,7 +29,8 @@
         }
     }
 	%>
->>>>>>> branch 'main' of https://github.com/Dar3valo/JAD-with-Gabe.git
+
+
 	<%--Navbar --%>
 	<jsp:include page="navbar.jsp" />
 
