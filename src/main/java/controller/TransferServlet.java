@@ -34,18 +34,31 @@ public class TransferServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		try {
+			HttpSession session = request.getSession(false); // Avoid creating a new session unnecessarily
+            if (session == null) {
+                response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+                return;
+            }
+
+            User loggedInUser = (User) session.getAttribute("loggedInUser");
+            if (loggedInUser == null) {
+                response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+                return;
+            }
+
+            int userId = loggedInUser.getUser_id();
+			
 			BookingDAO bookedDAO = new BookingDAO();
-			List<Booking> bookedItems = bookedDAO.getBookingInfo();
+			List<Booking> bookedItems = bookedDAO.getBookingInfo(userId);
 			
 			if(bookedItems.isEmpty()) {
 				request.setAttribute("errorMessage", "Your payment is unsuccessful.");
                 request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
                 return;
+			}else {
+				session.setAttribute("allBookedItems", bookedItems);
+				response.sendRedirect(request.getContextPath() + "/public/HTML/invoice.jsp");
 			}
-			
-			HttpSession session = request.getSession();
-			session.setAttribute("allBookedItems", bookedItems);
-			response.sendRedirect(request.getContextPath() + "/public/HTML/invoice.jsp");
 
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -80,7 +93,7 @@ public class TransferServlet extends HttpServlet {
         	session.setAttribute("successMessage", "Services Booked Successfully");
         	response.sendRedirect(request.getContextPath() + "/public/HTML/invoice.jsp");
         }else {
-        	request.setAttribute("errorMessage", "No Items in Cart");
+        	request.setAttribute("errorMessage", "Empty Booking List");
         	request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
         }
         }catch(Exception e) {

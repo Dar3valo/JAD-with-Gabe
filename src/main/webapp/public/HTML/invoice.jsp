@@ -14,10 +14,6 @@
 
     <jsp:include page="navbar.jsp" />
 
-    <header>
-        <h1>Invoice Details</h1>
-    </header>
-
     <section class="p-5">
         <div class="container invoice-container">
             <div class="invoice-header">
