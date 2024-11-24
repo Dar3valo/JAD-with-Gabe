@@ -60,8 +60,14 @@
                     <p><span>Shipping</span> <span>$<%= String.format("%.2f", shipping) %></span></p>
                     <hr>
                     <p><span>Total</span> <span>$<%= String.format("%.2f", total) %></span></p>
-                    <a href="#"><i class="bi bi-cart"></i>Pay</a>
-                    <hr>
+
+					<form action="<%=request.getContextPath() %>/TransferServlet" method="post">
+						<button type="submit" class="btn btn-success">
+							<i class="bi bi-cart"></i> Pay
+						</button>
+					</form>
+
+					<hr>
                 </div>
             </div>
         </div>
