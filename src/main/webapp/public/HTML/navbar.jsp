@@ -85,6 +85,8 @@ body:before{
 					<% if (pageAccessLevel <= 2) { %>
 						<li class="nav-item"><a class="nav-link" href="booking.jsp">BookNow</a>
 						</li>
+						<li class="nav-item"><a class="nav-link" href="invoice.jsp">Invoice</a>
+						</li>
 					<% } %>
 					
 					<li class="nav-item"><a class="nav-link" href="homePage.jsp#questions">Questions</a>
