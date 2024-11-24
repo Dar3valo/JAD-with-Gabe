@@ -92,7 +92,7 @@ public class BookingDAO {
 	}
 	
 	//Get Booking Information
-	public List<Booking> getBookingInfo(){
+	public List<Booking> getBookingInfo(int user_id){
 		List<Booking> bookedInfo = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -105,11 +105,11 @@ public class BookingDAO {
 			String selectSQL = "SELECT b.booking_id, b.booking_date, b.special_request, b.main_address, b.postal_code, "
 					+ "b.user_id, b.schedule_id, b.service_id, s.name AS service_name, s.price AS service_price FROM booking b "
 					+ "JOIN Service s "
-					+ "ON b.service_id = s.service_id "
+					+ "ON b.service_id = s.service_id WHERE user_id = ? "
 					+ "ORDER BY b.booking_date DESC";
 			
 			stmt = conn.prepareStatement(selectSQL);
-			
+			stmt.setInt(1, user_id);
 			
 			rs = stmt.executeQuery();
 			
