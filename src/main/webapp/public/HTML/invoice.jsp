@@ -11,6 +11,21 @@
     <link rel="stylesheet" href="../CSS/invoice.css"/>
 </head>
 <body>
+	<%
+    { // check permission
+    	request.setAttribute("pageAccessLevel", "2");
+        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
+        rd.include(request, response);
+        
+        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+        
+        if (hasAccess == null || !hasAccess) {
+            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+            return;
+        }
+    }
+	%>
+	
 
     <jsp:include page="navbar.jsp" />
 

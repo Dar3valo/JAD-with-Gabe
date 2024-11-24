@@ -15,6 +15,21 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
 </head>
 <body>
+	<%
+    { // check permission
+    	request.setAttribute("pageAccessLevel", "3");
+        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
+        rd.include(request, response);
+        
+        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+        
+        if (hasAccess == null || !hasAccess) {
+            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+            return;
+        }
+    }
+	%>
+	
 	<%-- Footer --%>
 	<footer class="p-5 bg-dark text-white text-center position-relative">
 		<div class="container">
