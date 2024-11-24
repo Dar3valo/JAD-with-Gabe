@@ -20,10 +20,6 @@
 <link rel="stylesheet" href="../CSS/homeStyle.css">
 </head>
 <body>
-<<<<<<< HEAD
-
-=======
->>>>>>> branch 'main' of https://github.com/Dar3valo/JAD-with-Gabe.git
 	<%
     { // check permission
     	request.setAttribute("pageAccessLevel", "3");

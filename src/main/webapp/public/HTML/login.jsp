@@ -16,24 +16,7 @@
 <title>AllCleanLogin</title>
 </head>
 <body>
-<<<<<<< HEAD
-	
-	<%
-    { // check permission
-    	request.setAttribute("pageAccessLevel", "3");
-        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
-        rd.include(request, response);
-        
-        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
-        
-        if (hasAccess == null || !hasAccess) {
-            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
-            return;
-        }
-    }
-	%>
 
-=======
 	<%
     { // check permission
     	request.setAttribute("pageAccessLevel", "3");
@@ -49,7 +32,6 @@
     }
 	%>
 	
->>>>>>> branch 'main' of https://github.com/Dar3valo/JAD-with-Gabe.git
 	<%-- Navbar --%>
 	<jsp:include page="navbar.jsp" />
 
