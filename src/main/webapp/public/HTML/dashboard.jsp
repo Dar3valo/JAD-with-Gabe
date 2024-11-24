@@ -34,7 +34,6 @@
         const filterOptions = document.querySelectorAll('.filterOption');
         
 	    servicesbutton.addEventListener('click', () => {
-	        alert('Button was clicked!');
             servicesFilter.classList.remove('d-none');
             
             filterOptions.forEach(option => {
@@ -45,7 +44,6 @@
 	    });
 	    
 	    usersbutton.addEventListener('click', () => {
-	        alert('Button was clicked!');
 	        usersFilter.classList.remove('d-none');
             
             filterOptions.forEach(option => {
