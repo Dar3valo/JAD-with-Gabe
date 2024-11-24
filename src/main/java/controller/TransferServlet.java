@@ -1,5 +1,6 @@
 package controller;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -33,6 +34,20 @@ public class TransferServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+        { // check permission
+        	request.setAttribute("pageAccessLevel", "2");
+	        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
+	        rd.include(request, response);
+	        
+	        HttpSession session = request.getSession();
+	        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+	        
+	        if (hasAccess == null || !hasAccess) {
+	            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+	            return;
+	        }
+        }
+        
 		try {
 			HttpSession session = request.getSession(false); // Avoid creating a new session unnecessarily
             if (session == null) {
@@ -72,6 +87,20 @@ public class TransferServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+        { // check permission
+        	request.setAttribute("pageAccessLevel", "2");
+	        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
+	        rd.include(request, response);
+	        
+	        HttpSession session = request.getSession();
+	        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+	        
+	        if (hasAccess == null || !hasAccess) {
+	            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+	            return;
+	        }
+        }
+        
 		HttpSession session = request.getSession();
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 

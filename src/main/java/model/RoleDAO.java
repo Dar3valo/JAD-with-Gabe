@@ -102,8 +102,15 @@ public class RoleDAO {
 		
 		boolean hasAccess = false;
 		
-		if (user.getRole_id() == pageAccessLevel || user.getRole_id() < pageAccessLevel) { // is user is admin
-			hasAccess = true;
+		try {
+			if (pageAccessLevel == 3) {
+				hasAccess = true;
+				
+			} else if (user.getRole_id() == pageAccessLevel || user.getRole_id() < pageAccessLevel) { // is user is admin
+				hasAccess = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		return hasAccess;

@@ -1,5 +1,6 @@
 package controller;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -41,6 +42,20 @@ public class UserLoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+        { // check permission
+        	request.setAttribute("pageAccessLevel", "3");
+	        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
+	        rd.include(request, response);
+	        
+	        HttpSession session = request.getSession();
+	        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+	        
+	        if (hasAccess == null || !hasAccess) {
+	            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+	            return;
+	        }
+        }
+        
 		// TODO Auto-generated method stub
 //		doGet(request, response);
 		String email = request.getParameter("email");

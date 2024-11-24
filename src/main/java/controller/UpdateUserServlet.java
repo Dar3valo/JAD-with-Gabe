@@ -41,6 +41,20 @@ public class UpdateUserServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+        { // check permission
+        	request.setAttribute("pageAccessLevel", "1");
+	        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
+	        rd.include(request, response);
+	        
+	        HttpSession session = request.getSession();
+	        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+	        
+	        if (hasAccess == null || !hasAccess) {
+	            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+	            return;
+	        }
+        }
+        
 		try {
 			// define session
 			HttpSession session = request.getSession();

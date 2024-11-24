@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.ServiceServiceCategoryDAO;
 
 import java.io.IOException;
@@ -30,6 +31,20 @@ public class checkServiceServiceCategoryRelationship extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+        { // check permission
+        	request.setAttribute("pageAccessLevel", "3");
+	        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
+	        rd.include(request, response);
+	        
+	        HttpSession session = request.getSession();
+	        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+	        
+	        if (hasAccess == null || !hasAccess) {
+	            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+	            return;
+	        }
+        }
+        
 		// get and format data
 		String input_service_id = request.getParameter("service_id");
 		String input_service_category_id = request.getParameter("service_category_id");
