@@ -46,13 +46,13 @@ public class GetBookingServlet extends HttpServlet {
             GetCartItemDAO getItemsDAO = new GetCartItemDAO();
             List<CartItem> cartItems = getItemsDAO.getCartItems(userId); // Fetch items for the specific user
 
+            session.setAttribute("allCartItems", cartItems);
+            
             if (cartItems == null || cartItems.isEmpty()) {
                 request.setAttribute("errorMessage", "Your cart is empty.");
                 request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
                 return;
-            }
-
-            session.setAttribute("allCartItems", cartItems); // Store cart items in session
+            } // Store cart items in session
             response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
         } catch (Exception e) {
             e.printStackTrace();
