@@ -53,7 +53,7 @@ input[type="radio"] {
 }
 
 .serviceModal {
-    width: 350px;
+    width: 300px;
     height: 400px;
     background-color: #f0f0f0; /* Optional: Background to help visualize the div */
     border: 1px solid #ccc; /* Optional: Border to distinguish the div */
@@ -169,4 +169,12 @@ input[type="radio"] {
 .modal-body .overflow-auto label {
     user-select: none;
     cursor: pointer;
+}
+
+/* user management */
+.nav-pills .nav-link.active {
+    background-color: var(--bs-primary);
+}
+.nav-pills .nav-link {
+    color: var(--bs-dark);
 }
