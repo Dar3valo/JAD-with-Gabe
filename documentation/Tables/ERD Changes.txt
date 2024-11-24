@@ -14,3 +14,6 @@
 	added trigger to handle service_service_category relationship
 	added feedback table to store user feedback
 	misc improvements
+
+-ERD V4.0
+	Modified the cart such that the cart will store the information 	after the user submits the booking form
