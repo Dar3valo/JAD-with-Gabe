@@ -55,13 +55,12 @@ public class UserLoginServlet extends HttpServlet {
 				session.setAttribute("loggedInUser", user);
 				response.sendRedirect(request.getContextPath() + "/public/HTML/homePage.jsp");
 			} else {
-				request.setAttribute("errorMessage", "Invalid email or password");
-				request.getRequestDispatcher("login.jsp").forward(request, response);
+				// error occurred
+				response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("errorMessage", "An unexpected error occurred. Please try again.");
-			request.getRequestDispatcher("login.jsp").forward(request, response);
+			response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
 		}
 
 	}

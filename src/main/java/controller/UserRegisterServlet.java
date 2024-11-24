@@ -64,14 +64,14 @@ public class UserRegisterServlet extends HttpServlet {
 				if(insertUser != null) {
 					response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
 				}else {
-					request.setAttribute("errorMessage", "An unexpected error occured ;-;");
-					request.getRequestDispatcher("register.jsp").forward(request, response);
+					// error occurred
+					response.sendRedirect(request.getContextPath() + "/public/HTML/register.jsp");
 				}
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
-			request.setAttribute("errorMessage", "An unexpected error occured ;-;");
-			request.getRequestDispatcher("register.jsp").forward(request, response);
+			// error occurred
+			response.sendRedirect(request.getContextPath() + "/public/HTML/register.jsp");
 		}
 	}
 

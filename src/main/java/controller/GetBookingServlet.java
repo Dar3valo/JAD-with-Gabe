@@ -31,13 +31,13 @@ public class GetBookingServlet extends HttpServlet {
         try {
             HttpSession session = request.getSession(false); // Avoid creating a new session unnecessarily
             if (session == null) {
-                response.sendRedirect(request.getContextPath() + "/login.jsp");
+                response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
                 return;
             }
 
             User loggedInUser = (User) session.getAttribute("loggedInUser");
             if (loggedInUser == null) {
-                response.sendRedirect(request.getContextPath() + "/login.jsp");
+                response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
                 return;
             }
 
