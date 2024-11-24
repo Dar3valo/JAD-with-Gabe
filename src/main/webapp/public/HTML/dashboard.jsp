@@ -28,12 +28,12 @@
 	<%
 	// handle tab
 	String dashboardCurrentFocus = (String) session.getAttribute("dashboardCurrentFocus");
-	
+
 	if (dashboardCurrentFocus == null) {
 		session.setAttribute("dashboardCurrentFocus", "services-content");
 		dashboardCurrentFocus = "services-content";
 	}
-	
+
 	// handle data
 	List<Service> services = (List<Service>) session.getAttribute("services");
 	List<ServiceCategory> categories = (List<ServiceCategory>) session.getAttribute("serviceCategories");
@@ -48,13 +48,13 @@
 		dispatcher.forward(request, response);
 		return;
 	}
-	
+
 	if (roles == null) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllRolesServlet");
 		dispatcher.forward(request, response);
 		return;
 	}
-	
+
 	if (relationships == null) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllServiceServiceCategoryServlet");
 		dispatcher.forward(request, response);
@@ -79,14 +79,17 @@
 					<div class="border-bottom mx-3 pb-5 mb-5">
 						<ul class="nav nav-pills" id="managementTabs" role="tablist">
 							<li class="nav-item" role="presentation">
-								<button class="nav-link <%= dashboardCurrentFocus == "services-content" ? "active" : "" %>" id="services-tab"
-									data-bs-toggle="pill" data-bs-target="#services-content"
-									type="button" role="tab">
+								<button
+									class="nav-link <%=dashboardCurrentFocus == "services-content" ? "active" : ""%>"
+									id="services-tab" data-bs-toggle="pill"
+									data-bs-target="#services-content" type="button" role="tab">
 									<i class="bi bi-gear-fill me-2"></i>Service Management
 								</button>
 							</li>
 							<li class="nav-item" role="presentation">
-								<button class="nav-link <%= dashboardCurrentFocus == "users-content" ? "active" : "" %>" id="users-tab" data-bs-toggle="pill"
+								<button
+									class="nav-link <%=dashboardCurrentFocus == "users-content" ? "active" : ""%>"
+									id="users-tab" data-bs-toggle="pill"
 									data-bs-target="#users-content" type="button" role="tab">
 									<i class="bi bi-people-fill me-2"></i>User Management
 								</button>
@@ -254,7 +257,8 @@
 				<%-- =================
 					Services Section 
 					================== --%>
-				<section class="h-100 tab-pane fade <%= dashboardCurrentFocus == "services-content" ? "show active" : "" %>"
+				<section
+					class="h-100 tab-pane fade <%=dashboardCurrentFocus == "services-content" ? "show active" : ""%>"
 					id="services-content" role="tabpanel">
 					<!-- Service Title -->
 					<div
@@ -532,17 +536,18 @@
 				<%-- =================
 					Users Section 
 					================== --%>
-				<section class="h-100 tab-pane fade <%= dashboardCurrentFocus == "users-content" ? "show active" : "" %>" id="users-content"
-					role="tabpanel">
+				<section
+					class="h-100 tab-pane fade <%=dashboardCurrentFocus == "users-content" ? "show active" : ""%>"
+					id="users-content" role="tabpanel">
 					<div
 						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
 						<h3 class="m-0 p-0 primaryFont">All Users</h3>
 
-						<%-- Add User Button --%>
+						<%-- Add User Button 
 						<button class="btn btn-primary" data-bs-toggle="modal"
 							data-bs-target="#addUserModal">
 							<i class="bi bi-person-plus-fill me-2"></i>Add User
-						</button>
+						</button> --%>
 					</div>
 
 					<!-- User Table -->
@@ -569,45 +574,159 @@
 							</thead>
 							<tbody>
 								<!-- dummy row -->
-								<% for (User user : users) { %>
+								<%
+								for (User user : users) {
+								%>
 								<tr>
-									<td><%= user.getUser_id() %></td>
-									<td><%= user.getName() %></td>
-									<td><%= user.getEmail() %></td>
-									<td><%= user.getGender() %></td>
+									<td><%=user.getUser_id()%></td>
+									<td><%=user.getName()%></td>
+									<td><%=user.getEmail()%></td>
+									<td><%=user.getGender()%></td>
 									<td>
 										<%
-											boolean roleExists = false;
-											for (Role role : roles) {
-												if (role.getRole_id() == user.getRole_id()) {
-													out.print(role.getName());
-													roleExists = true;
-												}
+										boolean roleExists = false;
+										for (Role role : roles) {
+											if (role.getRole_id() == user.getRole_id()) {
+												out.print(role.getName());
+												roleExists = true;
 											}
-											if (!roleExists) {
-												out.print("<div class='text-danger'>Unassigned<div>");
-											}
+										}
+										if (!roleExists) {
+											out.print("<div class='text-danger'>Unassigned<div>");
+										}
 										%>
 									</td>
 									<td><span class="badge bg-success">Active</span></td>
 									<td>
+										<!-- view profile photo -->
 										<button class="btn btn-sm btn-outline-secondary me-2"
-											data-bs-toggle="modal" data-bs-target="#userPhotoModal">
+											data-bs-toggle="modal"
+											data-bs-target="#profilePhoto<%=user.getUser_id()%>">
 											<i class="bi bi-person-bounding-box"></i>
 										</button>
-										<button class="btn btn-sm btn-outline-primary me-2">
+										<button class="btn btn-sm btn-outline-primary me-2"
+											data-bs-toggle="modal"
+											data-bs-target="#editUser<%=user.getUser_id()%>">
 											<i class="bi bi-pencil-fill"></i>
 										</button>
-										<button class="btn btn-sm btn-outline-danger">
-											<i class="bi bi-trash-fill"></i>
-										</button>
+										<form method="POST" action="<%=request.getContextPath()%>/DeleteUserServlet">
+											<input type="hidden" name="input_user_id" value="<%=user.getUser_id()%>">
+											<button type="submit" class="btn btn-sm btn-outline-danger">
+												<i class="bi bi-trash-fill"></i>
+											</button>
+										</form>
 									</td>
 								</tr>
-								<% } %>
+								<%
+								}
+								%>
 							</tbody>
 						</table>
 					</div>
 
+					<!-- User Content Modals -->
+					<% for (User user : users) { %>
+					<!-- profile photo modal -->
+					<div class="modal fade" id="profilePhoto<%=user.getUser_id()%>"
+						tabindex="-1" aria-labelledby="exampleModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel"><%=user.getName()%>'s
+										Profile Photo
+									</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close"></button>
+								</div>
+
+								<div
+									class="profile-photo-container my-4 d-flex justify-content-center">
+									<img
+										src="<%=user.getProfile_photo_url() != null ? user.getProfile_photo_url() : "../Image/defaultpic.png"%>"
+										alt="Profile Photo"
+										class="rounded-circle shadow-sm img-thumbnail"
+										style="width: 200px; height: 200px; object-fit: cover;">
+								</div>
+
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary"
+										data-bs-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- edit user modal -->
+					<div class="modal fade" id="editUser<%=user.getUser_id()%>"
+						tabindex="-1" aria-labelledby="exampleModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h1 class="modal-title fs-5 primaryFont">Edit User
+										Information</h1>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close"></button>
+								</div>
+
+								<!-- edit service modal contents -->
+								<form class="editServiceForm"
+									action="<%=request.getContextPath()%>/UpdateUserServlet"
+									method="POST">
+									<input type="hidden" name="input_user_id"
+										value="<%=user.getUser_id()%>">
+									<div class="modal-body">
+										<!-- Name Field -->
+										<div class="mb-3">
+											<label for="input_name" class="form-label">Name</label> <input
+												type="text" class="form-control" id="input_name"
+												name="input_name" value="<%=user.getName()%>" required>
+										</div>
+
+										<!-- Email Field -->
+										<div class="mb-3">
+											<label for="input_email" class="form-label">Email</label> <input
+												type="email" class="form-control" id="input_email"
+												name="input_email" value="<%=user.getEmail()%>" required>
+										</div>
+
+										<!-- Gender Field -->
+										<div class="mb-3">
+											<label for="input_gender" class="form-label">Gender
+												(M/F/N)</label> <input type="text" class="form-control"
+												id="input_gender" name="input_gender"
+												value="<%=user.getGender()%>" maxlength="1" pattern="[MFN]"
+												required>
+										</div>
+
+										<!-- Role ID Field -->
+										<div class="mb-3">
+											<label for="input_role_id" class="form-label">Role ID</label>
+											<input type="text" class="form-control" id="input_role_id"
+												name="input_role_id" value="<%=user.getRole_id()%>" required>
+										</div>
+
+										<!-- Profile Photo URL Field -->
+										<div class="mb-3">
+											<label for="input_profile_photo_url" class="form-label">Profile
+												Photo URL</label> <input type="text" class="form-control"
+												id="input_profile_photo_url" name="input_profile_photo_url"
+												value="<%=user.getProfile_photo_url()%>">
+										</div>
+									</div>
+
+									<div class="modal-footer justify-content-between">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<input type="submit" class="btn btn-primary"
+											data-bs-dismiss="modal" value="Save Changes">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<!-- end of edit user modal contents -->
+					<% } %>
 				</section>
 			</div>
 		</div>

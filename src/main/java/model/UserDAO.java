@@ -90,4 +90,85 @@ public class UserDAO {
 		
 		return users;
 	}
+	
+	public static int updateUserById(int user_id, String email, char gender, String name, String profile_photo_url, int role_id) {
+	    Connection connection = null;
+	    PreparedStatement statement = null;
+	    
+		try {			
+			// config
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+			// query
+			String ps = "UPDATE Users SET email = ?, gender = ?, name = ?, role_id = ? WHERE user_id = ?";
+			
+			statement = connection.prepareStatement(ps);
+			statement.setString(1, email);
+			statement.setString(2, String.valueOf(gender));
+			statement.setString(3, name);
+			//statement.setString(4, profile_photo_url);
+			statement.setInt(4, role_id);
+			statement.setInt(5, user_id);
+			int rowsAffected = statement.executeUpdate();
+			
+			if (rowsAffected > 0) {
+				return rowsAffected;
+                
+            } else {
+                throw new SQLException("(probably) wrong input or no user found with ID: " + user_id);
+            }
+			
+		} catch (Exception e) {
+			 e.printStackTrace(); 
+			 
+		} finally {
+	        try {
+	            if (statement != null) statement.close();
+	            if (connection != null) connection.close();
+	            
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		
+		return 0;
+	}
+	
+	public static void deleteUserById(int user_id) {
+	    Connection connection = null;
+	    PreparedStatement statement = null;
+	    
+		try {			
+			// config
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+			// query
+			String ps = "DELETE FROM Users WHERE user_id = ?";
+			
+			statement = connection.prepareStatement(ps);
+			statement.setInt(1, user_id);
+			
+			int rowsAffected = statement.executeUpdate();
+			
+			if (rowsAffected <= 0) {
+                throw new SQLException("(probably) wrong input or no user found with ID: " + user_id);
+            }
+			
+		} catch (Exception e) {
+			 e.printStackTrace(); 
+			 
+		} finally {
+	        try {
+	            if (statement != null) statement.close();
+	            if (connection != null) connection.close();
+	            
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
 }
