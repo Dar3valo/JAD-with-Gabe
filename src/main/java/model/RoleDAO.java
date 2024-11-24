@@ -92,4 +92,20 @@ public class RoleDAO {
 		
 		return role;
 	}
+	
+	public static boolean userRoleAccess(User user, int pageAccessLevel) {
+		/* pageAccessLevel legend:
+			1: admin
+			2: client
+			3: public
+		*/
+		
+		boolean hasAccess = false;
+		
+		if (user.getRole_id() == pageAccessLevel || user.getRole_id() < pageAccessLevel) { // is user is admin
+			hasAccess = true;
+		}
+		
+		return hasAccess;
+	}
 }
