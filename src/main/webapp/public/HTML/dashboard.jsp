@@ -4,6 +4,7 @@
 <%@ page import="model.Service"%>
 <%@ page import="model.ServiceCategory"%>
 <%@ page import="model.ServiceServiceCategory"%>
+<%@ page import="model.User"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,12 +25,28 @@
 </head>
 <body>
 	<%
+	// handle tab
+	String dashboardCurrentFocus = (String) session.getAttribute("dashboardCurrentFocus");
+	
+	if (dashboardCurrentFocus == null) {
+		session.setAttribute("dashboardCurrentFocus", "services-content");
+		dashboardCurrentFocus = "services-content";
+	}
+	
+	// handle data
 	List<Service> services = (List<Service>) session.getAttribute("services");
 	List<ServiceCategory> categories = (List<ServiceCategory>) session.getAttribute("serviceCategories");
 	List<ServiceServiceCategory> relationships = (List<ServiceServiceCategory>) session
 			.getAttribute("allServiceServiceCategories");
+	List<User> users = (List<User>) session.getAttribute("users");
 	ServiceCategory currentCategory = (ServiceCategory) session.getAttribute("currentCategory");
 
+	if (users == null) {
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllUsersServlet");
+		dispatcher.forward(request, response);
+		return;
+	}
+	
 	if (relationships == null) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllServiceServiceCategoryServlet");
 		dispatcher.forward(request, response);
@@ -54,14 +71,14 @@
 					<div class="border-bottom mx-3 pb-5 mb-5">
 						<ul class="nav nav-pills" id="managementTabs" role="tablist">
 							<li class="nav-item" role="presentation">
-								<button class="nav-link active" id="services-tab"
+								<button class="nav-link <%= dashboardCurrentFocus == "services-content" ? "active" : "" %>" id="services-tab"
 									data-bs-toggle="pill" data-bs-target="#services-content"
 									type="button" role="tab">
 									<i class="bi bi-gear-fill me-2"></i>Service Management
 								</button>
 							</li>
 							<li class="nav-item" role="presentation">
-								<button class="nav-link" id="users-tab" data-bs-toggle="pill"
+								<button class="nav-link <%= dashboardCurrentFocus == "users-content" ? "active" : "" %>" id="users-tab" data-bs-toggle="pill"
 									data-bs-target="#users-content" type="button" role="tab">
 									<i class="bi bi-people-fill me-2"></i>User Management
 								</button>
@@ -229,7 +246,7 @@
 				<%-- =================
 					Services Section 
 					================== --%>
-				<section class="h-100 tab-pane fade show active"
+				<section class="h-100 tab-pane fade <%= dashboardCurrentFocus == "services-content" ? "show active" : "" %>"
 					id="services-content" role="tabpanel">
 					<!-- Service Title -->
 					<div
@@ -507,7 +524,7 @@
 				<%-- =================
 					Users Section 
 					================== --%>
-				<section class="h-100 tab-pane fade" id="users-content"
+				<section class="h-100 tab-pane fade <%= dashboardCurrentFocus == "users-content" ? "show active" : "" %>" id="users-content"
 					role="tabpanel">
 					<div
 						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
@@ -543,13 +560,14 @@
 								</tr>
 							</thead>
 							<tbody>
-								<!-- Sample row, replace with dynamic data -->
+								<!-- dummy row -->
+								<% for (User user : users) { %>
 								<tr>
-									<td>1</td>
-									<td>John Doe</td>
-									<td>john@example.com</td>
-									<td>Male</td>
-									<td>Admin</td>
+									<td><%= user.getUser_id() %></td>
+									<td><%= user.getName() %></td>
+									<td><%= user.getEmail() %></td>
+									<td><%= user.getGender() %></td>
+									<td>Worry About Role Later</td>
 									<td><span class="badge bg-success">Active</span></td>
 									<td>
 										<button class="btn btn-sm btn-outline-secondary me-2"
@@ -564,6 +582,7 @@
 										</button>
 									</td>
 								</tr>
+								<% } %>
 							</tbody>
 						</table>
 					</div>

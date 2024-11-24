@@ -66,13 +66,12 @@ public class GetServiceInformationServlet extends HttpServlet {
 
 	        session.setAttribute("serviceCategories", serviceCategories);
 			
-	        // go back to dashboard
-			response.sendRedirect(request.getContextPath() + "/public/HTML/dashboard.jsp");
-				
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.sendRedirect("dashboard.jsp");
 		}
+		
+        // go back to dashboard
+		response.sendRedirect(request.getContextPath() + "/public/HTML/dashboard.jsp");
 	}
 
 	/**
