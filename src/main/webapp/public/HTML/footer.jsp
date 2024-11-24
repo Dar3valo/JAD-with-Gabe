@@ -30,7 +30,6 @@
     }
 	%>
 	
->>>>>>> branch 'main' of https://github.com/Dar3valo/JAD-with-Gabe.git
 	<%-- Footer --%>
 	<footer class="p-5 bg-dark text-white text-center position-relative">
 		<div class="container">
