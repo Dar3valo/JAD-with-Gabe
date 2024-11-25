@@ -46,7 +46,7 @@ public class GetAllServicesServlet extends HttpServlet {
 	            return;
 	        }
         }
-        
+        	
 		try {
             // Fetch all services
             List<Service> services = ServiceDAO.getServiceInformationByAll();

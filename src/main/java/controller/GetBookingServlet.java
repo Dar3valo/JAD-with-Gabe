@@ -25,56 +25,36 @@ public class GetBookingServlet extends HttpServlet {
         super();
     }
 
-    /**
-     * Handles GET requests to fetch cart items for a logged-in user.
-     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        { // check permission
-        	request.setAttribute("pageAccessLevel", "2");
-	        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
-	        rd.include(request, response);
-	        
-	        HttpSession session = request.getSession();
-	        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
-	        
-	        if (hasAccess == null || !hasAccess) {
-	            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
-	            return;
-	        }
-        }
-        
-        try {
-            HttpSession session = request.getSession(false); // Avoid creating a new session unnecessarily
-            if (session == null) {
-                response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
-                return;
-            }
+        request.setAttribute("pageAccessLevel", "2");
+        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
+        rd.include(request, response);
 
+        HttpSession session = request.getSession();
+        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+
+        if (hasAccess == null || !hasAccess) {
+            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+            return;
+        }
+
+        try {
             User loggedInUser = (User) session.getAttribute("loggedInUser");
             if (loggedInUser == null) {
                 response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
                 return;
             }
 
-            int userId = loggedInUser.getUser_id();
-
             GetCartItemDAO getItemsDAO = new GetCartItemDAO();
-            List<CartItem> cartItems = getItemsDAO.getCartItems(userId); // Fetch items for the specific user
+            List<CartItem> cartItems = getItemsDAO.getCartItems(loggedInUser.getUser_id());
 
+            // Update session with fetched cart items
             session.setAttribute("allCartItems", cartItems);
-            
-            if (cartItems == null || cartItems.isEmpty()) {
-                request.setAttribute("errorMessage", "Your cart is empty.");
-                request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
-                return;
-            } else {
-            	// Store cart items in session
-                response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
-            }
+            response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "An unexpected error occurred. Please try again.");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            session.setAttribute("errorMessage", "An unexpected error occurred. Please try again.");
+            request.getRequestDispatcher("/public/HTML/error.jsp").forward(request, response);
         }
     }
 

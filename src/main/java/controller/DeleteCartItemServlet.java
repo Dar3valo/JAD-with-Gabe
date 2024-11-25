@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.DeleteCartItemDAO;
 import model.CartItem;
+import model.GetCartItemDAO;
+import model.User;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,25 +21,17 @@ import java.util.List;
 public class DeleteCartItemServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public DeleteCartItemServlet() {
         super();
     }
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-HttpSession session = request.getSession();
-        
+        HttpSession session = request.getSession();
         try {
             // Get cart_item_id from request parameter and validate
             String cartItemIdStr = request.getParameter("cart_item_id");
             
             if (cartItemIdStr == null || cartItemIdStr.trim().isEmpty()) {
-                // Handle null or empty cart_item_id
                 session.setAttribute("errorMessage", "Cart item ID is missing");
                 response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
                 return;
@@ -46,7 +40,6 @@ HttpSession session = request.getSession();
             // Parse the cart_item_id
             int cart_item_id = Integer.parseInt(cartItemIdStr.trim());
             
-            // Validate cart_item_id is positive
             if (cart_item_id <= 0) {
                 session.setAttribute("errorMessage", "Invalid cart item ID");
                 response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
@@ -57,37 +50,25 @@ HttpSession session = request.getSession();
             DeleteCartItemDAO dao = new DeleteCartItemDAO();
             dao.deleteCartItem(cart_item_id);
             
-            // Update the session cart items
-            @SuppressWarnings("unchecked")
-            List<CartItem> allCartItems = (List<CartItem>) session.getAttribute("allCartItems");
-            if (allCartItems != null) {
-                allCartItems.removeIf(item -> item.getCart_item_id() == cart_item_id);
-                session.setAttribute("allCartItems", allCartItems);
-            }
+            // Refresh the cart items in the session
+            GetCartItemDAO getItemsDAO = new GetCartItemDAO();
+            List<CartItem> updatedCartItems = getItemsDAO.getCartItems(((User) session.getAttribute("loggedInUser")).getUser_id());
+            session.setAttribute("allCartItems", updatedCartItems);
             
             // Set success message
             session.setAttribute("successMessage", "Item successfully removed from cart");
-            
-            // Redirect back to the cart page
             response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
-            
         } catch (NumberFormatException e) {
-            // Log the error
             e.printStackTrace();
             session.setAttribute("errorMessage", "Invalid cart item ID format");
             response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
-            
         } catch (Exception e) {
-            // Log the error
             e.printStackTrace();
             session.setAttribute("errorMessage", "Error removing item from cart");
             response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
         }
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
