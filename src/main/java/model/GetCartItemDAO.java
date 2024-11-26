@@ -5,7 +5,7 @@ import java.util.List;
 import java.sql.*;
 
 public class GetCartItemDAO {
-	public List<CartItem> getCartItems(int user_id){
+	public static List<CartItem> getCartItems(int user_id){
 		List<CartItem> cartItems = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement stmt = null;

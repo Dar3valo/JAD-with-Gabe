@@ -3,7 +3,7 @@ package model;
 import java.sql.*;
 
 public class DeleteCartItemDAO {
-	public void deleteCartItem(int cart_item_id) {
+	public static void deleteCartItem(int cart_item_id) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		

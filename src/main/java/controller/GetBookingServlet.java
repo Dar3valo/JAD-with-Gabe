@@ -45,12 +45,12 @@ public class GetBookingServlet extends HttpServlet {
                 return;
             }
 
-            GetCartItemDAO getItemsDAO = new GetCartItemDAO();
-            List<CartItem> cartItems = getItemsDAO.getCartItems(loggedInUser.getUser_id());
+            List<CartItem> cartItems = GetCartItemDAO.getCartItems(loggedInUser.getUser_id());
 
             // Update session with fetched cart items
             session.setAttribute("allCartItems", cartItems);
             response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
+            
         } catch (Exception e) {
             e.printStackTrace();
             session.setAttribute("errorMessage", "An unexpected error occurred. Please try again.");

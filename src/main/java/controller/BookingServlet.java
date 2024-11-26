@@ -9,10 +9,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.CartItem;
 import model.CartItemDAO;
+import model.GetCartItemDAO;
 import model.User;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Servlet implementation class BookingServlet
@@ -61,7 +63,6 @@ public class BookingServlet extends HttpServlet {
         User userIdObj = (User) session.getAttribute("loggedInUser");
         
         if (userIdObj == null) {
-            request.setAttribute("errorMessage", "You must be logged in to make a booking.");
             response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
             return;
         }
@@ -77,8 +78,7 @@ public class BookingServlet extends HttpServlet {
 		
 		if (bookingDateStr == null || scheduleIdStr == null || serviceTypeStr == null || 
                 mainAddress == null || postalCodeStr == null) {
-                request.setAttribute("errorMessage", "All required fields must be filled");
-                request.getRequestDispatcher("/public/HTML/booking.jsp").forward(request, response);
+				response.sendRedirect(request.getContextPath() + "/public/HTML/booking.jsp");
                 return;
             }
 		
@@ -92,12 +92,14 @@ public class BookingServlet extends HttpServlet {
 
 				CartItem insertBooking = cartItemDAO.insertBooking(0, bookingDate, specialRequest != null ? specialRequest : "", mainAddress,
 		                postalCode, userId, scheduleId, serviceId);
+
+	            List<CartItem> updatedCartItems = GetCartItemDAO.getCartItems(((User) session.getAttribute("loggedInUser")).getUser_id());
 				
 				if(insertBooking != null) {
+					session.setAttribute("allCartItems", updatedCartItems);
 					response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
 				}else {
-					request.setAttribute("errorMessage", "An unexpected error occured ;-;");
-					request.getRequestDispatcher("booking.jsp").forward(request, response);
+					response.sendRedirect(request.getContextPath() + "/public/HTML/error.jsp");
 				}
 			
 		}catch(Exception e) {
