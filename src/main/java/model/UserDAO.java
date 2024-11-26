@@ -98,6 +98,51 @@ public class UserDAO {
 		return users;
 	}
 
+	public static int updateUserPasswordById(int user_id, String password) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+
+		try {
+			// config
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+			// query
+			String ps = "UPDATE Users SET password = ? WHERE user_id = ?";
+
+			// password is hashed
+			
+			statement = connection.prepareStatement(ps);
+			statement.setString(1, password);
+			statement.setInt(2, user_id);
+			int rowsAffected = statement.executeUpdate();
+
+			if (rowsAffected > 0) {
+				return rowsAffected;
+
+			} else {
+				throw new SQLException("(probably) wrong input or no user found with ID: " + user_id);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		} finally {
+			try {
+				if (statement != null)
+					statement.close();
+				if (connection != null)
+					connection.close();
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return 0;
+	}
+
 	public static int updateUserById(int user_id, String email, char gender, String name, String profile_photo_url,
 			int role_id) {
 		Connection connection = null;

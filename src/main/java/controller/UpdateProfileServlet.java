@@ -70,12 +70,13 @@ public class UpdateProfileServlet extends HttpServlet {
 			String profile_photo_url = request.getParameter("input_profile_photo_url");
 			
 			// processing
-			int rowsAffected = UserDAO.updateUserById(user_id, email, gender, name, profile_photo_url, 3);
+			int rowsAffected = UserDAO.updateUserById(user_id, email, gender, name, profile_photo_url, loggedInUser.getRole_id());
 			
 			// result
 			User currentUser = UserDAO.getUserById(user_id);
 			
 			session.setAttribute("currentUser", currentUser);
+			session.setAttribute("loggedInUser", currentUser);
 			
 			if (rowsAffected == 0 ) {
 				throw new Exception("no rows were updated for some odd reason");

@@ -113,11 +113,10 @@ body {
 
 	<div class="profile-container">
 		<%
-		User user = (User) session.getAttribute("currentUser");
+		User user = (User) session.getAttribute("loggedInUser");
 
 		if (user == null) {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/GetUserInformationById");
-			dispatcher.forward(request, response);
+			response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
 			return;
 		} else {
 		%>
@@ -187,7 +186,7 @@ body {
 				</div>
 				<div class="modal-body">
 					<form id="changePasswordForm"
-						action="<%=request.getContextPath()%>/changePasswordServlet"
+						action="<%=request.getContextPath()%>/UpdateUserPasswordByIdServlet"
 						method="POST">
 						<div class="mb-3">
 							<label for="currentPassword" class="form-label">Current
