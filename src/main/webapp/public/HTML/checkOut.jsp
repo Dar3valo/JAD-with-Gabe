@@ -48,7 +48,7 @@
                                 subtotal += item.getServicePrice();
                     %>
                     <div class="box">
-                        <img src="<%= item.getServiceImg() != null ? item.getServiceImg() : "../Image/carousellImage1.jpg" %>" alt="<%= item.getServiceName() %>">
+                        <img src="<%= item.getServiceImg() != null ? item.getServiceImg() : "../Image/carouselImage1.jpg" %>" alt="<%= item.getServiceName() %>">
                         <div class="content">
                             <h3><%= item.getServiceName() %></h3>
                             <h4>Price: $<%= item.getServicePrice() %></h4>
