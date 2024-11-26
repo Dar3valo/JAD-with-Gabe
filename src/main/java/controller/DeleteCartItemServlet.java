@@ -47,12 +47,10 @@ public class DeleteCartItemServlet extends HttpServlet {
             }
             
             // Create DAO instance and delete the cart item
-            DeleteCartItemDAO dao = new DeleteCartItemDAO();
-            dao.deleteCartItem(cart_item_id);
+            DeleteCartItemDAO.deleteCartItem(cart_item_id);
             
             // Refresh the cart items in the session
-            GetCartItemDAO getItemsDAO = new GetCartItemDAO();
-            List<CartItem> updatedCartItems = getItemsDAO.getCartItems(((User) session.getAttribute("loggedInUser")).getUser_id());
+            List<CartItem> updatedCartItems = GetCartItemDAO.getCartItems(((User) session.getAttribute("loggedInUser")).getUser_id());
             session.setAttribute("allCartItems", updatedCartItems);
             
             // Set success message
