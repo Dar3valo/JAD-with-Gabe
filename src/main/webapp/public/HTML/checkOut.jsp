@@ -43,6 +43,7 @@
                         }
                         else {
                             double subtotal = 0;
+                            
                             for (CartItem item : allCartItems) {
                                 subtotal += item.getServicePrice();
                     %>
