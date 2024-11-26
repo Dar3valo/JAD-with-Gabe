@@ -139,6 +139,8 @@ public class CartItem {
 		this.service_id = service_id;
 	}
 	
-	
+	public String getServiceImg() {
+		return null;
+	}
 	
 }

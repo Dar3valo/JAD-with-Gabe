@@ -152,17 +152,12 @@
                 <div class="divider"></div>
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <div class="text-muted">
-                        <small>Last updated: <span id="currentDate"></span></small>
-                    </div>
-                    <div>
-                        <button class="btn btn-primary me-2">
-                            <i class="bi bi-pencil-fill me-2"></i>Edit Profile
-                        </button>
-                        <button class="btn btn-outline-primary">
-                            <i class="bi bi-key-fill me-2"></i>Change Password
-                        </button>
-                    </div>
+					<button class="btn btn-outline-primary">
+					    <i class="bi bi-key-fill me-2"></i>Change Password
+					</button>
+					<button class="btn btn-primary me-2">
+	                   <i class="bi bi-pencil-fill me-2"></i>Edit Profile
+					</button>
                 </div>
             </div>
         <% } %>
@@ -172,14 +167,5 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Display current date
-        document.getElementById('currentDate').textContent = 
-            new Date().toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-    </script>
 </body>
 </html>
