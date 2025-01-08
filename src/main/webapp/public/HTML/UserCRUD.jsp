@@ -13,85 +13,7 @@
 	rel="stylesheet">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-<!-- Custom CSS -->
-<style>
-:root {
-	--primary-color: #007bff;
-	--secondary-color: #6c757d;
-	--background-color: #f8f9fa;
-}
-
-body {
-	background-color: var(--background-color);
-	min-height: 100vh;
-}
-
-.profile-container {
-	max-width: 800px;
-	margin: 2rem auto;
-	padding: 0 1rem;
-}
-
-.profile-header {
-	background: linear-gradient(135deg, var(--primary-color), #0056b3);
-	color: white;
-	border-radius: 15px;
-	padding: 2rem;
-	margin-bottom: 2rem;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.profile-photo {
-	width: 150px;
-	height: 150px;
-	border-radius: 50%;
-	border: 4px solid white;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	object-fit: cover;
-}
-
-.profile-card {
-	background: white;
-	border-radius: 15px;
-	padding: 2rem;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.info-label {
-	color: var(--secondary-color);
-	font-weight: 600;
-	margin-bottom: 0.5rem;
-}
-
-.info-value {
-	color: #333;
-	font-size: 1.1rem;
-	margin-bottom: 1.5rem;
-}
-
-.role-badge {
-	padding: 0.5rem 1rem;
-	border-radius: 20px;
-	font-weight: 500;
-	text-transform: capitalize;
-}
-
-.role-admin {
-	background-color: #dc3545;
-	color: white;
-}
-
-.role-client {
-	background-color: #28a745;
-	color: white;
-}
-
-.divider {
-	height: 1px;
-	background-color: #dee2e6;
-	margin: 1.5rem 0;
-}
-</style>
+<link rel="stylesheet" href="../CSS/profile.css" />
 </head>
 <body>
 	<%--Navbar --%>
@@ -158,11 +80,11 @@ body {
 			<div class="divider"></div>
 
 			<div class="d-flex justify-content-between align-items-center">
-				<button class="btn btn-outline-primary" data-bs-toggle="modal"
+				<button class="btn btn-outline-dark text-dark" data-bs-toggle="modal"
 					data-bs-target="#changePasswordModal">
 					<i class="bi bi-key-fill me-2"></i>Change Password
 				</button>
-				<button class="btn btn-primary me-2" data-bs-toggle="modal"
+				<button class="btn btn-dark me-2" data-bs-toggle="modal"
 					data-bs-target="#editProfileModal">
 					<i class="bi bi-pencil-fill me-2"></i>Edit Profile
 				</button>
