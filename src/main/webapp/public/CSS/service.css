@@ -1,59 +1,86 @@
-@charset "UTF-8";
-
-body{
-	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
-	background-color: #f9f9f9;
+:root {
+    --primary-color: #343a40;
+    --secondary-color: #495057;
+    --light-color: #f8f9fa;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
 }
 
-.container{
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	gap: 20px;
-	margin: 20px;
+body {
+    background-color: var(--light-color);
+    font-family: 'Arial', sans-serif;
 }
 
-.card{
-	width: 300px;
-	background: white;
-	border-radius: 10px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-	overflow: hidden;
-	text-align: center;
-	transition: 0.3s;
+.page-title {
+    color: black;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
 }
 
-.card img{
-	width: 100%;
-	height: 200px;
-	object-fit: cover;
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    background-color: white;
 }
 
-.card h3{
-	margin: 10px 0;
-	font-size: 1.5rem;
+.card:hover {
+    transform: translateY(-5px);
 }
 
-.card p{
-	margin: 0 10px 10px;
-	font-size: 1rem;
-	color: #666;
+.card-body {
+    padding: 1.5rem;
 }
 
-.card .price{
-	font-size: 1.2rem;
-	color: #333;
-	font-weight: bold;
-	margin-bottom: 15px;
+.card-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
 }
 
-.card:hover{
-	transform: scale(1.05);
-	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+.category-card {
+    background: white;
+    height: 100%;
 }
 
+.service-card {
+    background: white;
+    height: 100%;
+}
 
+.price-tag {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    font-weight: 500;
+}
 
+.section-title {
+    position: relative;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+}
 
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background-color: var(--primary-color);
+}
+
+.alert {
+    margin-top: 2rem;
+}
