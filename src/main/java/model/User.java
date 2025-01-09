@@ -20,6 +20,11 @@ public class User {
 		this.role_id = role_id;
 	}
 	
+	//Default constructor
+	public User() {
+		
+	}
+	
 	public int getUser_id() {
 		return user_id;
 	}
