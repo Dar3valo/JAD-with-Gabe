@@ -13,7 +13,10 @@
 	rel="stylesheet">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
 <link rel="stylesheet" href="../CSS/profile.css" />
+<link rel="stylesheet" href="../CSS/profilePic.css" />
 </head>
 <body>
 	<%--Navbar --%>
@@ -43,10 +46,14 @@
 		} else {
 		%>
 		<div class="profile-header text-center">
-			<img
-				src="<%=user.getProfile_photo_url() != null ? user.getProfile_photo_url() : "../Image/defaultpic.png"%>"
-				alt="Profile Photo" class="profile-photo mb-3"
-				onerror="this.src='https://via.placeholder.com/150'">
+			<div class="wrapper"
+				style="background-image: url('../Image/defaultpic.png');">
+				<input type="file" class="my_file" accept="image/*" />
+				<div class="upload-overlay">
+					<i class="bi bi-camera-fill upload-icon"></i>
+					<p class="upload-text">Change Photo</p>
+				</div>
+			</div>
 			<h1 class="mb-2"><%=user.getName()%></h1>
 			<span
 				class="role-badge <%=user.getRole_id() == 1 ? "role-admin" : "role-client"%>">
