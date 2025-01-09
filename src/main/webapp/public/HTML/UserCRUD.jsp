@@ -46,14 +46,20 @@
 		} else {
 		%>
 		<div class="profile-header text-center">
+		
+		
 			<div class="wrapper"
-				style="background-image: url('../Image/defaultpic.png');">
-				<input type="file" class="my_file" accept="image/*" />
-				<div class="upload-overlay">
-					<i class="bi bi-camera-fill upload-icon"></i>
-					<p class="upload-text">Change Photo</p>
-				</div>
+				style="background-image: url('<%=user.getProfile_photo_url() != null ? user.getProfile_photo_url() : "../Image/defaultpic.png"%>');">
+				<form action="<%=request.getContextPath()%>/UpdateProfilePicServlet"
+					method="post" enctype="multipart/form-data">
+					<button type="submit" class="btn btn-outline-dark text-dark">
+						<i class="bi bi-camera-fill"></i> Change Photo
+					</button>
+					<input type="file" name="profileImage" required>
+				</form>
 			</div>
+			
+			
 			<h1 class="mb-2"><%=user.getName()%></h1>
 			<span
 				class="role-badge <%=user.getRole_id() == 1 ? "role-admin" : "role-client"%>">
