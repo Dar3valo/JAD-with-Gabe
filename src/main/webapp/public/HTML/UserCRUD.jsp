@@ -206,12 +206,6 @@
 									<%=user.getGender() == 'N' ? "selected" : ""%>>Other</option>
 							</select>
 						</div>
-						<div class="mb-3">
-							<label for="editProfilePhoto" class="form-label">Profile
-								Photo URL</label> <input type="text" class="form-control"
-								id="editProfilePhoto" name="input_profile_photo_url"
-								value="<%=user.getProfile_photo_url() != null ? user.getProfile_photo_url() : ""%>">
-						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
 								data-bs-dismiss="modal">Cancel</button>
