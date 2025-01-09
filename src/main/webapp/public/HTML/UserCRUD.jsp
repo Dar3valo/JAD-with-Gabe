@@ -46,20 +46,29 @@
 		} else {
 		%>
 		<div class="profile-header text-center">
-		
-		
+
+
 			<div class="wrapper"
 				style="background-image: url('<%=user.getProfile_photo_url() != null ? user.getProfile_photo_url() : "../Image/defaultpic.png"%>');">
-				<form action="<%=request.getContextPath()%>/UpdateProfilePicServlet"
-					method="post" enctype="multipart/form-data">
-					<button type="submit" class="btn btn-outline-dark text-dark">
-						<i class="bi bi-camera-fill"></i> Change Photo
-					</button>
-					<input type="file" name="profileImage" required>
-				</form>
 			</div>
-			
-			
+
+			<form action="<%=request.getContextPath()%>/UpdateProfilePicServlet"
+				method="post" enctype="multipart/form-data">
+				<div class="file-upload-wrapper">
+					<input type="file" name="profileImage" id="file-upload"
+						class="file-upload-input" accept="image/*" required> <label
+						for="file-upload" class="file-upload-label"> <i
+						class="bi bi-cloud-arrow-up-fill upload-icon"></i> <span
+						class="upload-text">Choose a file</span> <span
+						class="selected-file"></span>
+					</label>
+					<button type="submit" class="btn btn-dark btn-outline-light mt-3">
+						<i class="bi bi-camera-fill me-2"></i>Change Photo
+					</button>
+				</div>
+			</form>
+
+
 			<h1 class="mb-2"><%=user.getName()%></h1>
 			<span
 				class="role-badge <%=user.getRole_id() == 1 ? "role-admin" : "role-client"%>">
@@ -93,8 +102,8 @@
 			<div class="divider"></div>
 
 			<div class="d-flex justify-content-between align-items-center">
-				<button class="btn btn-outline-dark text-dark" data-bs-toggle="modal"
-					data-bs-target="#changePasswordModal">
+				<button class="btn btn-outline-dark text-dark"
+					data-bs-toggle="modal" data-bs-target="#changePasswordModal">
 					<i class="bi bi-key-fill me-2"></i>Change Password
 				</button>
 				<button class="btn btn-dark me-2" data-bs-toggle="modal"
@@ -192,18 +201,15 @@
 						</div>
 						<div class="mb-3">
 							<label for="editEmail" class="form-label">Email</label> <input
-								type="email" class="form-control" id="editEmail" name="input_email"
-								value="<%=user.getEmail()%>" required>
+								type="email" class="form-control" id="editEmail"
+								name="input_email" value="<%=user.getEmail()%>" required>
 						</div>
 						<div class="mb-3">
 							<label for="editGender" class="form-label">Gender</label> <select
 								class="form-select" id="editGender" name="input_gender" required>
-								<option value="M"
-									<%=user.getGender() == 'M' ? "selected" : ""%>>Male</option>
-								<option value="F"
-									<%=user.getGender() == 'F' ? "selected" : ""%>>Female</option>
-								<option value="N"
-									<%=user.getGender() == 'N' ? "selected" : ""%>>Other</option>
+								<option value="M" <%=user.getGender() == 'M' ? "selected" : ""%>>Male</option>
+								<option value="F" <%=user.getGender() == 'F' ? "selected" : ""%>>Female</option>
+								<option value="N" <%=user.getGender() == 'N' ? "selected" : ""%>>Other</option>
 							</select>
 						</div>
 						<div class="modal-footer">
@@ -268,5 +274,16 @@
 							}
 						});
 	</script>
+	<script>
+		document.getElementById('file-upload').addEventListener('change', function(e) {
+		    const fileName = e.target.files[0]?.name;
+		    const selectedFileSpan = e.target.nextElementSibling.querySelector('.selected-file');
+		    if (fileName) {
+		        selectedFileSpan.textContent = fileName;
+		    } else {
+		        selectedFileSpan.textContent = '';
+		    }
+		});
+</script>
 </body>
 </html>
