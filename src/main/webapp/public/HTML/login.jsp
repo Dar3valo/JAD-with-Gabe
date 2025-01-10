@@ -80,7 +80,7 @@
                                 <label for="formCheck" class="form-check-label text-secondary"><small>Remember Me</small></label>
                             </div>
                             <div class="forgot">
-                                <small><a href="#">Forgot Password?</a></small>
+                                <small><a href="forgetPassword.jsp">Forgot Password?</a></small>
                             </div>
                         </div>
                         <div class="input-group mb-3">
