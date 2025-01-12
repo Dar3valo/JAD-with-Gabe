@@ -24,7 +24,7 @@
                 </p>
 
                 <!-- Form -->
-                <form action="" method="POST">
+                <form action="<%=request.getContextPath()%>/HandleForgetPasswordServlet" method="POST">
                     <div class="mb-4">
                         <label for="email" class="form-label text-white fw-semibold">Email Address</label>
                         <div class="input-group">
