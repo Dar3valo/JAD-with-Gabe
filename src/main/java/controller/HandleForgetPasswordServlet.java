@@ -43,9 +43,7 @@ public class HandleForgetPasswordServlet extends HttpServlet {
             // Check if email exists in the database
             User checkExistingEmail = dao.checkExistingEmail(email);
             if (checkExistingEmail == null) {
-                request.setAttribute("errorMessage", "Email not found!");
-                RequestDispatcher rd = request.getRequestDispatcher("/public/HTML/error.jsp");
-                rd.forward(request, response);
+            	response.sendRedirect(request.getContextPath()+"/public/HTML/error.jsp");
                 return;
             }
 
@@ -54,15 +52,14 @@ public class HandleForgetPasswordServlet extends HttpServlet {
             if (userWithToken != null) {
                 response.sendRedirect(request.getContextPath()+"/public/HTML/forgetPasswordSuccess.jsp");
             } else {
-                request.setAttribute("errorMessage", "Failed to generate reset token.");
-                RequestDispatcher rd = request.getRequestDispatcher("/public/HTML/error.jsp");
-                rd.forward(request, response);
+//                request.setAttribute("errorMessage", "Failed to generate reset token.");
+//                RequestDispatcher rd = request.getRequestDispatcher("/public/HTML/error.jsp");
+//                rd.forward(request, response);
+            	response.sendRedirect(request.getContextPath()+"/public/HTML/error.jsp");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "An internal server error occurred.");
-            RequestDispatcher rd = request.getRequestDispatcher("/public/HTML/error.jsp");
-            rd.forward(request, response);
+            response.sendRedirect(request.getContextPath()+"/public/HTML/error.jsp");
         }
     }
 }
