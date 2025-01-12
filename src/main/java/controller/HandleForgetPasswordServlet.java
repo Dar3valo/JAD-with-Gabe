@@ -52,9 +52,7 @@ public class HandleForgetPasswordServlet extends HttpServlet {
             // Generate reset token
             User userWithToken = dao.generateResetToken(email);
             if (userWithToken != null) {
-                request.setAttribute("successMessage", "Reset token successfully generated.");
-                RequestDispatcher rd = request.getRequestDispatcher("/public/HTML/forgetPasswordSuccess.jsp");
-                rd.forward(request, response);
+                response.sendRedirect(request.getContextPath()+"/public/HTML/forgetPasswordSuccess.jsp");
             } else {
                 request.setAttribute("errorMessage", "Failed to generate reset token.");
                 RequestDispatcher rd = request.getRequestDispatcher("/public/HTML/error.jsp");

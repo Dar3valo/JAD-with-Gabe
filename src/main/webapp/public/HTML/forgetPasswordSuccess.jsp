@@ -47,8 +47,8 @@
                             Your message has been sent successfully. We'll get back to you as soon as possible.
                         </p>
                         <div class="d-grid gap-2">
-                            <a href="homePage.jsp" class="btn btn-primary mb-2">
-                                <i class="bi bi-house-door me-2"></i>Return to Home
+                            <a href="login.jsp" class="btn btn-primary mb-2">
+                                <i class="bi bi-house-door me-2"></i>Return to Login
                             </a>
                             <a href="contact.jsp" class="btn btn-outline-secondary">
                                 <i class="bi bi-envelope me-2"></i>Send Another Message
