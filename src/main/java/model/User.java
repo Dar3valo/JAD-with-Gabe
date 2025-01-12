@@ -1,5 +1,8 @@
 package model;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 public class User {
 	private int user_id;
 	private String password;
@@ -8,6 +11,8 @@ public class User {
 	private String name;
 	private String profile_photo_url;
 	private int role_id;
+	private String reset_token;
+	private Timestamp tokenExpiryTime;
 
 	public User(int user_id, String password, String email, char gender, String name, String profile_photo_url, int role_id) {
 		super();
@@ -80,4 +85,22 @@ public class User {
 	public void setRole_id(int role_id) {
 		this.role_id = role_id;
 	}
+
+	public String getReset_token() {
+		return reset_token;
+	}
+
+	public void setReset_token(String reset_token) {
+		this.reset_token = reset_token;
+	}
+
+	public Timestamp getTokenExpiryTime() {
+		return tokenExpiryTime;
+	}
+
+	public void setTokenExpiryTime(Timestamp tokenExpiryTime) {
+		this.tokenExpiryTime = tokenExpiryTime;
+	}
+	
+	
 }
