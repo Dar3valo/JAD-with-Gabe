@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.CartItem;
 import model.CartItemDAO;
-import model.GetCartItemDAO;
+//import model.GetCartItemDAO;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -94,7 +94,7 @@ public class BookingServlet extends HttpServlet {
 				CartItem insertBooking = cartItemDAO.insertBooking(0, bookingDate, specialRequest != null ? specialRequest : "", mainAddress,
 		                postalCode, userId, scheduleId, serviceId);
 
-	            List<CartItem> updatedCartItems = GetCartItemDAO.getCartItems(((User) session.getAttribute("loggedInUser")).getUser_id());
+	            List<CartItem> updatedCartItems = CartItemDAO.getCartItems(((User) session.getAttribute("loggedInUser")).getUser_id());
 				
 				if(insertBooking != null) {
 					session.setAttribute("allCartItems", updatedCartItems);

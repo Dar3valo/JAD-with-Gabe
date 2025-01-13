@@ -6,7 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.UpdateCartItemsDAO;
+import model.CartItemDAO;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -37,7 +37,7 @@ public class UpdateCartItemsServlet extends HttpServlet {
             double servicePrice = Double.parseDouble(request.getParameter("servicePrice"));
 
             // Update cart item
-            UpdateCartItemsDAO updateDAO = new UpdateCartItemsDAO();
+            CartItemDAO updateDAO = new CartItemDAO();
             boolean isUpdated = updateDAO.updateCartItem(cartItemId, bookingDate, specialRequest, mainAddress, postalCode,
                                                          userId, scheduleId, serviceId, serviceName, servicePrice);
 

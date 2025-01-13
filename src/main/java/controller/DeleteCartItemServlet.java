@@ -6,9 +6,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.DeleteCartItemDAO;
+//import model.DeleteCartItemDAO;
 import model.CartItem;
-import model.GetCartItemDAO;
+import model.CartItemDAO;
 
 import java.io.IOException;
 import java.util.List;
@@ -48,10 +48,10 @@ public class DeleteCartItemServlet extends HttpServlet {
             }
             
             // Create DAO instance and delete the cart item
-            DeleteCartItemDAO.deleteCartItem(cart_item_id);
+            CartItemDAO.deleteCartItem(cart_item_id);
             
             // Refresh the cart items in the session
-            List<CartItem> updatedCartItems = GetCartItemDAO.getCartItems(((User) session.getAttribute("loggedInUser")).getUser_id());
+            List<CartItem> updatedCartItems = CartItemDAO.getCartItems(((User) session.getAttribute("loggedInUser")).getUser_id());
             session.setAttribute("allCartItems", updatedCartItems);
             
             // Set success message

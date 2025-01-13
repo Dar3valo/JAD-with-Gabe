@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.CartItem;
-import model.GetCartItemDAO;
+import model.CartItemDAO;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,7 +46,7 @@ public class GetBookingServlet extends HttpServlet {
                 return;
             }
 
-            List<CartItem> cartItems = GetCartItemDAO.getCartItems(loggedInUser.getUser_id());
+            List<CartItem> cartItems = CartItemDAO.getCartItems(loggedInUser.getUser_id());
 
             // Update session with fetched cart items
             session.setAttribute("allCartItems", cartItems);
