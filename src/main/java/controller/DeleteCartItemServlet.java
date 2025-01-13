@@ -6,13 +6,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-//import model.DeleteCartItemDAO;
-import model.CartItem;
-import model.CartItemDAO;
 
 import java.io.IOException;
 import java.util.List;
 
+import CartModel.CartItem;
+import CartModel.CartItemDAO;
 import UserModel.User;
 
 /**

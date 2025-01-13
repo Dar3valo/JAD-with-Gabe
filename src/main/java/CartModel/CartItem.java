@@ -1,4 +1,4 @@
-package model;
+package CartModel;
 
 import java.sql.Timestamp;
 import java.sql.Date;
