@@ -1,8 +1,10 @@
-package model;
+package ScheduleModel;
 
 import java.sql.*;
-import model.Schedule;
 import java.util.List;
+
+import ScheduleModel.Schedule;
+
 import java.util.ArrayList;
 
 public class ScheduleDAO {

@@ -1,4 +1,4 @@
-package model;
+package ScheduleModel;
 
 public class Schedule {
 	private int schedule_id;

@@ -4,8 +4,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="model.Service" %>
 <%@ page import="model.ServiceDAO" %>
-<%@ page import="model.Schedule" %>
-<%@ page import="model.ScheduleDAO" %>
+<%@ page import="ScheduleModel.Schedule" %>
+<%@ page import="ScheduleModel.ScheduleDAO" %>
 <!DOCTYPE html>
 <html>
 <head>
