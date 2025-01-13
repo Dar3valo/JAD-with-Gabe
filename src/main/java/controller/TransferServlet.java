@@ -9,10 +9,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Booking;
 import model.BookingDAO;
-import model.User;
 
 import java.io.IOException;
 import java.util.List;
+
+import UserModel.User;
 
 /**
  * Servlet implementation class TransferServlet

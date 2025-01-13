@@ -1,4 +1,4 @@
-package model;
+package UserModel;
 
 import java.sql.Date;
 import java.sql.Timestamp;

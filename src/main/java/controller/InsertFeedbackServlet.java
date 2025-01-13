@@ -9,9 +9,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Feedback;
 import model.FeedbackDAO;
-import model.User;
 
 import java.io.IOException;
+
+import UserModel.User;
 
 /**
  * Servlet implementation class InsertFeedbackServlet

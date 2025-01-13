@@ -4,6 +4,8 @@ import java.security.SecureRandom;
 import java.sql.*;
 import java.util.Base64;
 
+import UserModel.User;
+
 public class ForgetPasswordDAO {
 	public User checkExistingEmail(String email) {
 		User existEmail = null;

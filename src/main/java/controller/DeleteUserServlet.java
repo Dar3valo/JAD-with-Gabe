@@ -8,9 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.ServiceDAO;
-import model.UserDAO;
 
 import java.io.IOException;
+
+import UserModel.UserDAO;
 
 /**
  * Servlet implementation class DeleteUserServlet

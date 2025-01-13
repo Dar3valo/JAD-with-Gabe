@@ -4,7 +4,7 @@
 <%@ page import="model.Service"%>
 <%@ page import="model.ServiceCategory"%>
 <%@ page import="model.ServiceServiceCategory"%>
-<%@ page import="model.User"%>
+<%@ page import="UserModel.User"%>
 <%@ page import="model.Role"%>
 <!DOCTYPE html>
 <html>

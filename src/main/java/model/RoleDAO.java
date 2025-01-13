@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import UserModel.User;
+
 public class RoleDAO {
 	public static List<Role> getRoleByAll() {
 		List<Role> roles = new ArrayList<Role>();

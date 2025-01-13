@@ -9,11 +9,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.ServiceCategory;
 import model.ServiceCategoryDAO;
-import model.User;
-import model.UserDAO;
 
 import java.io.IOException;
 import java.util.List;
+
+import UserModel.User;
+import UserModel.UserDAO;
 
 /**
  * Servlet implementation class GetAllCategoriesServlet

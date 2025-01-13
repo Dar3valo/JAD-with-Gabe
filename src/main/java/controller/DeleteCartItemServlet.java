@@ -9,10 +9,11 @@ import jakarta.servlet.http.HttpSession;
 import model.DeleteCartItemDAO;
 import model.CartItem;
 import model.GetCartItemDAO;
-import model.User;
 
 import java.io.IOException;
 import java.util.List;
+
+import UserModel.User;
 
 /**
  * Servlet implementation class DeleteCartItemServlet

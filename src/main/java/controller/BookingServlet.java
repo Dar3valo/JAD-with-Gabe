@@ -10,11 +10,12 @@ import jakarta.servlet.http.HttpSession;
 import model.CartItem;
 import model.CartItemDAO;
 import model.GetCartItemDAO;
-import model.User;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
+
+import UserModel.User;
 
 /**
  * Servlet implementation class BookingServlet

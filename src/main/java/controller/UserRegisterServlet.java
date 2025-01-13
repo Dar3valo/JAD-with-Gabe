@@ -8,10 +8,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.UserDAO;
-import model.User;
 
 import java.io.IOException;
+
+import UserModel.User;
+import UserModel.UserDAO;
 
 /**
  * Servlet implementation class UserRegisterServlet

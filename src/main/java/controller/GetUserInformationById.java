@@ -7,10 +7,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.User;
-import model.UserDAO;
 
 import java.io.IOException;
+
+import UserModel.User;
+import UserModel.UserDAO;
 
 /**
  * Servlet implementation class GetUserInformationById
