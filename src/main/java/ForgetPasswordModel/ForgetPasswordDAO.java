@@ -1,4 +1,4 @@
-package model;
+package ForgetPasswordModel;
 
 import java.security.SecureRandom;
 import java.sql.*;
