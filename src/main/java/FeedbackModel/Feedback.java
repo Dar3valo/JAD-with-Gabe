@@ -1,4 +1,4 @@
-package model;
+package FeedbackModel;
 
 public class Feedback {
 	private int user_id;

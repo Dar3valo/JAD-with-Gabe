@@ -7,11 +7,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.FeedbackGetDAO;
-import model.Feedback;
 
 import java.io.IOException;
 import java.util.List;
+
+import FeedbackModel.Feedback;
+import FeedbackModel.FeedbackDAO;
 
 /**
  * Servlet implementation class TopThreeFeedbackServlet
@@ -51,7 +52,7 @@ public class TopThreeFeedbackServlet extends HttpServlet {
 		System.out.println("Servlet is being called"); // Debug line
 
 		try {
-			FeedbackGetDAO feedbackDAO = new FeedbackGetDAO();
+			FeedbackDAO feedbackDAO = new FeedbackDAO();
 			List<Feedback> feedbackList = feedbackDAO.getFeedbackReviews();
 
 			// Debug lines

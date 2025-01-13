@@ -7,11 +7,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.Feedback;
-import model.FeedbackDAO;
 
 import java.io.IOException;
 
+import FeedbackModel.Feedback;
+import FeedbackModel.FeedbackDAO;
 import UserModel.User;
 
 /**
