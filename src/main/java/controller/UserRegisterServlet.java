@@ -8,8 +8,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.UserRegisterDAO;
-import model.UserRegister;
+import model.UserDAO;
+import model.User;
 
 import java.io.IOException;
 
@@ -69,13 +69,14 @@ public class UserRegisterServlet extends HttpServlet {
 	    }
 		
 		try {
-			UserRegisterDAO userRegisterDAO = new UserRegisterDAO();
+			UserDAO userDAO = new UserDAO();
 			
-			if(userRegisterDAO.isEmailExist(email)) {
+			if(userDAO.isEmailExist(email)) {
 				request.setAttribute("errorMessage", "Email already exists, please key in a different email...");
 				request.getRequestDispatcher("register.jsp").forward(request, response);
 			}else {
-				UserRegister insertUser = userRegisterDAO.insertUserInfo(name, email, password, gender);
+				char genderChar = gender.charAt(0);
+				User insertUser = userDAO.insertUserInfo(name, email, password, genderChar);
 				
 				if(insertUser != null) {
 					response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");

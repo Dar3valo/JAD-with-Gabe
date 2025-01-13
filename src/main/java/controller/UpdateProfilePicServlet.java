@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import model.User;
-import model.UserPfpDAO;
+import model.UserDAO;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -85,7 +85,7 @@ public class UpdateProfilePicServlet extends HttpServlet {
 				}
 
 				// Update the user profile picture URL in the database
-				UserPfpDAO pfpDao = new UserPfpDAO();
+				UserDAO pfpDao = new UserDAO();
 				String filePath = request.getContextPath() + "/Image/" + filename; // Add contextPath here
 				User updatedUser = pfpDao.updateUserPfp(loggedInUser.getUser_id(), filePath);
 
