@@ -7,12 +7,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.Role;
-import model.RoleDAO;
 
 import java.io.IOException;
 import java.util.List;
 
+import RoleModel.Role;
+import RoleModel.RoleDAO;
 import UserModel.User;
 import UserModel.UserDAO;
 

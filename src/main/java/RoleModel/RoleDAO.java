@@ -1,4 +1,4 @@
-package model;
+package RoleModel;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
