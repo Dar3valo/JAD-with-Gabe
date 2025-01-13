@@ -1,4 +1,4 @@
-package model;
+package BookingModel;
 
 import java.sql.*;
 import java.util.ArrayList;
