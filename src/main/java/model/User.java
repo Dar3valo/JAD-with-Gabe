@@ -13,7 +13,20 @@ public class User {
 	private int role_id;
 	private String reset_token;
 	private Timestamp tokenExpiryTime;
-
+	
+	//Default constructor
+	public User() {
+		
+	}
+	
+	public User(String name, String email, String password, char gender) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.gender = gender;
+	}
+	
 	public User(int user_id, String password, String email, char gender, String name, String profile_photo_url, int role_id) {
 		super();
 		this.user_id = user_id;
@@ -24,12 +37,7 @@ public class User {
 		this.profile_photo_url = profile_photo_url;
 		this.role_id = role_id;
 	}
-	
-	//Default constructor
-	public User() {
-		
-	}
-	
+
 	public int getUser_id() {
 		return user_id;
 	}

@@ -338,4 +338,96 @@ public class UserDAO {
 
 		return users;
 	}
+	
+	public User insertUserInfo (String name, String email, String password, char gender) {
+		User userInfo = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+//		int rowsAffected = 0;
+		ResultSet rs = null;
+		
+		
+		try {
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+			
+			String hashedPassword = PasswordBcrypt.hashPassword(password);
+			
+			String sql = "INSERT INTO users (name, email, password, gender) VALUES (?, ?, ?, ?);";
+			
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, name);
+			stmt.setString(2, email);
+			stmt.setString(3, hashedPassword);
+			stmt.setString(4, String.valueOf(gender));
+			
+			int rowsAffected = stmt.executeUpdate();
+			
+			if(rowsAffected > 0) {
+				userInfo = new User(name, email, hashedPassword, gender);
+			}else {
+				System.out.println("User registered unsuccessfully, no rows affected");
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				conn.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return userInfo;
+	}
+
+	public boolean isEmailExist(String email) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	public User updateUserPfp(int user_id, String profile_photo_url) {
+		User userPfp = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+			String sql = "UPDATE users SET profile_photo_url = ? WHERE user_id = ?;";
+
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, profile_photo_url);
+			stmt.setInt(2, user_id);
+
+			int rowsAffected = stmt.executeUpdate();
+
+			if (rowsAffected > 0) {
+				userPfp = new User();
+				userPfp.setUser_id(user_id);
+				userPfp.setProfile_photo_url(profile_photo_url);
+			} else {
+				System.out.println("Update Unsuccessful, no rows affected");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// Close resources
+			try {
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return userPfp;
+	}
 }
