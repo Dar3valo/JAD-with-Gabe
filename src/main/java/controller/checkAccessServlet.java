@@ -9,8 +9,8 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-import RoleModel.RoleDAO;
-import UserModel.User;
+import Models.Role.RoleDAO;
+import Models.User.User;
 
 /**
  * Servlet implementation class checkAccessServlet

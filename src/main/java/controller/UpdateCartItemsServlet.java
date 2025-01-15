@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 
-import CartModel.CartItemDAO;
+import Models.Cart.CartItemDAO;
 
 /**
  * Servlet implementation class UpdateCartItemServlet

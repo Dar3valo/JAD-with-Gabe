@@ -11,8 +11,8 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-import ServiceModel.Service;
-import ServiceModel.ServiceDAO;
+import Models.Service.Service;
+import Models.Service.ServiceDAO;
 
 /**
  * Servlet implementation class ServicesBookingDropdown

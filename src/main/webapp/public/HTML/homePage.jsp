@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="FeedbackModel.Feedback" %>
-<%@ page import="FeedbackModel.Feedback" %>
+<%@ page import="Models.Feedback.Feedback" %>
+<%@ page import="Models.Feedback.Feedback" %>
 
 <!DOCTYPE html>
 <html>

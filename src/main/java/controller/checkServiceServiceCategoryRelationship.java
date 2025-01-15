@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-import ServiceServiceCategoryModel.ServiceServiceCategoryDAO;
+import Models.ServiceServiceCategory.ServiceServiceCategoryDAO;
 
 /**
  * Servlet implementation class checkServiceServiceCategoryRelationship

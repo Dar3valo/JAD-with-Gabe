@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import ServiceCategoryModel.ServiceCategoryDAO;
+import Models.ServiceCategory.ServiceCategoryDAO;
 
 /**
  * Servlet implementation class EditServiceCategoryServlet

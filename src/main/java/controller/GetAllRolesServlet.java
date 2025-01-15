@@ -11,10 +11,10 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-import RoleModel.Role;
-import RoleModel.RoleDAO;
-import UserModel.User;
-import UserModel.UserDAO;
+import Models.Role.Role;
+import Models.Role.RoleDAO;
+import Models.User.User;
+import Models.User.UserDAO;
 
 /**
  * Servlet implementation class GetAllRolesServlet

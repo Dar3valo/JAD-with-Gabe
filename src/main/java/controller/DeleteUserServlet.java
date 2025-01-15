@@ -10,8 +10,8 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-import ServiceModel.ServiceDAO;
-import UserModel.UserDAO;
+import Models.Service.ServiceDAO;
+import Models.User.UserDAO;
 
 /**
  * Servlet implementation class DeleteUserServlet

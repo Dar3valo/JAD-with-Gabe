@@ -11,9 +11,9 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-import BookingModel.Booking;
-import BookingModel.BookingDAO;
-import UserModel.User;
+import Models.Booking.Booking;
+import Models.Booking.BookingDAO;
+import Models.User.User;
 
 /**
  * Servlet implementation class TransferServlet

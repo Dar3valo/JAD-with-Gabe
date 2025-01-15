@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
-<%@ page import="ServiceModel.Service"%>
-<%@ page import="ServiceCategoryModel.ServiceCategory"%>
-<%@ page import="ServiceServiceCategoryModel.ServiceServiceCategory"%>
-<%@ page import="UserModel.User"%>
-<%@ page import="RoleModel.Role"%>
+<%@ page import="Models.Service.Service"%>
+<%@ page import="Models.ServiceCategory.ServiceCategory"%>
+<%@ page import="Models.ServiceServiceCategory.ServiceServiceCategory"%>
+<%@ page import="Models.User.User"%>
+<%@ page import="Models.Role.Role"%>
 <!DOCTYPE html>
 <html>
 <head>

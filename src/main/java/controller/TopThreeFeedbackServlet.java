@@ -11,8 +11,8 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-import FeedbackModel.Feedback;
-import FeedbackModel.FeedbackDAO;
+import Models.Feedback.Feedback;
+import Models.Feedback.FeedbackDAO;
 
 /**
  * Servlet implementation class TopThreeFeedbackServlet

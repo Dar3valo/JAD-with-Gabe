@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ServiceCategoryModel.ServiceCategory;
-import ServiceCategoryModel.ServiceCategoryDAO;
-import ServiceModel.ServiceDAO;
-import ServiceServiceCategoryModel.ServiceServiceCategoryDAO;
+import Models.Service.ServiceDAO;
+import Models.ServiceCategory.ServiceCategory;
+import Models.ServiceCategory.ServiceCategoryDAO;
+import Models.ServiceServiceCategory.ServiceServiceCategoryDAO;
 
 /**
  * Servlet implementation class EditServiceServlet

@@ -11,10 +11,10 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-import ScheduleModel.Schedule;
-import ScheduleModel.ScheduleDAO;
-import ServiceModel.Service;
-import ServiceModel.ServiceDAO;
+import Models.Schedule.Schedule;
+import Models.Schedule.ScheduleDAO;
+import Models.Service.Service;
+import Models.Service.ServiceDAO;
 
 /**
  * Servlet implementation class ScheduleDropdownServlet

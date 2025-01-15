@@ -9,8 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import ForgetPasswordModel.ForgetPasswordDAO;
-import UserModel.User;
+import Models.ForgetPassword.ForgetPasswordDAO;
+import Models.User.User;
 
 /**
  * Servlet implementation class HandleForgetPasswordServlet

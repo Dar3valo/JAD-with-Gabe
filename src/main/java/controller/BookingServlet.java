@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
-import CartModel.CartItem;
-import CartModel.CartItemDAO;
-import UserModel.User;
+import Models.Cart.CartItem;
+import Models.Cart.CartItemDAO;
+import Models.User.User;
 
 /**
  * Servlet implementation class BookingServlet
