@@ -1,4 +1,4 @@
-package controller;
+package Controllers.Cart;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;

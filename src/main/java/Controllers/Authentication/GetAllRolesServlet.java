@@ -1,7 +1,7 @@
-package controller;
+package Controllers.Authentication;
 
 import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException; 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,20 +11,22 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-import Models.Service.Service;
-import Models.Service.ServiceDAO;
+import Models.Role.Role;
+import Models.Role.RoleDAO;
+import Models.User.User;
+import Models.User.UserDAO;
 
 /**
- * Servlet implementation class ServicesBookingDropdown
+ * Servlet implementation class GetAllRolesServlet
  */
-@WebServlet("/ServicesBookingDropdownServlet")
-public class ServicesBookingDropdownServlet extends HttpServlet {
+@WebServlet("/GetAllRolesServlet")
+public class GetAllRolesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ServicesBookingDropdownServlet() {
+    public GetAllRolesServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -49,18 +51,19 @@ public class ServicesBookingDropdownServlet extends HttpServlet {
         }
         
 		try {
-			List<Service> serviceDropdown = ServiceDAO.getAllServices();
+			// define session
+			HttpSession session = request.getSession();
 			
-			// Store services in session
-            HttpSession session = request.getSession();
-            session.setAttribute("serviceTypes", serviceDropdown);
-            
-            response.sendRedirect(request.getContextPath() + "/public/HTML/booking.jsp");
-		}catch(Exception e) {
+			List<Role> roles = RoleDAO.getRoleByAll();
+			
+			session.setAttribute("roles", roles);
+			
+		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("errorMessage", "An unexpected error occurred. Please try again.");
-			response.sendRedirect(request.getContextPath() + "error.jsp");
 		}
+		
+		// redirect user to dashboard
+		response.sendRedirect(request.getContextPath() + "/public/HTML/dashboard.jsp");
 	}
 
 	/**

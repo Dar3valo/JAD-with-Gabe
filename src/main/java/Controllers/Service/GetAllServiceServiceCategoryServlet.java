@@ -1,4 +1,4 @@
-package controller;
+package Controllers.Service;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -13,20 +13,20 @@ import java.util.List;
 
 import Models.Service.Service;
 import Models.Service.ServiceDAO;
-import Models.ServiceCategory.ServiceCategory;
-import Models.ServiceCategory.ServiceCategoryDAO;
+import Models.ServiceServiceCategory.ServiceServiceCategory;
+import Models.ServiceServiceCategory.ServiceServiceCategoryDAO;
 
 /**
- * Servlet implementation class GetServiceInformationServlet
+ * Servlet implementation class GetAllServiceServiceCategory
  */
-@WebServlet("/GetServiceInformationServlet")
-public class GetServiceInformationServlet extends HttpServlet {
+@WebServlet("/GetAllServiceServiceCategoryServlet")
+public class GetAllServiceServiceCategoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetServiceInformationServlet() {
+    public GetAllServiceServiceCategoryServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,7 +34,6 @@ public class GetServiceInformationServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	@SuppressWarnings("null")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
         { // check permission
@@ -51,43 +50,31 @@ public class GetServiceInformationServlet extends HttpServlet {
 	        }
         }
         
-		String categoryParam = request.getParameter("serviceCategory");
-		int category = Integer.parseInt(categoryParam);
-		
 		try {
-			// define session
-			HttpSession session = request.getSession();
-			
-			// get stored services
-			if (category == 0) {
-				List<Service> services = ServiceDAO.getServiceInformationByAll();
-				
-				// set all current selected service category
-				session.setAttribute("currentCategory", null);
-		        session.setAttribute("services", services);
-				
-			} else if (category >= 1) {
-				List<Service> services = ServiceDAO.getServiceInformationByCategory(category);
-				
-				// set current selected service category
-				ServiceCategory serviceCategory = ServiceCategoryDAO.getServiceCategoryById(category);
-	
-				session.setAttribute("currentCategory", serviceCategory);
-		        session.setAttribute("services", services);
-				
-			}
-			
-			// get stored service categories
-			List<ServiceCategory> serviceCategories = ServiceCategoryDAO.getServiceCategoryByAll();
+            // Fetch all services
+            List<ServiceServiceCategory> relationships = ServiceServiceCategoryDAO.getServiceServiceCategoryByAll();
 
-	        session.setAttribute("serviceCategories", serviceCategories);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-        // go back to dashboard
-		response.sendRedirect(request.getContextPath() + "/public/HTML/dashboard.jsp");
+            if (relationships == null) {
+            	throw new Exception("categories is null. please pleaplsepalseplaspe be better");
+            }
+            
+            // Store services in session
+            HttpSession session = request.getSession();
+            session.setAttribute("allServiceServiceCategories", relationships);
+
+			// redirect user to dashboard
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
+			dispatcher.forward(request, response);
+			return;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+			// redirect user to dashboard
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/GetServiceInformationServlet?serviceCategory=0");
+			dispatcher.forward(request, response);
+			return;
+        }
 	}
 
 	/**

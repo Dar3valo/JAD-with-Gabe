@@ -1,4 +1,4 @@
-package controller;
+package Controllers.Feedback;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;

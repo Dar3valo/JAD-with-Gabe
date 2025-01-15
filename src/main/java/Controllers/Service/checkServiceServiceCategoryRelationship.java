@@ -1,4 +1,4 @@
-package controller;
+package Controllers.Service;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -9,24 +9,20 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.util.List;
 
-import Models.ServiceCategory.ServiceCategory;
-import Models.ServiceCategory.ServiceCategoryDAO;
-import Models.User.User;
-import Models.User.UserDAO;
+import Models.ServiceServiceCategory.ServiceServiceCategoryDAO;
 
 /**
- * Servlet implementation class GetAllCategoriesServlet
+ * Servlet implementation class checkServiceServiceCategoryRelationship
  */
-@WebServlet("/GetAllCategoriesServlet")
-public class GetAllCategoriesServlet extends HttpServlet {
+@WebServlet("/checkServiceServiceCategoryRelationship")
+public class checkServiceServiceCategoryRelationship extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetAllCategoriesServlet() {
+    public checkServiceServiceCategoryRelationship() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -50,20 +46,20 @@ public class GetAllCategoriesServlet extends HttpServlet {
 	        }
         }
         
-		try {
-			// define session
-			HttpSession session = request.getSession();
-			
-			List<ServiceCategory> categories = ServiceCategoryDAO.getServiceCategoryByAll();
-			
-			session.setAttribute("allCategories", categories);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		// get and format data
+		String input_service_id = request.getParameter("service_id");
+		String input_service_category_id = request.getParameter("service_category_id");
 		
-		// redirect user to dashboard
-		response.sendRedirect(request.getContextPath() + "/public/HTML/services.jsp");
+		int service_id = Integer.parseInt(input_service_id);
+		int service_category_id = Integer.parseInt(input_service_category_id);
+		
+		boolean isRelationship = ServiceServiceCategoryDAO.checkServiceServiceCategoryRelationship(service_id, service_category_id);
+		
+		request.setAttribute("isRelationship", isRelationship);
+
+        // Forward the request to the JSP for rendering
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/result.jsp");
+        dispatcher.forward(request, response);
 	}
 
 	/**

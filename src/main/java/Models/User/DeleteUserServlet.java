@@ -1,4 +1,4 @@
-package controller;
+package Models.User;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 import Models.Service.ServiceDAO;
-import Models.User.UserDAO;
 
 /**
  * Servlet implementation class DeleteUserServlet

@@ -83,8 +83,7 @@
 	// handle data
 	List<Service> services = (List<Service>) session.getAttribute("services");
 	List<ServiceCategory> categories = (List<ServiceCategory>) session.getAttribute("serviceCategories");
-	List<ServiceServiceCategory> relationships = (List<ServiceServiceCategory>) session
-			.getAttribute("allServiceServiceCategories");
+	List<ServiceServiceCategory> relationships = (List<ServiceServiceCategory>) session.getAttribute("allServiceServiceCategories");
 	List<User> users = (List<User>) session.getAttribute("users");
 	List<Role> roles = (List<Role>) session.getAttribute("roles");
 	ServiceCategory currentCategory = (ServiceCategory) session.getAttribute("currentCategory");

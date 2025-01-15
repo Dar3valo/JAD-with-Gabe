@@ -1,7 +1,7 @@
-package controller;
+package Controllers.Service;
 
 import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException; 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,22 +11,20 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-import Models.Schedule.Schedule;
-import Models.Schedule.ScheduleDAO;
 import Models.Service.Service;
 import Models.Service.ServiceDAO;
 
 /**
- * Servlet implementation class ScheduleDropdownServlet
+ * Servlet implementation class GetAllServicesServlet
  */
-@WebServlet("/ScheduleDropdownServlet")
-public class ScheduleDropdownServlet extends HttpServlet {
+@WebServlet("/GetAllServicesServlet")
+public class GetAllServicesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ScheduleDropdownServlet() {
+    public GetAllServicesServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,7 +35,7 @@ public class ScheduleDropdownServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
         { // check permission
-        	request.setAttribute("pageAccessLevel", "2");
+        	request.setAttribute("pageAccessLevel", "3");
 	        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
 	        rd.include(request, response);
 	        
@@ -49,20 +47,23 @@ public class ScheduleDropdownServlet extends HttpServlet {
 	            return;
 	        }
         }
-        
+        	
 		try {
-			List<Schedule> scheduleDropdown = ScheduleDAO.getAllSchedule();
-			
-			// Store services in session
+            // Fetch all services
+            List<Service> services = ServiceDAO.getServiceInformationByAll();
+
+            // Store services in session
             HttpSession session = request.getSession();
-            session.setAttribute("scheduleTimings", scheduleDropdown);
-            
-            response.sendRedirect(request.getContextPath() + "/public/HTML/booking.jsp");
-		}catch(Exception e) {
-			e.printStackTrace();
-			request.setAttribute("errorMessage", "An unexpected error occurred. Please try again.");
-			response.sendRedirect(request.getContextPath() + "error.jsp");
-		}
+            session.setAttribute("allServices", services);
+
+            // Redirect to the JSP page to display the services
+            response.sendRedirect(request.getContextPath() + "/public/HTML/services.jsp");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "An unexpected error occurred. Please try again.");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
 	}
 
 	/**
