@@ -1,5 +1,8 @@
-package model;
+package ServiceModel;
 import java.util.List;
+
+import ServiceCategoryModel.ServiceCategory;
+
 import java.util.ArrayList;
 import java.sql.*;
 

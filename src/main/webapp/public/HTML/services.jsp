@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
-<%@ page import="model.Service"%>
-<%@ page import="model.ServiceCategory"%>
-<%@ page import="model.ServiceDAO"%>
+<%@ page import="ServiceModel.Service"%>
+<%@ page import="ServiceCategoryModel.ServiceCategory"%>
+<%@ page import="ServiceModel.ServiceDAO"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>

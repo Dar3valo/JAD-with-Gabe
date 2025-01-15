@@ -2,8 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="model.Service" %>
-<%@ page import="model.ServiceDAO" %>
+<%@ page import="ServiceModel.Service" %>
+<%@ page import="ServiceModel.ServiceDAO" %>
 <%@ page import="ScheduleModel.Schedule" %>
 <%@ page import="ScheduleModel.ScheduleDAO" %>
 <!DOCTYPE html>

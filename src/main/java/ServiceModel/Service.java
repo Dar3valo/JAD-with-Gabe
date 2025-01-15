@@ -1,4 +1,4 @@
-package model;
+package ServiceModel;
 
 public class Service {
 	private int service_id;

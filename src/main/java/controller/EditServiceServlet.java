@@ -7,14 +7,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.ServiceCategory;
-import model.ServiceCategoryDAO;
-import model.ServiceDAO;
-import model.ServiceServiceCategoryDAO;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import ServiceCategoryModel.ServiceCategory;
+import ServiceCategoryModel.ServiceCategoryDAO;
+import ServiceModel.ServiceDAO;
+import ServiceServiceCategoryModel.ServiceServiceCategoryDAO;
 
 /**
  * Servlet implementation class EditServiceServlet

@@ -1,4 +1,4 @@
-package model;
+package ServiceServiceCategoryModel;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

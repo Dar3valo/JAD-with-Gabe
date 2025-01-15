@@ -1,4 +1,4 @@
-package model;
+package ServiceCategoryModel;
 
 public class ServiceCategory {
 	private int service_category_id;
