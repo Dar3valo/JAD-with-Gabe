@@ -385,10 +385,39 @@ public class UserDAO {
 		return userInfo;
 	}
 
-	public boolean isEmailExist(String email) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	 public boolean isEmailExist(String email) {
+	        boolean exists = false;
+	        Connection conn = null;
+	        PreparedStatement stmt = null;
+	        ResultSet rs = null;
+
+	        try {
+	            Class.forName("org.postgresql.Driver");
+	            String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+	            conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+	            String sql = "SELECT 1 FROM users WHERE email = ?";
+
+	            stmt = conn.prepareStatement(sql);
+	            stmt.setString(1, email);
+
+	            rs = stmt.executeQuery();
+	            exists = rs.next();
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	            // Close resources
+	            try {
+	                if (rs != null) rs.close();
+	                if (stmt != null) stmt.close();
+	                if (conn != null) conn.close();
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	        return exists;
+	    }
 	
 	public User updateUserPfp(int user_id, String profile_photo_url) {
 		User userPfp = null;
@@ -432,4 +461,42 @@ public class UserDAO {
 		}
 		return userPfp;
 	}
+	
+	public boolean updatePassword(String email, String hashedPassword) {
+        boolean isUpdated = false;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+            conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+            String sql = "UPDATE users SET password = ? WHERE email = ?;";
+
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, hashedPassword);
+            stmt.setString(2, email);
+
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                isUpdated = true;
+            } else {
+                System.out.println("Update Unsuccessful, no rows affected");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources
+            try {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return isUpdated;
+    }
 }
