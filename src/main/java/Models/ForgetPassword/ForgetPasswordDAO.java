@@ -18,7 +18,7 @@ public class ForgetPasswordDAO {
 			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
 			conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
 			
-			String sql = "SELECT email FROM Users WHERE email = ?";
+			String sql = "SELECT email, name FROM Users WHERE email = ?";
 
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
@@ -28,6 +28,7 @@ public class ForgetPasswordDAO {
 			if(rs.next()) {
 				existEmail = new User();
 				existEmail.setEmail(rs.getString("email"));
+				existEmail.setName(rs.getString("name"));
 			}
 			
 		}catch(Exception e) {
@@ -74,10 +75,24 @@ public class ForgetPasswordDAO {
 	        
 	        int rowsUpdated = stmt.executeUpdate();
 	        if (rowsUpdated > 0) {
-	            generateToken = new User(); // Assuming User class has an appropriate constructor
-	            generateToken.setReset_token(token);
-	            generateToken.setTokenExpiryTime(tokenExpiryTime);
-	            System.out.println("Token generated and saved for email: " + email);
+	        	
+	        	String selectSql = "SELECT name, reset_token, token_expiry FROM Users WHERE email = ?";
+	            stmt = conn.prepareStatement(selectSql);
+	            stmt.setString(1, email);
+	            rs = stmt.executeQuery();
+	            
+	            if(rs.next()) {
+	            	generateToken = new User();
+	                generateToken.setName(rs.getString("name")); // Retrieve and set name
+	                generateToken.setReset_token(rs.getString("reset_token"));
+	                generateToken.setTokenExpiryTime(rs.getTimestamp("token_expiry"));
+	            }
+	            
+	            
+//	            generateToken = new User(); // Assuming User class has an appropriate constructor
+//	            generateToken.setReset_token(token);
+//	            generateToken.setTokenExpiryTime(tokenExpiryTime);
+//	            System.out.println("Token generated and saved for email: " + email);
 	        }
 	        
 	    } catch (Exception e) {
