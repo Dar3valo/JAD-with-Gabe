@@ -62,7 +62,8 @@
                                 for (Booking booking : bookedItems) {
                             %>
                             <tr>
-                                <td><strong>#<%= index++ %></strong></td>
+                                <td><strong>#<%= index++ %></strong></td> <!-- Sequential number -->
+    							<td class="d-none">#<%= booking.getBooking_id() %></td> <!-- Hidden column with actual booking ID -->
                                 <td><%= new java.text.SimpleDateFormat("MMM d, yyyy").format(booking.getBooking_date()) %></td>
                                 <td><%= booking.getServiceName() %></td>
                                 <td><%= booking.getSpecial_request().isEmpty() ? "-" : booking.getSpecial_request() %></td>
