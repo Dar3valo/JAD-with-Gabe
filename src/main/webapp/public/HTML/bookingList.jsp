@@ -58,10 +58,11 @@
                         </thead>
                         <tbody>
                             <% 
+                            	int index = 1;
                                 for (Booking booking : bookedItems) {
                             %>
                             <tr>
-                                <td><strong>#<%= booking.getBooking_id() %></strong></td>
+                                <td><strong>#<%= index++ %></strong></td>
                                 <td><%= new java.text.SimpleDateFormat("MMM d, yyyy").format(booking.getBooking_date()) %></td>
                                 <td><%= booking.getServiceName() %></td>
                                 <td><%= booking.getSpecial_request().isEmpty() ? "-" : booking.getSpecial_request() %></td>
