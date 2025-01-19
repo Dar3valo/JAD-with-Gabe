@@ -93,6 +93,8 @@ body:before{
 					</li>
 					<li class="nav-item"><a class="nav-link" href="contact.jsp">Contact Us</a>
 					</li>
+					<li class="nav-item"><a class="nav-link" href="termsAndCondition.jsp">Terms And Conditions</a>
+					</li>
 					
 					<% if (pageAccessLevel <= 2) { %>
 						<li class="nav-item"><a class="nav-link" href="feedbackForm.jsp">Feedback</a>
