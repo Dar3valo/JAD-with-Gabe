@@ -15,14 +15,14 @@
     <div class="container py-5">
         <div class="terms-wrapper bg-white rounded-3 shadow-sm">
             <div class="terms-header text-center py-4">
-                <h1 class="display-5 fw-bold text-primary mb-3">Terms and Conditions</h1>
+                <h1 class="display-5 fw-bold text-dark mb-3">Terms and Conditions</h1>
                 <p class="lead text-muted">AllClean Cleaning Services</p>
             </div>
 
             <div class="terms-content px-4 px-md-5">
                 <div class="row justify-content-center">
                     <div class="col-12 col-lg-10">
-                        <div class="accordion" id="termsAccordion">
+                        <div class="accordion mt-4" id="termsAccordion">
                             <!-- Services Provided -->
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="heading1">
@@ -32,8 +32,13 @@
                                 </h2>
                                 <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="heading1" data-bs-parent="#termsAccordion">
                                     <div class="accordion-body">
-                                        <p>AllClean Cleaning Services offers various cleaning solutions, including residential and commercial cleaning services, window cleaning, deep cleaning, etc. The scope of services and specifics will be agreed upon during the booking process.</p>
-                                    </div>
+										<p class="lead">AllClean Cleaning Services offers various
+											cleaning solutions, including residential and commercial
+											cleaning services, window cleaning, deep cleaning, etc. The
+											scope of services and specifics will be agreed upon during
+											the booking process.
+										</p>
+									</div>
                                 </div>
                             </div>
 
@@ -47,29 +52,59 @@
                                 <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2" data-bs-parent="#termsAccordion">
                                     <div class="accordion-body">
                                         <h5 class="mb-3">Booking</h5>
-                                        <p>Service bookings can be made through our website, mobile app, or by calling our customer service team. Bookings are subject to availability and confirmation.</p>
+                                        <p class="lead">Service bookings can be made through our website, mobile app, or by calling our customer service team. Bookings are subject to availability and confirmation.</p>
                                         <h5 class="mb-3">Payment</h5>
-                                        <p>Full payment is required at the time of booking unless otherwise agreed upon. We accept multiple forms of payment, including credit/debit cards, online transfers, and cash payments (where applicable).</p>
+                                        <p class="lead">Full payment is required at the time of booking unless otherwise agreed upon. We accept multiple forms of payment, including credit/debit cards, online transfers, and cash payments (where applicable).</p>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Add similar accordion items for sections 3-11 -->
-                            <!-- For brevity, I'm showing the pattern - you would repeat for all sections -->
+                            
+                            <!-- Service Delivery -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading3">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                        3. Service Delivery
+                                    </button>
+                                </h2>
+                                <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#termsAccordion">
+                                    <div class="accordion-body">
+										<p class="lead">Our professional cleaning team will arrive at the
+											scheduled time and location. We maintain high standards of
+											service delivery and ensure all cleaning tasks are performed
+											according to industry best practices.
+										</p>
+									</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Cancellation Policy -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading4">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                                        4. Cancellation Policy
+                                    </button>
+                                </h2>
+                                <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4" data-bs-parent="#termsAccordion">
+                                    <div class="accordion-body">
+										<p class="lead">Cancellations must be made at least 24
+											hours before the scheduled service. Late cancellations may
+											incur a fee. Please refer to our cancellation policy for
+											detailed information.
+										</p>
+									</div>
+                                </div>
+                            </div>
 
                         </div>
 
                         <div class="text-center mt-5">
-                            <p class="text-muted small">Last updated: January 2024</p>
-                            <div class="d-flex justify-content-center gap-3">
-                                <button class="btn btn-outline-primary" onclick="window.print()">
+                            <p class="text-muted small">Last updated: January 2025</p>
+                            <div class="d-flex justify-content-center gap-3 mb-3">
+                                <button class="btn btn-outline-dark" onclick="window.print()">
                                     <i class="bi bi-printer me-2"></i>Print
                                 </button>
-                                <a href="#" class="btn btn-primary">
-                                    <i class="bi bi-check-circle me-2"></i>Accept Terms
-                                </a>
                             </div>
-                        </div>
+                        </div>	
                     </div>
                 </div>
             </div>
