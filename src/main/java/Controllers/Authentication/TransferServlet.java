@@ -69,7 +69,8 @@ public class TransferServlet extends HttpServlet {
 			
 			if(bookedItems.isEmpty()) {
 				request.setAttribute("errorMessage", "Your payment is unsuccessful.");
-                request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
+//                request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
+				response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
                 return;
 			}else {
 				session.setAttribute("allBookedItems", bookedItems);
