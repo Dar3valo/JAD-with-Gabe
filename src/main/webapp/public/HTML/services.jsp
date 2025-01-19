@@ -95,7 +95,6 @@
                                 <div class="price-tag">
                                     $<%= String.format("%.2f", service.getPrice()) %>
                                 </div>
-                                <a href="#" class="btn btn-dark btn-sm">View Details</a>
                             </div>
                         </div>
                     </div>
