@@ -74,7 +74,7 @@ public class TransferServlet extends HttpServlet {
                 return;
 			}else {
 				session.setAttribute("allBookedItems", bookedItems);
-				response.sendRedirect(request.getContextPath() + "/public/HTML/invoice.jsp");
+				response.sendRedirect(request.getContextPath() + "/public/HTML/bookingList.jsp");
 			}
 
 		}catch(Exception e) {
