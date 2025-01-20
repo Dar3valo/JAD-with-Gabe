@@ -114,8 +114,8 @@
                     <input type="text" class="form-control" id="postal_code" name="postal_code" maxlength='6' placeholder="123456" required>
                 </div>
                 <div>
-                    <label for="specialRequest" class="form-label">Special Request</label>
-                    <textarea class="form-control" id="specialRequest" name="special_request" rows="4" placeholder="Enter your special request here" required></textarea>
+                    <label for="specialRequest" class="form-label">Special Request (Optional)</label>
+                    <textarea class="form-control" id="specialRequest" name="special_request" rows="4" placeholder="Enter your special request here"></textarea>
                 </div>
 
                 <!-- Terms and Conditions -->
