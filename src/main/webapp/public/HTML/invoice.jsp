@@ -106,8 +106,8 @@
                 <button onclick="window.print()" class="btn btn-outline-secondary">
                     <i class="bi bi-printer"></i> Print Invoice
                 </button>
-                <a href="<%= request.getContextPath() %>/public/HTML/checkOut.jsp" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left"></i> Back to Checkout
+                <a href="<%= request.getContextPath() %>/public/HTML/bookingList.jsp" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> View Booking List
                 </a>
                 <a href="<%= request.getContextPath() %>/public/HTML/homePage.jsp" class="btn btn-primary">
                     <i class="bi bi-house"></i> Home

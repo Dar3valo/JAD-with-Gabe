@@ -49,8 +49,16 @@ public class TransferServlet extends HttpServlet {
 	        }
         }
         
-		try {
-			HttpSession session = request.getSession(false); // Avoid creating a new session unnecessarily
+        HttpSession session = request.getSession();
+        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+
+        if (hasAccess == null || !hasAccess) {
+            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+            return;
+        }
+
+        try {
+            session = request.getSession(false); // Avoid creating a new session unnecessarily
             if (session == null) {
                 response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
                 return;
@@ -63,25 +71,24 @@ public class TransferServlet extends HttpServlet {
             }
 
             int userId = loggedInUser.getUser_id();
-			
-			BookingDAO bookedDAO = new BookingDAO();
-			List<Booking> bookedItems = bookedDAO.getBookingInfo(userId);
-			
-			if(bookedItems.isEmpty()) {
-				request.setAttribute("errorMessage", "Your payment is unsuccessful.");
-//                request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
-				response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
-                return;
-			}else {
-				session.setAttribute("allBookedItems", bookedItems);
-				response.sendRedirect(request.getContextPath() + "/public/HTML/bookingList.jsp");
-			}
 
-		}catch(Exception e) {
-			e.printStackTrace();
-			request.setAttribute("errorMessage", "An unexpected error occured! Please try again later.");
-			request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
-		}
+            BookingDAO bookedDAO = new BookingDAO();
+            List<Booking> bookedItems = bookedDAO.getBookingInfo(userId);
+
+            if (bookedItems.isEmpty()) {
+                request.setAttribute("errorMessage", "Your payment is unsuccessful.");
+                response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
+                return;
+            } else {
+                session.setAttribute("allBookedItems", bookedItems);
+                response.sendRedirect(request.getContextPath() + "/public/HTML/bookingList.jsp");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "An unexpected error occurred! Please try again later.");
+            request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
+        }
 	}
 
 	/**
@@ -103,7 +110,14 @@ public class TransferServlet extends HttpServlet {
 	        }
         }
         
-		HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
+        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+
+        if (hasAccess == null || !hasAccess) {
+            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+            return;
+        }
+
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
         if (loggedInUser == null) {
@@ -114,25 +128,26 @@ public class TransferServlet extends HttpServlet {
         }
 
         try {
-        // Get user ID from the logged-in user object
-        int userId = loggedInUser.getUser_id();
-        
-        BookingDAO bookDAO = new BookingDAO();
-        Booking newBooking = bookDAO.transferCartData(userId);
-        
-        if(newBooking != null) {
-//        	session.setAttribute("successMessage", "Services Booked Successfully");
-//        	response.sendRedirect(request.getContextPath() + "/public/HTML/invoice.jsp");
-        	List<Booking> updatedBookings = bookDAO.getBookingInfo(userId);
-            session.setAttribute("allBookedItems", updatedBookings); // Update session
-            session.setAttribute("latestBooking", newBooking);      // Set the latest transaction
-            response.sendRedirect(request.getContextPath() + "/public/HTML/invoice.jsp");
-        }else {
-        	request.setAttribute("errorMessage", "Empty Booking List");
-        	request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
-        }
-        }catch(Exception e) {
-        	e.printStackTrace();
+            // Get user ID from the logged-in user object
+            int userId = loggedInUser.getUser_id();
+
+            BookingDAO bookDAO = new BookingDAO();
+            Booking newBooking = bookDAO.transferCartData(userId);
+
+            if (newBooking != null) {
+                // Update session with the latest bookings
+                List<Booking> updatedBookings = bookDAO.getTransactionLatestResults(userId);
+                session.setAttribute("allBookedItems", updatedBookings); // Update session
+                session.setAttribute("latestBooking", newBooking);      // Set the latest transaction
+                response.sendRedirect(request.getContextPath() + "/public/HTML/invoice.jsp");
+            } else {
+                request.setAttribute("errorMessage", "Empty Booking List");
+                request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "An unexpected error occurred! Please try again later.");
+            request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
         }
 	}
 }
