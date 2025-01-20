@@ -192,5 +192,7 @@ public class CartItemDAO {
 				e.printStackTrace();
 			}
 		}
-	}
+	};
+	
+	//Update schedule in the cart
 }
