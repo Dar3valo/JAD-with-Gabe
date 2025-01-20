@@ -149,4 +149,69 @@ public class BookingDAO {
 		}
 		return bookedInfo;
 	};
+	
+	//getTransactionLatestResults
+	public List<Booking> getTransactionLatestResults(int user_id) {
+	    List<Booking> latestResults = new ArrayList<>();
+	    Connection conn = null;
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+
+	    try {
+	        Class.forName("org.postgresql.Driver");
+	        String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+	        conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+	        // SQL to fetch the latest transaction based on the booking date
+	        String latestTransactionSQL = "SELECT b.booking_id, b.booking_date, b.special_request, b.main_address, b.postal_code, "
+	                + "b.user_id, b.schedule_id, b.service_id, s.name AS service_name, s.price AS service_price, b.purchase_time "
+	                + "FROM booking b "
+	                + "JOIN Service s ON b.service_id = s.service_id "
+	                + "WHERE b.user_id = ? AND b.purchase_time = (SELECT MAX(purchase_time) FROM booking WHERE user_id = ?) "
+	                + "ORDER BY b.purchase_time DESC, b.booking_id ASC";
+
+	        stmt = conn.prepareStatement(latestTransactionSQL);
+	        stmt.setInt(1, user_id);
+	        stmt.setInt(2, user_id);
+
+	        rs = stmt.executeQuery();
+
+	        while (rs.next()) {
+	            int bookingId = rs.getInt("booking_id");
+	            Date bookingDate = rs.getDate("booking_date");
+	            String specialRequest = rs.getString("special_request");
+	            String mainAddress = rs.getString("main_address");
+	            int postalCode = rs.getInt("postal_code");
+	            int userId = rs.getInt("user_id");
+	            int scheduleId = rs.getInt("schedule_id");
+	            int serviceId = rs.getInt("service_id");
+	            String serviceName = rs.getString("service_name");
+	            double servicePrice = rs.getDouble("service_price");
+	            Timestamp purchaseTime = rs.getTimestamp("purchase_time");
+
+	            Booking latestItem = new Booking(bookingId, bookingDate, specialRequest, mainAddress, postalCode, userId,
+	                    scheduleId, serviceId, serviceName, servicePrice, purchaseTime);
+	            latestResults.add(latestItem);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) {
+	                rs.close();
+	            }
+	            if (stmt != null) {
+	                stmt.close();
+	            }
+	            if (conn != null) {
+	                conn.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return latestResults;
+	};
+	
 }
