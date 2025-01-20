@@ -195,4 +195,45 @@ public class CartItemDAO {
 	};
 	
 	//Update schedule in the cart
+	public boolean updateCartItemSchedule(int cart_item_id, int schedule_id) {
+		Connection conn = null;
+	    PreparedStatement stmt = null;
+	    boolean scheduleUpdated = false;
+	    
+	    try {
+	    	// Load the database driver
+	        Class.forName("org.postgresql.Driver");
+	        String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+	        conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+	        
+	        String sql = "UPDATE cart_item SET schedule_id = ? WHERE cart_item_id = ?;";
+	        
+	        stmt = conn.prepareStatement(sql);
+	        stmt.setInt(1, schedule_id);
+	        stmt.setInt(2, cart_item_id);
+	        int rowsAffected = stmt.executeUpdate();
+	        
+	        if(rowsAffected > 0) {
+	        	scheduleUpdated = true;
+	        }else {
+	        	System.out.println("Update failed, no rows affected.");
+	        }
+	    	
+	    }catch(Exception e) {
+	    	e.printStackTrace();
+	    }finally {
+	        // Close the statement and connection in the finally block
+	        try {
+	            if (stmt != null) {
+	                stmt.close();
+	            }
+	            if (conn != null) {
+	                conn.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return scheduleUpdated;
+	}
 }
