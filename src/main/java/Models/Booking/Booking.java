@@ -15,9 +15,10 @@ public class Booking {
 	private String serviceName;  // New field for service name
     private double servicePrice;
     private Timestamp creation_date;
+    private int status_id;
 	
 	public Booking(int booking_id, Date booking_date, String special_request, String main_address, int postal_code,
-			int user_id, int schedule_id, int service_id) {
+			int user_id, int schedule_id, int service_id, int status_id) {
 		super();
 		this.booking_id = booking_id;
 		this.booking_date = booking_date;
@@ -27,10 +28,12 @@ public class Booking {
 		this.user_id = user_id;
 		this.schedule_id = schedule_id;
 		this.service_id = service_id;
+		this.status_id = status_id;
 	}
 	
 	public Booking(int booking_id, Date booking_date, String special_request, String main_address, int postal_code,
-			int user_id, int schedule_id, int service_id, String serviceName, double servicePrice, Timestamp creation_date) {
+			int user_id, int schedule_id, int service_id, String serviceName, double servicePrice, Timestamp creation_date, 
+			int status_id) {
 		super();
 		this.booking_id = booking_id;
 		this.booking_date = booking_date;
@@ -43,6 +46,7 @@ public class Booking {
 		this.serviceName = serviceName;
 		this.servicePrice = servicePrice;
 		this.creation_date = creation_date;
+		this.status_id = status_id;
 	}
 	
 	public Booking(int booking_id, Date booking_date, String special_request, String main_address, int postal_code,

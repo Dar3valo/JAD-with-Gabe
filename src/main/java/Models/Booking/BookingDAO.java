@@ -18,19 +18,20 @@ public class BookingDAO {
 			String sql = """
 					     INSERT INTO Booking (
 					        booking_date, special_request, main_address,
-					        postal_code, user_id, schedule_id, service_id
+					        postal_code, user_id, schedule_id, service_id, status_id
 					    )
 					    SELECT
 					        booking_date, special_request, main_address,
-					        postal_code, user_id, schedule_id, service_id
+					        postal_code, user_id, schedule_id, service_id, ? 
 					    FROM Cart_Item
 					    WHERE user_id = ?
 					    RETURNING booking_id, booking_date, special_request, main_address,
-					              postal_code, user_id, schedule_id, service_id
+					              postal_code, user_id, schedule_id, service_id, status_id
 					""";
 
 			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, user_id);
+			stmt.setInt(1, 1);
+			stmt.setInt(2, user_id);
 
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next()) {
@@ -42,7 +43,8 @@ public class BookingDAO {
 	                    rs.getInt("postal_code"),
 	                    rs.getInt("user_id"),
 	                    rs.getInt("schedule_id"),
-	                    rs.getInt("service_id")
+	                    rs.getInt("service_id"),
+	                    rs.getInt("status_id") 
 				);
 				deleteFromCart(user_id);
 			}
@@ -164,7 +166,7 @@ public class BookingDAO {
 
 	        // SQL to fetch the latest transaction based on the booking date
 	        String latestTransactionSQL = "SELECT b.booking_id, b.booking_date, b.special_request, b.main_address, b.postal_code, "
-	                + "b.user_id, b.schedule_id, b.service_id, s.name AS service_name, s.price AS service_price, b.creation_date "
+	                + "b.user_id, b.schedule_id, b.service_id, s.name AS service_name, s.price AS service_price, b.creation_date, b.status_id "
 	                + "FROM booking b "
 	                + "JOIN Service s ON b.service_id = s.service_id "
 	                + "WHERE b.user_id = ? AND b.creation_date = (SELECT MAX(creation_date) FROM booking WHERE user_id = ?) "
@@ -188,9 +190,10 @@ public class BookingDAO {
 	            String serviceName = rs.getString("service_name");
 	            double servicePrice = rs.getDouble("service_price");
 	            Timestamp creationDate = rs.getTimestamp("creation_date");
+	            int statusId = rs.getInt("status_id");
 
 	            Booking latestItem = new Booking(bookingId, bookingDate, specialRequest, mainAddress, postalCode, userId,
-	                    scheduleId, serviceId, serviceName, servicePrice, creationDate);
+	                    scheduleId, serviceId, serviceName, servicePrice, creationDate, statusId);
 	            latestResults.add(latestItem);
 	        }
 
