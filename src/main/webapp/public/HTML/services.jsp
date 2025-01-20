@@ -3,6 +3,7 @@
 <%@ page import="Models.Service.Service"%>
 <%@ page import="Models.ServiceCategory.ServiceCategory"%>
 <%@ page import="Models.Service.ServiceDAO"%>
+<%@ page import="java.util.stream.Collectors" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,39 +72,51 @@
         <!-- Services Section -->
         <section class="mb-5">
             <h2 class="text-center text-secondary mb-4">Available Services</h2>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                <%
-                List<Service> services = (List<Service>) session.getAttribute("allServices");
-                
-                if (services == null) {
-                    response.sendRedirect(request.getContextPath() + "/GetAllServicesServlet");
-                    return;
-                } else if (services.isEmpty()) { %>
-                <div class="col-12">
-                    <div class="alert alert-info text-center">
-                        No services available at the moment.
-                    </div>
-                </div>
-                <% } else {
-                    for (Service service : services) { %>
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title"><%= service.getName() %></h5>
-                            <p class="card-text mb-3"><%= service.getDescription() %></p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="price-tag">
-                                    $<%= String.format("%.2f", service.getPrice()) %>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <%
-                    }
-                }
-                %>
+
+            <!-- Search Form -->
+            <div class="mb-3">
+                <input type="text" id="searchInput" class="form-control" placeholder="Search by service name..." onkeyup="performSearch()">
             </div>
+
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Service Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                </thead>
+                <tbody id="serviceTable">
+                    <%
+                    List<Service> services = (List<Service>) session.getAttribute("allServices");
+                    String searchKeyword = request.getParameter("search");
+                    
+                    if (services == null) {
+                        response.sendRedirect(request.getContextPath() + "/GetAllServicesServlet");
+                        return;
+                    } else if (services.isEmpty()) { %>
+                    <tr>
+                        <td colspan="3" class="text-center">No services available at the moment.</td>
+                    </tr>
+                    <% } else {
+                        if (searchKeyword != null && !searchKeyword.isEmpty()) {
+                            services = services.stream()
+                                               .filter(service -> service.getName().toLowerCase().contains(searchKeyword.toLowerCase()))
+                                               .collect(Collectors.toList());
+                        }
+
+                        for (Service service : services) { %>
+                    <tr>
+                        <td><%= service.getName() %></td>
+                        <td><%= service.getDescription() %></td>
+                        <td>$<%= String.format("%.2f", service.getPrice()) %></td>
+                    </tr>
+                    <%
+                        }
+                    }
+                    %>
+                </tbody>
+            </table>
         </section>
     </div>
 
@@ -112,5 +125,24 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function performSearch() {
+            var input = document.getElementById('searchInput');
+            var filter = input.value.toLowerCase();
+            var table = document.getElementById('serviceTable');
+            var rows = table.getElementsByTagName('tr');
+            for (var i = 0; i < rows.length; i++) {
+                var td = rows[i].getElementsByTagName('td')[0];
+                if (td) {
+                    var textValue = td.textContent || td.innerText;
+                    if (textValue.toLowerCase().indexOf(filter) > -1) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>
