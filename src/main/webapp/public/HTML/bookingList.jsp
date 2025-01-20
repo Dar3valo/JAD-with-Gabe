@@ -36,10 +36,10 @@
             </div>
 
             <% 
-            List<Booking> bookedItems = (List<Booking>) session.getAttribute("allBookedItems");
+            List<Booking> bookedItems = (List<Booking>) session.getAttribute("bookingInfo");
 
             if (bookedItems == null) { 
-                response.sendRedirect(request.getContextPath() + "/TransferServlet");
+                response.sendRedirect(request.getContextPath() + "/BookingListServlet");
             } else if (bookedItems.isEmpty()) {
                 out.println("<p>You have no current bookings.</p>");
             } else { %>
