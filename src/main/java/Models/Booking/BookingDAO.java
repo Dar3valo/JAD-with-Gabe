@@ -164,11 +164,11 @@ public class BookingDAO {
 
 	        // SQL to fetch the latest transaction based on the booking date
 	        String latestTransactionSQL = "SELECT b.booking_id, b.booking_date, b.special_request, b.main_address, b.postal_code, "
-	                + "b.user_id, b.schedule_id, b.service_id, s.name AS service_name, s.price AS service_price, b.purchase_time "
+	                + "b.user_id, b.schedule_id, b.service_id, s.name AS service_name, s.price AS service_price, b.creation_date "
 	                + "FROM booking b "
 	                + "JOIN Service s ON b.service_id = s.service_id "
-	                + "WHERE b.user_id = ? AND b.purchase_time = (SELECT MAX(purchase_time) FROM booking WHERE user_id = ?) "
-	                + "ORDER BY b.purchase_time DESC, b.booking_id ASC";
+	                + "WHERE b.user_id = ? AND b.creation_date = (SELECT MAX(creation_date) FROM booking WHERE user_id = ?) "
+	                + "ORDER BY b.creation_date DESC, b.booking_id ASC";
 
 	        stmt = conn.prepareStatement(latestTransactionSQL);
 	        stmt.setInt(1, user_id);
@@ -187,10 +187,10 @@ public class BookingDAO {
 	            int serviceId = rs.getInt("service_id");
 	            String serviceName = rs.getString("service_name");
 	            double servicePrice = rs.getDouble("service_price");
-	            Timestamp purchaseTime = rs.getTimestamp("purchase_time");
+	            Timestamp creationDate = rs.getTimestamp("creation_date");
 
 	            Booking latestItem = new Booking(bookingId, bookingDate, specialRequest, mainAddress, postalCode, userId,
-	                    scheduleId, serviceId, serviceName, servicePrice, purchaseTime);
+	                    scheduleId, serviceId, serviceName, servicePrice, creationDate);
 	            latestResults.add(latestItem);
 	        }
 

@@ -14,7 +14,7 @@ public class Booking {
 	private int service_id;
 	private String serviceName;  // New field for service name
     private double servicePrice;
-    private Timestamp purchase_time;
+    private Timestamp creation_date;
 	
 	public Booking(int booking_id, Date booking_date, String special_request, String main_address, int postal_code,
 			int user_id, int schedule_id, int service_id) {
@@ -30,7 +30,7 @@ public class Booking {
 	}
 	
 	public Booking(int booking_id, Date booking_date, String special_request, String main_address, int postal_code,
-			int user_id, int schedule_id, int service_id, String serviceName, double servicePrice, Timestamp purchase_date) {
+			int user_id, int schedule_id, int service_id, String serviceName, double servicePrice, Timestamp creation_date) {
 		super();
 		this.booking_id = booking_id;
 		this.booking_date = booking_date;
@@ -42,6 +42,7 @@ public class Booking {
 		this.service_id = service_id;
 		this.serviceName = serviceName;
 		this.servicePrice = servicePrice;
+		this.creation_date = creation_date;
 	}
 	
 	public Booking(int booking_id, Date booking_date, String special_request, String main_address, int postal_code,
@@ -58,14 +59,13 @@ public class Booking {
 		this.serviceName = serviceName;
 		this.servicePrice = servicePrice;
 	}
-	
-	
-	public Timestamp getPurchase_time() {
-		return purchase_time;
+
+	public Timestamp getCreation_date() {
+		return creation_date;
 	}
 
-	public void setPurchase_time(Timestamp purchase_time) {
-		this.purchase_time = purchase_time;
+	public void setCreation_date(Timestamp creation_date) {
+		this.creation_date = creation_date;
 	}
 
 	public String getServiceName() {
