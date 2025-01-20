@@ -121,8 +121,12 @@ public class TransferServlet extends HttpServlet {
         Booking newBooking = bookDAO.transferCartData(userId);
         
         if(newBooking != null) {
-        	session.setAttribute("successMessage", "Services Booked Successfully");
-        	response.sendRedirect(request.getContextPath() + "/public/HTML/invoice.jsp");
+//        	session.setAttribute("successMessage", "Services Booked Successfully");
+//        	response.sendRedirect(request.getContextPath() + "/public/HTML/invoice.jsp");
+        	List<Booking> updatedBookings = bookDAO.getBookingInfo(userId);
+            session.setAttribute("allBookedItems", updatedBookings); // Update session
+            session.setAttribute("latestBooking", newBooking);      // Set the latest transaction
+            response.sendRedirect(request.getContextPath() + "/public/HTML/invoice.jsp");
         }else {
         	request.setAttribute("errorMessage", "Empty Booking List");
         	request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);

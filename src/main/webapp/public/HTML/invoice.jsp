@@ -24,6 +24,13 @@
             return;
         }
     }
+	
+	Booking latestBooking = (Booking) session.getAttribute("latestBooking");
+    if (latestBooking == null) {
+        // Redirect to the booking list page if no latest booking is found
+        response.sendRedirect(request.getContextPath() + "/public/HTML/bookingList.jsp");
+        return;
+    }
 	%>
 
 
