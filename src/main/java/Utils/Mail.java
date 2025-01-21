@@ -4,6 +4,8 @@ import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 public class Mail {
     private static Session createSession() {
         Properties properties = new Properties();
@@ -15,7 +17,10 @@ public class Mail {
         return Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("wongdarren516@gmail.com", "gshx wzfo wfip tydn"); // Use your app password here
+            	Dotenv dotenv = Dotenv.load();
+            	String gmail_address = dotenv.get("gmail_account");
+            	String gmail_public = dotenv.get("gmail_public");
+                return new PasswordAuthentication(gmail_address, gmail_public);
             }
         });
     }
