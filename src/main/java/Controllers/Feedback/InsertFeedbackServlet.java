@@ -72,11 +72,12 @@ public class InsertFeedbackServlet extends HttpServlet {
 		String otherSources = request.getParameter("otherSources");
 		String comments = request.getParameter("comments");
 		String improvements = request.getParameter("improvements");
+		int serviceId = Integer.parseInt(request.getParameter("serviceType"));
 	        
 		try {
 			FeedbackDAO feedbackDAO = new FeedbackDAO();
 			
-				Feedback insertFeedback = feedbackDAO.insertUserFeedback(userId, rating, sources, otherSources, comments, improvements);
+				Feedback insertFeedback = feedbackDAO.insertUserFeedback(userId, rating, sources, otherSources, comments, improvements, serviceId);
 				
 				if(insertFeedback != null) {
 					response.sendRedirect(request.getContextPath() + "/public/HTML/feedbackForm.jsp");

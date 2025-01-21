@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FeedbackDAO {
-	public Feedback insertUserFeedback(int user_id, int rating, String sources, String other_sources, String comments, String improvements) {
+	public Feedback insertUserFeedback(int user_id, int rating, String sources, String other_sources, String comments, String improvements, int service_id) {
 		Feedback feedbackInfo = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -18,7 +18,7 @@ public class FeedbackDAO {
 			Class.forName("org.postgresql.Driver");
 			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
 			conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
-			String sql = "INSERT INTO feedback (user_id, rating, sources, other_sources, comments, improvements) VALUES (?, ?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO feedback (user_id, rating, sources, other_sources, comments, improvements, service_id) VALUES (?, ?, ?, ?, ?, ?, ?);";
 			
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, user_id);
@@ -27,11 +27,12 @@ public class FeedbackDAO {
 			stmt.setString(4, other_sources);
 			stmt.setString(5, comments);
 			stmt.setString(6, improvements);
+			stmt.setInt(7, service_id);
 			
 			int rowsAffected = stmt.executeUpdate();
 			
 			if(rowsAffected > 0) {
-				feedbackInfo = new Feedback(user_id, rating, sources, other_sources, comments, improvements);
+				feedbackInfo = new Feedback(user_id, rating, sources, other_sources, comments, improvements, service_id);
 			}else {
 				System.out.println("Feedback failed, no rows affected");
 			}
