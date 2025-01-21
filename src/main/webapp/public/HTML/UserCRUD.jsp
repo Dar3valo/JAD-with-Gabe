@@ -46,8 +46,6 @@
 		} else {
 		%>
 		<div class="profile-header text-center">
-
-
 			<div class="wrapper"
 				style="background-image: url('<%=user.getProfile_photo_url() != null ? user.getProfile_photo_url() : "../Image/defaultpic.png"%>');">
 			</div>
@@ -67,7 +65,6 @@
 					</button>
 				</div>
 			</form>
-
 
 			<h1 class="mb-2"><%=user.getName()%></h1>
 			<span
@@ -102,22 +99,25 @@
 			<div class="divider"></div>
 
 			<div class="d-flex justify-content-between align-items-center">
-				<button class="btn btn-outline-dark text-dark"
-					data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-					<i class="bi bi-key-fill me-2"></i>Change Password
-				</button>
-				<button class="btn btn-dark me-2" data-bs-toggle="modal"
-					data-bs-target="#editProfileModal">
-					<i class="bi bi-pencil-fill me-2"></i>Edit Profile
-				</button>
-			</div>
+                <button class="btn btn-outline-dark text-dark" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                    <i class="bi bi-key-fill me-2"></i>Change Password
+                </button>
+                <div>
+                    <button class="btn btn-dark me-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        <i class="bi bi-pencil-fill me-2"></i>Edit Profile
+                    </button>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                        <i class="bi bi-trash-fill me-2"></i>Delete Account
+                    </button>
+                </div>
+            </div>
 		</div>
 		<%
 		}
 		%>
 	</div>
 
-	<!-- change password modal -->
+	<!-- Change Password Modal -->
 	<div class="modal fade" id="changePasswordModal" tabindex="-1"
 		aria-labelledby="changePasswordModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -179,7 +179,7 @@
 		</div>
 	</div>
 
-	<!-- edit profile information modal -->
+	<!-- Edit Profile Modal -->
 	<div class="modal fade" id="editProfileModal" tabindex="-1"
 		aria-labelledby="editProfileModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -224,6 +224,50 @@
 		</div>
 	</div>
 
+    <!-- Delete Account Modal -->
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" 
+        aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteAccountModalLabel">Delete Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" 
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Warning: This action cannot be undone. Your account will be permanently deleted.
+                    </div>
+                    <form id="deleteAccountForm" 
+                        action="<%=request.getContextPath()%>/DeleteOwnUserAccountServlet" 
+                        method="POST">
+                        <div class="mb-3">
+                            <label for="deleteConfirmPassword" class="form-label">
+                                Enter your password to confirm deletion
+                            </label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" 
+                                    id="deleteConfirmPassword" name="input_password" required>
+                                <button class="btn btn-outline-secondary" type="button" 
+                                    id="toggleDeletePassword">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" 
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash-fill me-2"></i>Delete Account
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 	<%-- Footer --%>
 	<jsp:include page="footer.jsp" />
 
@@ -256,6 +300,7 @@
 		createPasswordToggle('currentPassword', 'toggleCurrentPassword');
 		createPasswordToggle('newPassword', 'toggleNewPassword');
 		createPasswordToggle('confirmPassword', 'toggleConfirmPassword');
+        createPasswordToggle('deleteConfirmPassword', 'toggleDeletePassword');
 
 		// Form validation
 		document
@@ -273,7 +318,18 @@
 								alert('New password and confirm password do not match!');
 							}
 						});
+
+        // Delete account form validation
+        document
+                .getElementById('deleteAccountForm')
+                .addEventListener('submit', function(e) {
+                    if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                        e.preventDefault();
+                    }
+                });
 	</script>
+
+	<!-- File Upload Script -->
 	<script>
 		document.getElementById('file-upload').addEventListener('change', function(e) {
 		    const fileName = e.target.files[0]?.name;
@@ -284,6 +340,6 @@
 		        selectedFileSpan.textContent = '';
 		    }
 		});
-</script>
+    </script>
 </body>
 </html>
