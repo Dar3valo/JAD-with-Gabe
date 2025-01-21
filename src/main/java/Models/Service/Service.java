@@ -6,6 +6,7 @@ public class Service {
 	private String description;
 	private double price;
 	private String service_photo_url;
+	private int booking_count;
 	
 	// constructor where all values are passed
 	public Service(int service_id, String name, String description, double price, String service_photo_url) {
@@ -25,6 +26,20 @@ public class Service {
 		this.description = "";
 		this.price = 0.0;
 		this.service_photo_url = "../Image/defaultpic.png";
+	}
+	
+	public Service() {
+		
+	}
+	
+	
+
+	public int getBooking_count() {
+		return booking_count;
+	}
+
+	public void setBooking_count(int booking_count) {
+		this.booking_count = booking_count;
 	}
 
 	public int getService_id() {
