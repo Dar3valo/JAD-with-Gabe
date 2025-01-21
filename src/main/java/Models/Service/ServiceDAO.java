@@ -2,6 +2,7 @@ package Models.Service;
 import java.util.List;
 
 import Models.ServiceCategory.ServiceCategory;
+import Models.ServiceReport.ServiceReport;
 
 import java.util.ArrayList;
 import java.sql.*;
@@ -282,5 +283,46 @@ public class ServiceDAO {
 	    }
 		
 		return 0;
+	};
+	
+	public List<ServiceReport> getServiceReport() {
+		List<ServiceReport> serviceReports = new ArrayList<>();
+		Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        
+        try {
+        	Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+			
+			String sql = "SELECT " + "s.service_id, " + "s.name, " + "SUM(s.price) AS totalRevenue, "
+					+ "COUNT(b.booking_id) AS totalBookings " + "FROM Service s "
+					+ "JOIN Booking b ON s.service_id = b.service_id " + "GROUP BY s.service_id, s.name "
+					+ "ORDER BY s.service_id ASC;";
+
+			statement = connection.prepareStatement(sql);
+			rs = statement.executeQuery();
+			
+			while (rs.next()) {
+                int serviceId = rs.getInt("service_id");
+                String serviceName = rs.getString("name");
+                double totalRevenue = rs.getDouble("totalRevenue");
+                int totalBookings = rs.getInt("totalBookings");
+
+                serviceReports.add(new ServiceReport(serviceId, serviceName, totalRevenue, totalBookings));
+			}
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }finally {
+	        try {
+	            if (statement != null) statement.close();
+	            if (connection != null) connection.close();
+	            
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+        return serviceReports;
 	}
 }
