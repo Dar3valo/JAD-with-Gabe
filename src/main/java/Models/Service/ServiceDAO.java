@@ -2,6 +2,7 @@ package Models.Service;
 import java.util.List;
 
 import Models.ServiceCategory.ServiceCategory;
+import Models.ServiceOrderByRating.ServiceByRating;
 import Models.ServiceReport.ServiceReport;
 
 import java.util.ArrayList;
@@ -324,5 +325,59 @@ public class ServiceDAO {
 	        }
 	    }
         return serviceReports;
-	}
+	};
+	
+	public List<ServiceByRating> getServicesOrderedByRating(){
+		List<ServiceByRating> servicesByRating = new ArrayList<>();
+		Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        
+        try {
+        	Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+			
+			String sql = """
+		            SELECT 
+		                s.service_id, 
+		                s.name, 
+		                AVG(f.rating) AS average_rating
+		            FROM 
+		                service s
+		            JOIN 
+		                feedback f 
+		            ON 
+		                s.service_id = f.service_id
+		            GROUP BY 
+		                s.service_id, s.name
+		            ORDER BY 
+		                average_rating DESC
+		        """;
+			
+			statement = connection.prepareStatement(sql);
+			rs = statement.executeQuery();
+			
+			while(rs.next()) {
+				ServiceByRating service = new ServiceByRating();
+                service.setId(rs.getInt("service_id"));
+                service.setName(rs.getString("name"));
+                service.setAverageRating(rs.getDouble("average_rating"));
+
+                servicesByRating.add(service);
+			}
+        	
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }finally {
+	        try {
+	            if (statement != null) statement.close();
+	            if (connection != null) connection.close();
+	            
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+        return servicesByRating;
+	};
 }
