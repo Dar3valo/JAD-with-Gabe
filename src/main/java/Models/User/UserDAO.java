@@ -1,6 +1,11 @@
 package Models.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +22,7 @@ public class UserDAO {
 			Class.forName("org.postgresql.Driver");
 			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
 			conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
-			
+
 			String sql = "SELECT * FROM Users WHERE email = ?";
 
 			stmt = conn.prepareStatement(sql);
@@ -27,15 +32,15 @@ public class UserDAO {
 
 			if(rs.next()) {
 				String hashedPassword = rs.getString("password");
-				
+
 				if(PasswordBcrypt.verifyPassword(password, hashedPassword)) {
 					int user_id = rs.getInt("user_id");
 					String user_email = rs.getString("email");
-					char gender = (char) rs.getString("gender").charAt(0);
+					char gender = rs.getString("gender").charAt(0);
 					String name = rs.getString("name");
 					String profile_photo_url = rs.getString("profile_photo_url");
 					int role_id = rs.getInt("role_id");
-					
+
 					user = new User(user_id, hashedPassword, user_email, gender, name, profile_photo_url, role_id);
 				} else {
 					System.out.println("Invalid Password");
@@ -55,7 +60,7 @@ public class UserDAO {
 	}
 
 	public static List<User> getUserByAll() {
-		List<User> users = new ArrayList<User>();
+		List<User> users = new ArrayList<>();
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -74,7 +79,7 @@ public class UserDAO {
 					int user_id = rs.getInt("user_id");
 					String user_password = rs.getString("password");
 					String user_email = rs.getString("email");
-					char gender = (char) rs.getString("gender").charAt(0);
+					char gender = rs.getString("gender").charAt(0);
 					String name = rs.getString("name");
 					String profile_photo_url = rs.getString("profile_photo_url");
 					int role_id = rs.getInt("role_id");
@@ -114,7 +119,7 @@ public class UserDAO {
 			String ps = "UPDATE Users SET password = ? WHERE user_id = ?";
 
 			// password is hashed
-			
+
 			statement = connection.prepareStatement(ps);
 			statement.setString(1, password);
 			statement.setInt(2, user_id);
@@ -132,10 +137,12 @@ public class UserDAO {
 
 		} finally {
 			try {
-				if (statement != null)
+				if (statement != null) {
 					statement.close();
-				if (connection != null)
+				}
+				if (connection != null) {
 					connection.close();
+				}
 
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -180,10 +187,12 @@ public class UserDAO {
 
 		} finally {
 			try {
-				if (statement != null)
+				if (statement != null) {
 					statement.close();
-				if (connection != null)
+				}
+				if (connection != null) {
 					connection.close();
+				}
 
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -216,16 +225,16 @@ public class UserDAO {
 				int output_user_id = rs.getInt("user_id");
 				String user_password = rs.getString("password");
 				String user_email = rs.getString("email");
-				char gender = (char) rs.getString("gender").charAt(0);
+				char gender = rs.getString("gender").charAt(0);
 				String name = rs.getString("name");
 				String profile_photo_url = rs.getString("profile_photo_url");
 				int role_id = rs.getInt("role_id");
 
 				user = new User(output_user_id, user_password, user_email, gender, name, profile_photo_url, role_id);
-				
+
 			} else {
 				throw new SQLException("(probably) wrong input or no user found with user id: " + user_id);
-				
+
 			}
 
 		} catch (Exception e) {
@@ -233,16 +242,18 @@ public class UserDAO {
 
 		} finally {
 			try {
-				if (statement != null)
+				if (statement != null) {
 					statement.close();
-				if (connection != null)
+				}
+				if (connection != null) {
 					connection.close();
+				}
 
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return user;
 	}
 
@@ -266,10 +277,10 @@ public class UserDAO {
 
 			if (rowsAffected > 0) {
 				System.out.println("User successfully deleted");
-				
+
 			} else {
 				throw new SQLException("(probably) wrong input or no user found with user id: " + user_id);
-				
+
 			}
 
 		} catch (Exception e) {
@@ -277,10 +288,12 @@ public class UserDAO {
 
 		} finally {
 			try {
-				if (statement != null)
+				if (statement != null) {
 					statement.close();
-				if (connection != null)
+				}
+				if (connection != null) {
 					connection.close();
+				}
 
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -289,7 +302,7 @@ public class UserDAO {
 	}
 
 	public static List<User> getUserByRoleId(int role_id) {
-		List<User> users = new ArrayList<User>();
+		List<User> users = new ArrayList<>();
 		Connection connection = null;
 		PreparedStatement statement = null;
 
@@ -312,26 +325,28 @@ public class UserDAO {
 					int user_id = rs.getInt("user_id");
 					String user_password = rs.getString("password");
 					String user_email = rs.getString("email");
-					char gender = (char) rs.getString("gender").charAt(0);
+					char gender = rs.getString("gender").charAt(0);
 					String name = rs.getString("name");
 					String profile_photo_url = rs.getString("profile_photo_url");
 					int user_role_id = rs.getInt("role_id");
-	
+
 					users.add(new User(user_id, user_password, user_email, gender, name, profile_photo_url, user_role_id));
 				}
 			} else {
 				throw new SQLException("(probably) wrong input or no user found with role id: " + role_id);
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 
 		} finally {
 			try {
-				if (statement != null)
+				if (statement != null) {
 					statement.close();
-				if (connection != null)
+				}
+				if (connection != null) {
 					connection.close();
+				}
 
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -340,38 +355,38 @@ public class UserDAO {
 
 		return users;
 	}
-	
+
 	public User insertUserInfo (String name, String email, String password, char gender) {
 		User userInfo = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 //		int rowsAffected = 0;
 		ResultSet rs = null;
-		
-		
+
+
 		try {
 			Class.forName("org.postgresql.Driver");
 			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
 			conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
-			
+
 			String hashedPassword = PasswordBcrypt.hashPassword(password);
-			
+
 			String sql = "INSERT INTO users (name, email, password, gender) VALUES (?, ?, ?, ?);";
-			
+
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, name);
 			stmt.setString(2, email);
 			stmt.setString(3, hashedPassword);
 			stmt.setString(4, String.valueOf(gender));
-			
+
 			int rowsAffected = stmt.executeUpdate();
-			
+
 			if(rowsAffected > 0) {
 				userInfo = new User(name, email, hashedPassword, gender);
 			}else {
 				System.out.println("User registered unsuccessfully, no rows affected");
 			}
-			
+
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -409,16 +424,22 @@ public class UserDAO {
 	        } finally {
 	            // Close resources
 	            try {
-	                if (rs != null) rs.close();
-	                if (stmt != null) stmt.close();
-	                if (conn != null) conn.close();
+	                if (rs != null) {
+						rs.close();
+					}
+	                if (stmt != null) {
+						stmt.close();
+					}
+	                if (conn != null) {
+						conn.close();
+					}
 	            } catch (SQLException e) {
 	                e.printStackTrace();
 	            }
 	        }
 	        return exists;
 	    }
-	
+
 	public User updateUserPfp(int user_id, String profile_photo_url) {
 		User userPfp = null;
 		Connection conn = null;
@@ -451,17 +472,19 @@ public class UserDAO {
 		} finally {
 			// Close resources
 			try {
-				if (stmt != null)
+				if (stmt != null) {
 					stmt.close();
-				if (conn != null)
+				}
+				if (conn != null) {
 					conn.close();
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 		return userPfp;
 	}
-	
+
 	public boolean updatePassword(String email, String hashedPassword) {
         boolean isUpdated = false;
         Connection conn = null;
@@ -491,12 +514,58 @@ public class UserDAO {
         } finally {
             // Close resources
             try {
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
+                if (stmt != null) {
+					stmt.close();
+				}
+                if (conn != null) {
+					conn.close();
+				}
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return isUpdated;
     }
+
+	public static boolean verifyPassword(int user_id, String input_password) {
+	    Connection conn = null;
+	    PreparedStatement stmt = null;
+	    
+	    try {
+	        Class.forName("org.postgresql.Driver");
+	        String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+	        conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+	        
+	        String sql = "SELECT password FROM users WHERE user_id = ?";
+	        
+	        stmt = conn.prepareStatement(sql);
+	        stmt.setInt(1, user_id);
+	        
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                String hashedPassword = rs.getString("password");
+	                return PasswordBcrypt.verifyPassword(input_password, hashedPassword);
+	            } else {
+	                System.out.println("User not found");
+	            }
+	        }
+	        
+	    } catch (ClassNotFoundException e) {
+	        System.err.println("PostgreSQL driver not found: " + e.getMessage());
+	    } catch (SQLException e) {
+	        System.err.println("Database error occurred: " + e.getMessage());
+	    } finally {
+	        try {
+	            if (stmt != null) {
+	                stmt.close();
+	            }
+	            if (conn != null) {
+	                conn.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return false;
+	}
 }
