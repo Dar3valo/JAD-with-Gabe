@@ -156,6 +156,13 @@
 									<i class="bi bi-bar-chart-line-fill me-2"></i>Service Ratings
 								</button>
 							</li>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link" id="booking-frequency-tab"
+									data-bs-toggle="pill" data-bs-target="#service-demand-content"
+									type="button" role="tab">
+									<i class="bi bi-bar-chart-line-fill me-2"></i>Service Demand
+								</button>
+							</li>
 						</ul>
 					</div>
 
@@ -931,6 +938,58 @@
 									<td><%=rating.getId()%></td>
 									<td><%=rating.getName()%></td>
 									<td><%=String.format("%.2f", rating.getAverageRating())%></td>
+								</tr>
+								<%
+								}
+								} else {
+								%>
+								<tr>
+									<td colspan="5" class="text-center">No report data
+										available.</td>
+								</tr>
+								<%
+								}
+								%>
+							</tbody>
+						</table>
+					</div>
+				</section>
+				
+				<section class="h-100 tab-pane fade show active" id="service-demand-content" role="tabpanel">
+					<div
+						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
+						<h3 class="m-0 p-0 primaryFont">Service Demand</h3>
+					</div>
+
+					<form
+						action="<%=request.getContextPath()%>/ServiceDemandServlet"
+						method="get">
+						<div class="mb-4">
+							<button type="submit" class="btn btn-primary">Fetch
+								Service Demands</button>
+						</div>
+					</form>
+
+					<div class="table-container"
+						style="height: 70vh; overflow-y: auto;">
+						<table class="table table-striped table-hover">
+							<thead class="sticky-top border">
+								<tr>
+									<th class="bg-white">Service ID</th>
+									<th class="bg-white">Service Name</th>
+									<th class="bg-white">Booking Count</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%
+								List<Service> serviceDemands = (List<Service>) session.getAttribute("bookingFrequency");
+								if (serviceDemands != null && !serviceDemands.isEmpty()) {
+									for (Service demand : serviceDemands) {
+								%>
+								<tr>
+									<td><%=demand.getService_id()%></td>
+									<td><%=demand.getName()%></td>
+									<td><%=demand.getBooking_count() %></td>
 								</tr>
 								<%
 								}
