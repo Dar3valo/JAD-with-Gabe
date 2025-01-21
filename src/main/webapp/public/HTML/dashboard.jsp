@@ -7,6 +7,7 @@
 <%@ page import="Models.User.User"%>
 <%@ page import="Models.Role.Role"%>
 <%@ page import="Models.ServiceReport.ServiceReport" %>
+<%@ page import="Models.ServiceOrderByRating.ServiceByRating" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -146,6 +147,13 @@
 									data-bs-toggle="pill" data-bs-target="#reporting-content"
 									type="button" role="tab">
 									<i class="bi bi-bar-chart-line-fill me-2"></i>Service Reporting
+								</button>
+							</li>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link" id="service-rating-tab"
+									data-bs-toggle="pill" data-bs-target="#service-rating-content"
+									type="button" role="tab">
+									<i class="bi bi-bar-chart-line-fill me-2"></i>Service Ratings
 								</button>
 							</li>
 						</ul>
@@ -887,6 +895,59 @@
 						</table>
 					</div>
 				</section>
+
+				<section class="h-100 tab-pane fade show active" id="service-rating-content" role="tabpanel">
+					<div
+						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
+						<h3 class="m-0 p-0 primaryFont">Service Ratings</h3>
+					</div>
+
+					<form
+						action="<%=request.getContextPath()%>/ServiceRatingOrderServlet"
+						method="get">
+						<div class="mb-4">
+							<button type="submit" class="btn btn-primary">Fetch
+								Service Ratings</button>
+						</div>
+					</form>
+
+					<div class="table-container"
+						style="height: 70vh; overflow-y: auto;">
+						<table class="table table-striped table-hover">
+							<thead class="sticky-top border">
+								<tr>
+									<th class="bg-white">Service ID</th>
+									<th class="bg-white">Service Name</th>
+									<th class="bg-white">Average Rating</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%
+								List<ServiceByRating> serviceRatings = (List<ServiceByRating>) session.getAttribute("serviceRatingOrder");
+								if (serviceRatings != null && !serviceRatings.isEmpty()) {
+									for (ServiceByRating rating : serviceRatings) {
+								%>
+								<tr>
+									<td><%=rating.getId()%></td>
+									<td><%=rating.getName()%></td>
+									<td><%=String.format("%.2f", rating.getAverageRating())%></td>
+								</tr>
+								<%
+								}
+								} else {
+								%>
+								<tr>
+									<td colspan="5" class="text-center">No report data
+										available.</td>
+								</tr>
+								<%
+								}
+								%>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
 
 			</div>
 		</div>
