@@ -61,6 +61,10 @@ body:before{
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link" href="services.jsp">Services</a>
 					</li>
+					<% if (pageAccessLevel <= 2) { %>
+						<li class="nav-item"><a class="nav-link" href="inquiry.jsp">Inquiry</a>
+						</li>
+					<% } %>
 				</ul>
 				<ul class="navbar-nav ms-auto">
 				
