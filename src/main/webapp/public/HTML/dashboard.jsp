@@ -8,6 +8,8 @@
 <%@ page import="Models.Role.Role"%>
 <%@ page import="Models.ServiceReport.ServiceReport" %>
 <%@ page import="Models.ServiceOrderByRating.ServiceByRating" %>
+<%@ page import="Models.Booking.Booking" %>
+<%@ page import="Models.Booking.BookingDAO" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -161,6 +163,13 @@
 									data-bs-toggle="pill" data-bs-target="#service-demand-content"
 									type="button" role="tab">
 									<i class="bi bi-bar-chart-line-fill me-2"></i>Service Demand
+								</button>
+							</li>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link" id="booking-list-tab"
+									data-bs-toggle="pill" data-bs-target="#booking-content"
+									type="button" role="tab">
+									<i class="bi bi-bar-chart-line-fill me-2"></i>Booking List
 								</button>
 							</li>
 						</ul>
@@ -1007,7 +1016,88 @@
 					</div>
 				</section>
 
+				<section class="booking-container h-100 tab-pane fade show active"
+					id="booking-content" role="tabpanel">
+					<div class="booking-header">
+						<h3 class="primaryFont">Booking List</h3>
+					</div>
 
+					<table class="booking-table">
+						<thead>
+							<tr>
+								<th>Customer Name</th>
+								<th>Customer Email</th>
+								<th>Booking Date</th>
+								<th>Booking Period</th>
+								<th>Service Name</th>
+								<th>Service Price</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%
+							BookingDAO bookingDAO = new BookingDAO();
+							int pageNumber = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
+							int pageSize = 10;
+							List<Booking> bookings = bookingDAO.getBookingDetailsAdmin(pageNumber, pageSize);
+							int totalRecords = bookingDAO.getTotalBookings();
+							int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+							int startRecord = (pageNumber - 1) * pageSize + 1;
+							int endRecord = Math.min(startRecord + pageSize - 1, totalRecords);
+
+							for (Booking booking : bookings) {
+							%>
+							<tr>
+								<td><%=booking.getUsername()%></td>
+								<td><%=booking.getUserEmail()%></td>
+								<td><%=booking.getBooking_date()%></td>
+								<td><%=booking.getBookingPeriod()%></td>
+								<td><%=booking.getServiceName()%></td>
+								<td>$<%=String.format("%.2f", booking.getServicePrice())%></td>
+							</tr>
+							<%
+							}
+							%>
+						</tbody>
+					</table>
+
+					<div class="pagination-container">
+						<div class="results-info">
+							Showing
+							<%=startRecord%>
+							to
+							<%=endRecord%>
+							of
+							<%=totalRecords%>
+							entries
+						</div>
+
+						<nav aria-label="Page navigation">
+							<ul class="pagination">
+								<li class="page-item <%=pageNumber == 1 ? "disabled" : ""%>">
+									<a class="page-link" href="?page=<%=pageNumber - 1%>">&laquo;</a>
+								</li>
+
+								<%
+								int startPage = Math.max(1, pageNumber - 2);
+								int endPage = Math.min(startPage + 4, totalPages);
+
+								for (int i = startPage; i <= endPage; i++) {
+								%>
+								<li class="page-item <%=pageNumber == i ? "active" : ""%>">
+									<a class="page-link" href="?page=<%=i%>"><%=i%></a>
+								</li>
+								<%
+								}
+								%>
+
+								<li
+									class="page-item <%=pageNumber == totalPages ? "disabled" : ""%>">
+									<a class="page-link" href="?page=<%=pageNumber + 1%>">&raquo;</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</section>
 			</div>
 		</div>
 
