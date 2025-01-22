@@ -217,4 +217,114 @@ public class BookingDAO {
 	    return latestResults;
 	};
 	
+	public List<Booking> getBookingDetailsAdmin(int pageNumber, int pageSize){
+		List<Booking> bookings = new ArrayList<>();
+		Connection conn = null;
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+	    
+	    try {
+	    	Class.forName("org.postgresql.Driver");
+	        String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+	        conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+	        
+	        String sql = """
+	        		SELECT 
+						u.name,
+						u.email,
+					    b.booking_date,
+					    CONCAT(s.start_time, ' - ', s.end_time) AS booking_period, 
+					    srv.name AS service_name, 
+					    srv.price AS service_price
+					FROM 
+					    booking b
+					JOIN 
+					    service srv 
+					ON 
+					    b.service_id = srv.service_id
+					JOIN 
+					    users u 
+					ON 
+					    b.user_id = u.user_id
+					JOIN 
+					    schedule s 
+					ON 
+					    b.schedule_id = s.schedule_id
+					ORDER BY 
+					    b.booking_date LIMIT ? OFFSET ?;
+	        		""";
+	        //Remove LIMIT ? and OFFSET ? if no work
+	        stmt = conn.prepareStatement(sql);
+	        //remove these 2 if no work
+	        stmt.setInt(1, pageSize);
+	        stmt.setInt(2, (pageNumber - 1) * pageSize);
+	        rs = stmt.executeQuery();
+	        
+	        while(rs.next()) {
+	        	Booking booking = new Booking();
+	        	booking.setUsername(rs.getString("name")); // User name
+	            booking.setUserEmail(rs.getString("email")); // User email
+	            booking.setBooking_date(rs.getDate("booking_date")); // Booking date
+	            booking.setBookingPeriod(rs.getString("booking_period")); // Booking period (start_time - end_time)
+	            booking.setServiceName(rs.getString("service_name")); // Service name
+	            booking.setServicePrice(rs.getDouble("service_price")); // Service price
+	            
+	            bookings.add(booking);
+	        }
+	    	
+	    	
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) {
+	                rs.close();
+	            }
+	            if (stmt != null) {
+	                stmt.close();
+	            }
+	            if (conn != null) {
+	                conn.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return bookings;
+	};
+	
+	public int getTotalBookings() {
+        int totalRecords = 0;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            Class.forName("org.postgresql.Driver");
+            String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+            conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+            
+            String sql = "SELECT COUNT(*) AS total FROM booking";
+            stmt = conn.prepareStatement(sql);
+            
+            rs = stmt.executeQuery();
+            
+            if(rs.next()) {
+                totalRecords = rs.getInt("total");
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return totalRecords;
+    }
+	
 }

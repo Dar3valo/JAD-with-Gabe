@@ -16,7 +16,10 @@ public class Booking {
     private double servicePrice;
     private Timestamp creation_date;
     private int status_id;
-	
+    private String username;
+    private String userEmail;
+    private String bookingPeriod;
+
 	public Booking(int booking_id, Date booking_date, String special_request, String main_address, int postal_code,
 			int user_id, int schedule_id, int service_id, int status_id) {
 		super();
@@ -62,6 +65,10 @@ public class Booking {
 		this.service_id = service_id;
 		this.serviceName = serviceName;
 		this.servicePrice = servicePrice;
+	}
+	
+	public Booking() {
+		
 	}
 
 	public Timestamp getCreation_date() {
@@ -152,5 +159,35 @@ public class Booking {
 		this.service_id = service_id;
 	}
 	
+	public int getStatus_id() {
+		return status_id;
+	}
+
+	public void setStatus_id(int status_id) {
+		this.status_id = status_id;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
 	
+	public String getBookingPeriod() {
+		return bookingPeriod;
+	}
+
+	public void setBookingPeriod(String bookingPeriod) {
+		this.bookingPeriod = bookingPeriod;
+	}
 }
