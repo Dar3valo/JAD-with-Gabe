@@ -1016,14 +1016,16 @@
 					</div>
 				</section>
 
-				<section class="booking-container h-100 tab-pane fade show active"
+				<section class="h-100 tab-pane fade show active"
 					id="booking-content" role="tabpanel">
 					<div class="booking-header">
 						<h3 class="primaryFont">Booking List</h3>
 					</div>
-
-					<table class="booking-table">
-						<thead>
+					
+					<div class="table-container"
+						style="height: 70vh; overflow-y: auto;">
+					<table class="table table-striped table-hover">
+						<thead class="sticky-top border">
 							<tr>
 								<th>Customer Name</th>
 								<th>Customer Email</th>
@@ -1037,7 +1039,7 @@
 							<%
 							BookingDAO bookingDAO = new BookingDAO();
 							int pageNumber = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
-							int pageSize = 10;
+							int pageSize = 5;
 							List<Booking> bookings = bookingDAO.getBookingDetailsAdmin(pageNumber, pageSize);
 							int totalRecords = bookingDAO.getTotalBookings();
 							int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
@@ -1059,6 +1061,7 @@
 							%>
 						</tbody>
 					</table>
+				</div>
 
 					<div class="pagination-container">
 						<div class="results-info">
