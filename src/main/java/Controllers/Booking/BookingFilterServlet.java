@@ -1,5 +1,6 @@
 package Controllers.Booking;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -36,15 +37,15 @@ public class BookingFilterServlet extends HttpServlet {
         int pageSize = 5;
 
         BookingDAO bookingDAO = new BookingDAO();
-        List<Booking> bookings;
+        List<Booking> bookingList;
 
         if (filterType != null && filterValue != null) {
-            bookings = bookingDAO.getFilteredBookings(filterType, filterValue, pageNumber, pageSize);
+        	bookingList = bookingDAO.getFilteredBookings(filterType, filterValue, pageNumber, pageSize);
         } else {
-            bookings = bookingDAO.getBookingDetailsAdmin(pageNumber, pageSize);
+        	bookingList = bookingDAO.getBookingDetailsAdmin(pageNumber, pageSize);
         }
 
-        request.setAttribute("bookings", bookings);
+        request.setAttribute("bookings", bookingList);
 
         // Set session attribute for dashboard tab
         request.getSession().setAttribute("dashboardCurrentFocus", "booking-content");
