@@ -31,9 +31,11 @@
 	document.addEventListener('DOMContentLoaded', () => {
 	    const servicesbutton = document.getElementById('services-tab');
 	    const usersbutton = document.getElementById('users-tab');
+	    const bookingbutton = document.getElementById('booking-list-tab');
 	    
         const servicesFilter = document.getElementById('services-filter');
         const usersFilter = document.getElementById('users-filter');
+        const bookingFilter = document.getElementById('booking-filter');
         
         const filterOptions = document.querySelectorAll('.filterOption');
         
@@ -55,6 +57,16 @@
             });
             
             usersFilter.classList.remove('d-none');
+	    });
+	    
+	    bookingbutton.addEventListener('click', () => {
+	        bookingFilter.classList.remove('d-none');
+            
+            filterOptions.forEach(option => {
+                option.classList.add('d-none');
+            });
+            
+            bookingFilter.classList.remove('d-none');
 	    });
 	});
 </script>
@@ -92,6 +104,7 @@
 	List<Role> roles = (List<Role>) session.getAttribute("roles");
 	ServiceCategory currentCategory = (ServiceCategory) session.getAttribute("currentCategory");
 	Role currentRole = (Role) session.getAttribute("currentRole");
+	List<Booking> bookings = (List<Booking>) request.getAttribute("bookings");
 
 	if (users == null) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllUsersServlet");
@@ -166,9 +179,10 @@
 								</button>
 							</li>
 							<li class="nav-item" role="presentation">
-								<button class="nav-link" id="booking-list-tab"
-									data-bs-toggle="pill" data-bs-target="#booking-content"
-									type="button" role="tab">
+								<button
+									class="nav-link <%= dashboardCurrentFocus.equals("booking-content") ? "active" : "" %>"
+									id="booking-list-tab" data-bs-toggle="pill"
+									data-bs-target="#booking-content" type="button" role="tab">
 									<i class="bi bi-bar-chart-line-fill me-2"></i>Booking List
 								</button>
 							</li>
@@ -244,6 +258,20 @@
 									<input type="submit" class="btn btn-primary"
 										value="Search Filters">
 								</div>
+							</form>
+						</div>
+						<!-- Filter Form (Visible Only When Booking Tab is Active) -->
+						<div id="booking-filter"
+							class="m-0 p-0 <%= dashboardCurrentFocus.equals("booking-content") ? "d-block" : "d-none" %> filterOption">
+							<form method="GET"
+								action="${pageContext.request.contextPath}/BookingFilterServlet">
+								<label for="filterType">Filter By:</label> <select
+									name="filterType" id="filterType">
+									<option value="date">Booking Date</option>
+									<option value="month">Booking Month</option>
+								</select> <input type="text" name="filterValue"
+									placeholder="Enter Date (YYYY-MM-DD) or Month (MM)" required>
+								<button type="submit">Apply Filter</button>
 							</form>
 						</div>
 					</div>
@@ -1016,86 +1044,92 @@
 					</div>
 				</section>
 
-				<section class="h-100 tab-pane fade show active"
+				<%
+				// Initialize variables for pagination
+				int pageNumber = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
+				int pageSize = 5;
+
+				// Get booking details from DAO
+				BookingDAO bookingDAO = new BookingDAO();
+				List<Booking> bookingList = bookingDAO.getBookingDetailsAdmin(pageNumber, pageSize);
+
+				// Get total bookings for pagination
+				int totalRecords = bookingDAO.getTotalBookings();
+				int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+
+				// Calculate records range for display
+				int startRecord = (pageNumber - 1) * pageSize + 1;
+				int endRecord = Math.min(startRecord + pageSize - 1, totalRecords);
+				%>
+
+				<section
+					class="h-100 tab-pane fade <%= dashboardCurrentFocus.equals("booking-content") ? "show active" : "" %>"
 					id="booking-content" role="tabpanel">
-					<div class="booking-header">
-						<h3 class="primaryFont">Booking List</h3>
+					<div class="table-container">
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>Customer Name</th>
+									<th>Customer Email</th>
+									<th>Booking Date</th>
+									<th>Booking Period</th>
+									<th>Service Name</th>
+									<th>Service Price</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% if (bookingList != null && !bookingList.isEmpty()) { 
+                    for (Booking booking : bookingList) { %>
+								<tr>
+									<td><%= booking.getUsername() %></td>
+									<td><%= booking.getUserEmail() %></td>
+									<td><%= booking.getBooking_date() %></td>
+									<td><%= booking.getBookingPeriod() %></td>
+									<td><%= booking.getServiceName() %></td>
+									<td>$<%= String.format("%.2f", booking.getServicePrice()) %></td>
+								</tr>
+								<% } 
+                } else { %>
+								<tr>
+									<td colspan="6">No bookings found.</td>
+								</tr>
+								<% } %>
+							</tbody>
+						</table>
 					</div>
-					
-					<div class="table-container"
-						style="height: 70vh; overflow-y: auto;">
-					<table class="table table-striped table-hover">
-						<thead class="sticky-top border">
-							<tr>
-								<th>Customer Name</th>
-								<th>Customer Email</th>
-								<th>Booking Date</th>
-								<th>Booking Period</th>
-								<th>Service Name</th>
-								<th>Service Price</th>
-							</tr>
-						</thead>
-						<tbody>
-							<%
-							BookingDAO bookingDAO = new BookingDAO();
-							int pageNumber = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
-							int pageSize = 5;
-							List<Booking> bookings = bookingDAO.getBookingDetailsAdmin(pageNumber, pageSize);
-							int totalRecords = bookingDAO.getTotalBookings();
-							int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
-							int startRecord = (pageNumber - 1) * pageSize + 1;
-							int endRecord = Math.min(startRecord + pageSize - 1, totalRecords);
 
-							for (Booking booking : bookings) {
-							%>
-							<tr>
-								<td><%=booking.getUsername()%></td>
-								<td><%=booking.getUserEmail()%></td>
-								<td><%=booking.getBooking_date()%></td>
-								<td><%=booking.getBookingPeriod()%></td>
-								<td><%=booking.getServiceName()%></td>
-								<td>$<%=String.format("%.2f", booking.getServicePrice())%></td>
-							</tr>
-							<%
-							}
-							%>
-						</tbody>
-					</table>
-				</div>
-
+					<!-- Pagination Section -->
 					<div class="pagination-container">
 						<div class="results-info">
 							Showing
-							<%=startRecord%>
+							<%= startRecord %>
 							to
-							<%=endRecord%>
+							<%= endRecord %>
 							of
-							<%=totalRecords%>
+							<%= totalRecords %>
 							entries
 						</div>
-
 						<nav aria-label="Page navigation">
 							<ul class="pagination">
-								<li class="page-item <%=pageNumber == 1 ? "disabled" : ""%>">
-									<a class="page-link" href="?page=<%=pageNumber - 1%>">&laquo;</a>
+								<li
+									class="page-item <%= pageNumber == 1 ? "disabled" : "" %>">
+									<a class="page-link" href="?page=<%= pageNumber - 1 %>">&laquo;</a>
 								</li>
 
-								<%
-								int startPage = Math.max(1, pageNumber - 2);
-								int endPage = Math.min(startPage + 4, totalPages);
+								<% 
+                					// Generate page numbers for pagination
+                					int startPage = Math.max(1, pageNumber - 2);
+                					int endPage = Math.min(startPage + 4, totalPages);
 
-								for (int i = startPage; i <= endPage; i++) {
-								%>
-								<li class="page-item <%=pageNumber == i ? "active" : ""%>">
-									<a class="page-link" href="?page=<%=i%>"><%=i%></a>
-								</li>
-								<%
-								}
-								%>
+                					for (int i = startPage; i <= endPage; i++) { %>
+											<li class="page-item <%= pageNumber == i ? "active" : "" %>">
+												<a class="page-link" href="?page=<%= i %>"><%= i %></a>
+											</li>
+										<% } %>
 
 								<li
-									class="page-item <%=pageNumber == totalPages ? "disabled" : ""%>">
-									<a class="page-link" href="?page=<%=pageNumber + 1%>">&raquo;</a>
+									class="page-item <%= pageNumber == totalPages ? "disabled" : "" %>">
+									<a class="page-link" href="?page=<%= pageNumber + 1 %>">&raquo;</a>
 								</li>
 							</ul>
 						</nav>
