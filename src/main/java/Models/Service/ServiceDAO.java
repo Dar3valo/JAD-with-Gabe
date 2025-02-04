@@ -2,6 +2,8 @@ package Models.Service;
 import java.util.List;
 
 import Models.ServiceCategory.ServiceCategory;
+import Models.ServiceOrderByRating.ServiceByRating;
+import Models.ServiceReport.ServiceReport;
 
 import java.util.ArrayList;
 import java.sql.*;
@@ -282,5 +284,142 @@ public class ServiceDAO {
 	    }
 		
 		return 0;
-	}
+	};
+	
+	public List<ServiceReport> getServiceReport() {
+		List<ServiceReport> serviceReports = new ArrayList<>();
+		Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        
+        try {
+        	Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+			
+			String sql = "SELECT " + "s.service_id, " + "s.name, " + "SUM(s.price) AS totalRevenue, "
+					+ "COUNT(b.booking_id) AS totalBookings " + "FROM Service s "
+					+ "JOIN Booking b ON s.service_id = b.service_id " + "GROUP BY s.service_id, s.name "
+					+ "ORDER BY s.service_id ASC;";
+
+			statement = connection.prepareStatement(sql);
+			rs = statement.executeQuery();
+			
+			while (rs.next()) {
+                int serviceId = rs.getInt("service_id");
+                String serviceName = rs.getString("name");
+                double totalRevenue = rs.getDouble("totalRevenue");
+                int totalBookings = rs.getInt("totalBookings");
+
+                serviceReports.add(new ServiceReport(serviceId, serviceName, totalRevenue, totalBookings));
+			}
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }finally {
+	        try {
+	            if (statement != null) statement.close();
+	            if (connection != null) connection.close();
+	            
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+        return serviceReports;
+	};
+	
+	public List<ServiceByRating> getServicesOrderedByRating(){
+		List<ServiceByRating> servicesByRating = new ArrayList<>();
+		Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        
+        try {
+        	Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+			
+			String sql = """
+		            SELECT 
+		                s.service_id, 
+		                s.name, 
+		                AVG(f.rating) AS average_rating
+		            FROM 
+		                service s
+		            JOIN 
+		                feedback f 
+		            ON 
+		                s.service_id = f.service_id
+		            GROUP BY 
+		                s.service_id, s.name
+		            ORDER BY 
+		                average_rating DESC
+		        """;
+			
+			statement = connection.prepareStatement(sql);
+			rs = statement.executeQuery();
+			
+			while(rs.next()) {
+				ServiceByRating service = new ServiceByRating();
+                service.setId(rs.getInt("service_id"));
+                service.setName(rs.getString("name"));
+                service.setAverageRating(rs.getDouble("average_rating"));
+
+                servicesByRating.add(service);
+			}
+        	
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }finally {
+	        try {
+	            if (statement != null) statement.close();
+	            if (connection != null) connection.close();
+	            
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+        return servicesByRating;
+	};
+	
+	public List<Service> getServicesByBookingFrequency(){
+		List<Service> bookingFreq = new ArrayList<>();
+		Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        
+        try {
+        	Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+        	
+			String sql = """
+					SELECT
+					    s.service_id,
+					    s.name,
+					    COALESCE(COUNT(b.booking_id), 0) AS booking_count
+					FROM
+					    service s
+					LEFT JOIN
+					    booking b ON s.service_id = b.service_id
+					GROUP BY
+					    s.service_id, s.name
+					ORDER BY
+					    booking_count DESC;
+										""";
+			statement = connection.prepareStatement(sql);
+			rs = statement.executeQuery();
+			
+			while (rs.next()) {
+	            Service service = new Service();
+	            service.setService_id(rs.getInt("service_id"));
+	            service.setName(rs.getString("name"));
+	            service.setBooking_count(rs.getInt("booking_count"));
+	            
+	            bookingFreq.add(service);
+	        }
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }
+        return bookingFreq;
+	};
 }

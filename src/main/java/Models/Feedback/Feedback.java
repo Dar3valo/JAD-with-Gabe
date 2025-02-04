@@ -7,7 +7,20 @@ public class Feedback {
 	private String other_sources;
 	private String comments;
 	private String improvements;
+	private int service_id;
 
+	public Feedback(int user_id, int rating, String sources, String other_sources, String comments,
+			String improvements, int service_id) {
+		super();
+		this.user_id = user_id;
+		this.rating = rating;
+		this.sources = sources;
+		this.other_sources = other_sources;
+		this.comments = comments;
+		this.improvements = improvements;
+		this.service_id = service_id;
+	}
+	
 	public Feedback(int user_id, int rating, String sources, String other_sources, String comments,
 			String improvements) {
 		super();
@@ -17,6 +30,14 @@ public class Feedback {
 		this.other_sources = other_sources;
 		this.comments = comments;
 		this.improvements = improvements;
+	}
+
+	public int getService_id() {
+		return service_id;
+	}
+
+	public void setService_id(int service_id) {
+		this.service_id = service_id;
 	}
 
 	public int getUser_id() {

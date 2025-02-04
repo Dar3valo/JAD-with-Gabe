@@ -6,6 +6,10 @@
 <%@ page import="Models.ServiceServiceCategory.ServiceServiceCategory"%>
 <%@ page import="Models.User.User"%>
 <%@ page import="Models.Role.Role"%>
+<%@ page import="Models.ServiceReport.ServiceReport" %>
+<%@ page import="Models.ServiceOrderByRating.ServiceByRating" %>
+<%@ page import="Models.Booking.Booking" %>
+<%@ page import="Models.Booking.BookingDAO" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -138,6 +142,34 @@
 									id="users-tab" data-bs-toggle="pill"
 									data-bs-target="#users-content" type="button" role="tab">
 									<i class="bi bi-people-fill me-2"></i>Users
+								</button>
+							</li>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link" id="reporting-tab"
+									data-bs-toggle="pill" data-bs-target="#reporting-content"
+									type="button" role="tab">
+									<i class="bi bi-bar-chart-line-fill me-2"></i>Service Reporting
+								</button>
+							</li>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link" id="service-rating-tab"
+									data-bs-toggle="pill" data-bs-target="#service-rating-content"
+									type="button" role="tab">
+									<i class="bi bi-bar-chart-line-fill me-2"></i>Service Ratings
+								</button>
+							</li>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link" id="booking-frequency-tab"
+									data-bs-toggle="pill" data-bs-target="#service-demand-content"
+									type="button" role="tab">
+									<i class="bi bi-bar-chart-line-fill me-2"></i>Service Demand
+								</button>
+							</li>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link" id="booking-list-tab"
+									data-bs-toggle="pill" data-bs-target="#booking-content"
+									type="button" role="tab">
+									<i class="bi bi-bar-chart-line-fill me-2"></i>Booking List
 								</button>
 							</li>
 						</ul>
@@ -823,6 +855,251 @@
 					<%
 					}
 					%>
+				</section>
+
+				<section class="h-100 tab-pane fade show active"
+					id="reporting-content" role="tabpanel">
+					<div
+						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
+						<h3 class="m-0 p-0 primaryFont">Service Reporting</h3>
+					</div>
+
+					<form action="<%=request.getContextPath()%>/ServiceReportServlet"
+						method="get">
+						<div class="mb-4">
+							<button type="submit" class="btn btn-primary">Fetch
+								Service Reports
+							</button>
+						</div>
+					</form>
+
+					<div class="table-container"
+						style="height: 70vh; overflow-y: auto;">
+						<table class="table table-striped table-hover">
+							<thead class="sticky-top border">
+								<tr>
+									<th class="bg-white">Service ID</th>
+									<th class="bg-white">Service Name</th>
+									<th class="bg-white">Total Bookings</th>
+									<th class="bg-white">Total Revenue</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%
+								List<ServiceReport> serviceReports = (List<ServiceReport>) request.getSession().getAttribute("serviceReports");
+								if (serviceReports != null && !serviceReports.isEmpty()) {
+									for (ServiceReport report : serviceReports) {
+								%>
+								<tr>
+									<td><%=report.getServiceId()%></td>
+									<td><%=report.getServiceName()%></td>
+									<td><%=report.getTotalBookings()%></td>
+									<td>$<%=String.format("%.2f", report.getTotalRevenue())%></td>
+								</tr>
+								<%
+								}
+								} else {
+								%>
+								<tr>
+									<td colspan="4" class="text-center">No report data
+										available.</td>
+								</tr>
+								<%
+								}
+								%>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+				<section class="h-100 tab-pane fade show active" id="service-rating-content" role="tabpanel">
+					<div
+						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
+						<h3 class="m-0 p-0 primaryFont">Service Ratings</h3>
+					</div>
+
+					<form
+						action="<%=request.getContextPath()%>/ServiceRatingOrderServlet"
+						method="get">
+						<div class="mb-4">
+							<button type="submit" class="btn btn-primary">Fetch
+								Service Ratings</button>
+						</div>
+					</form>
+
+					<div class="table-container"
+						style="height: 70vh; overflow-y: auto;">
+						<table class="table table-striped table-hover">
+							<thead class="sticky-top border">
+								<tr>
+									<th class="bg-white">Service ID</th>
+									<th class="bg-white">Service Name</th>
+									<th class="bg-white">Average Rating</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%
+								List<ServiceByRating> serviceRatings = (List<ServiceByRating>) session.getAttribute("serviceRatingOrder");
+								if (serviceRatings != null && !serviceRatings.isEmpty()) {
+									for (ServiceByRating rating : serviceRatings) {
+								%>
+								<tr>
+									<td><%=rating.getId()%></td>
+									<td><%=rating.getName()%></td>
+									<td><%=String.format("%.2f", rating.getAverageRating())%></td>
+								</tr>
+								<%
+								}
+								} else {
+								%>
+								<tr>
+									<td colspan="5" class="text-center">No report data
+										available.</td>
+								</tr>
+								<%
+								}
+								%>
+							</tbody>
+						</table>
+					</div>
+				</section>
+				
+				<section class="h-100 tab-pane fade show active" id="service-demand-content" role="tabpanel">
+					<div
+						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
+						<h3 class="m-0 p-0 primaryFont">Service Demand</h3>
+					</div>
+
+					<form
+						action="<%=request.getContextPath()%>/ServiceDemandServlet"
+						method="get">
+						<div class="mb-4">
+							<button type="submit" class="btn btn-primary">Fetch
+								Service Demands</button>
+						</div>
+					</form>
+
+					<div class="table-container"
+						style="height: 70vh; overflow-y: auto;">
+						<table class="table table-striped table-hover">
+							<thead class="sticky-top border">
+								<tr>
+									<th class="bg-white">Service ID</th>
+									<th class="bg-white">Service Name</th>
+									<th class="bg-white">Booking Count</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%
+								List<Service> serviceDemands = (List<Service>) session.getAttribute("bookingFrequency");
+								if (serviceDemands != null && !serviceDemands.isEmpty()) {
+									for (Service demand : serviceDemands) {
+								%>
+								<tr>
+									<td><%=demand.getService_id()%></td>
+									<td><%=demand.getName()%></td>
+									<td><%=demand.getBooking_count() %></td>
+								</tr>
+								<%
+								}
+								} else {
+								%>
+								<tr>
+									<td colspan="5" class="text-center">No report data
+										available.</td>
+								</tr>
+								<%
+								}
+								%>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+				<section class="h-100 tab-pane fade show active"
+					id="booking-content" role="tabpanel">
+					<div class="booking-header">
+						<h3 class="primaryFont">Booking List</h3>
+					</div>
+					
+					<div class="table-container"
+						style="height: 70vh; overflow-y: auto;">
+					<table class="table table-striped table-hover">
+						<thead class="sticky-top border">
+							<tr>
+								<th>Customer Name</th>
+								<th>Customer Email</th>
+								<th>Booking Date</th>
+								<th>Booking Period</th>
+								<th>Service Name</th>
+								<th>Service Price</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%
+							BookingDAO bookingDAO = new BookingDAO();
+							int pageNumber = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
+							int pageSize = 5;
+							List<Booking> bookings = bookingDAO.getBookingDetailsAdmin(pageNumber, pageSize);
+							int totalRecords = bookingDAO.getTotalBookings();
+							int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+							int startRecord = (pageNumber - 1) * pageSize + 1;
+							int endRecord = Math.min(startRecord + pageSize - 1, totalRecords);
+
+							for (Booking booking : bookings) {
+							%>
+							<tr>
+								<td><%=booking.getUsername()%></td>
+								<td><%=booking.getUserEmail()%></td>
+								<td><%=booking.getBooking_date()%></td>
+								<td><%=booking.getBookingPeriod()%></td>
+								<td><%=booking.getServiceName()%></td>
+								<td>$<%=String.format("%.2f", booking.getServicePrice())%></td>
+							</tr>
+							<%
+							}
+							%>
+						</tbody>
+					</table>
+				</div>
+
+					<div class="pagination-container">
+						<div class="results-info">
+							Showing
+							<%=startRecord%>
+							to
+							<%=endRecord%>
+							of
+							<%=totalRecords%>
+							entries
+						</div>
+
+						<nav aria-label="Page navigation">
+							<ul class="pagination">
+								<li class="page-item <%=pageNumber == 1 ? "disabled" : ""%>">
+									<a class="page-link" href="?page=<%=pageNumber - 1%>">&laquo;</a>
+								</li>
+
+								<%
+								int startPage = Math.max(1, pageNumber - 2);
+								int endPage = Math.min(startPage + 4, totalPages);
+
+								for (int i = startPage; i <= endPage; i++) {
+								%>
+								<li class="page-item <%=pageNumber == i ? "active" : ""%>">
+									<a class="page-link" href="?page=<%=i%>"><%=i%></a>
+								</li>
+								<%
+								}
+								%>
+
+								<li
+									class="page-item <%=pageNumber == totalPages ? "disabled" : ""%>">
+									<a class="page-link" href="?page=<%=pageNumber + 1%>">&raquo;</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
 				</section>
 			</div>
 		</div>

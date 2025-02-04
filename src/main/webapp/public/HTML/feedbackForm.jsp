@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="Models.Service.Service" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,6 +89,32 @@
 							<%-- Textarea for Other's Checkbox --%>
 							<textarea id="otherSource" name="otherSources" class="form-control mt-2"
 								placeholder="Please specify"></textarea><br>
+						</div>
+
+						<div class="col-md-6">
+							<label for="serviceType" class="form-label text-white">Service Type</label>
+							<select id="serviceType" name="serviceType" class="form-select"
+								required>
+								<option selected disabled>Choose...</option>
+								<%
+								List<Service> serviceDropdown = (List<Service>) session.getAttribute("serviceTypes");
+
+								if (serviceDropdown == null) {
+									response.sendRedirect(request.getContextPath() + "/ServicesFeedbackDropdownServlet");
+									return;
+								} else if (serviceDropdown.isEmpty()) {
+								%>
+								<option disabled>No Services Available</option>
+								<%
+								} else {
+								for (Service service : serviceDropdown) {
+								%>
+								<option value="<%=service.getService_id()%>"><%=service.getName()%></option>
+								<%
+								}
+								}
+								%>
+							</select>
 						</div>
 
 						<div class="form-group mb-2">
