@@ -218,7 +218,7 @@ public class BookingDAO {
 	};
 	
 	public List<Booking> getBookingDetailsAdmin(int pageNumber, int pageSize){
-		List<Booking> bookings = new ArrayList<>();
+		List<Booking> bookingList = new ArrayList<>();
 		Connection conn = null;
 	    PreparedStatement stmt = null;
 	    ResultSet rs = null;
@@ -269,7 +269,7 @@ public class BookingDAO {
 	            booking.setServiceName(rs.getString("service_name")); // Service name
 	            booking.setServicePrice(rs.getDouble("service_price")); // Service price
 	            
-	            bookings.add(booking);
+	            bookingList.add(booking);
 	        }
 	    	
 	    	
@@ -290,7 +290,7 @@ public class BookingDAO {
 	            e.printStackTrace();
 	        }
 	    }
-	    return bookings;
+	    return bookingList;
 	};
 	
 	public int getTotalBookings() {
@@ -325,6 +325,61 @@ public class BookingDAO {
             }
         }
         return totalRecords;
+    };
+    
+    public List<Booking> getFilteredBookings(String filterType, String filterValue, int pageNumber, int pageSize) {
+    	List<Booking> bookings = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+        	Class.forName("org.postgresql.Driver");
+            String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+            conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+            
+            String sql = "SELECT u.name, u.email, b.booking_date, CONCAT(s.start_time, ' - ', s.end_time) AS booking_period, srv.name AS service_name, srv.price AS service_price "
+                    + "FROM booking b "
+                    + "JOIN service srv ON b.service_id = srv.service_id "
+                    + "JOIN users u ON b.user_id = u.user_id "
+                    + "JOIN schedule s ON b.schedule_id = s.schedule_id ";
+
+            sql += "ORDER BY b.booking_date LIMIT ? OFFSET ?";
+
+            stmt = conn.prepareStatement(sql);
+            if ("date".equals(filterType)) {
+                stmt.setDate(1, Date.valueOf(filterValue));  // Convert String to Date
+            } else if ("month".equals(filterType)) {
+                stmt.setInt(1, Integer.parseInt(filterValue));  // Convert String to Integer
+            }
+            stmt.setInt(2, pageSize);
+            stmt.setInt(3, (pageNumber - 1) * pageSize);
+
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Booking booking = new Booking();
+                booking.setUsername(rs.getString("name"));
+                booking.setUserEmail(rs.getString("email"));
+                booking.setBooking_date(rs.getDate("booking_date"));
+                booking.setBookingPeriod(rs.getString("booking_period"));
+                booking.setServiceName(rs.getString("service_name"));
+                booking.setServicePrice(rs.getDouble("service_price"));
+
+                bookings.add(booking);
+        }
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return bookings;
     }
 	
 }
