@@ -6,6 +6,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -35,6 +37,7 @@ public class BookingFilterServlet extends HttpServlet {
         String filterValue = request.getParameter("filterValue");
         int pageNumber = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
         int pageSize = 5;
+        HttpSession session = request.getSession();
 
         BookingDAO bookingDAO = new BookingDAO();
         List<Booking> bookingList;
@@ -45,12 +48,16 @@ public class BookingFilterServlet extends HttpServlet {
         	bookingList = bookingDAO.getBookingDetailsAdmin(pageNumber, pageSize);
         }
 
-        request.setAttribute("bookings", bookingList);
+        session.setAttribute("bookings", bookingList);
 
         // Set session attribute for dashboard tab
-        request.getSession().setAttribute("dashboardCurrentFocus", "booking-content");
+        session.setAttribute("dashboardCurrentFocus", "booking-content");
+        
+        String redirectUrl = request.getContextPath() + "/public/HTML/dashboard.jsp?filterType=" + filterType + "&filterValue=" + filterValue;
 
-        response.sendRedirect(request.getContextPath() + "/public/HTML/dashboard.jsp");
+        response.sendRedirect(redirectUrl);
+//        RequestDispatcher dispatcher = request.getRequestDispatcher("/public/HTML/dashboard.jsp");
+//        dispatcher.forward(request, response);
 	}
 
 	/**

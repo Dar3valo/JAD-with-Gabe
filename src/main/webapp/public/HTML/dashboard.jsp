@@ -104,7 +104,7 @@
 	List<Role> roles = (List<Role>) session.getAttribute("roles");
 	ServiceCategory currentCategory = (ServiceCategory) session.getAttribute("currentCategory");
 	Role currentRole = (Role) session.getAttribute("currentRole");
-	List<Booking> bookings = (List<Booking>) request.getAttribute("bookings");
+	List<Booking> bookings = (List<Booking>) session.getAttribute("bookings");
 
 	if (users == null) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllUsersServlet");
@@ -885,7 +885,7 @@
 					%>
 				</section>
 
-				<section class="h-100 tab-pane fade show active"
+				<section class="h-100 tab-pane fade"
 					id="reporting-content" role="tabpanel">
 					<div
 						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
@@ -940,7 +940,7 @@
 					</div>
 				</section>
 
-				<section class="h-100 tab-pane fade show active" id="service-rating-content" role="tabpanel">
+				<section class="h-100 tab-pane fade" id="service-rating-content" role="tabpanel">
 					<div
 						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
 						<h3 class="m-0 p-0 primaryFont">Service Ratings</h3>
@@ -992,7 +992,7 @@
 					</div>
 				</section>
 				
-				<section class="h-100 tab-pane fade show active" id="service-demand-content" role="tabpanel">
+				<section class="h-100 tab-pane fade" id="service-demand-content" role="tabpanel">
 					<div
 						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
 						<h3 class="m-0 p-0 primaryFont">Service Demand</h3>
