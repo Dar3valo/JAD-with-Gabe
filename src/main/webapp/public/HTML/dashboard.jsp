@@ -1095,6 +1095,10 @@
 							placeholder="Enter Date (YYYY-MM-DD) or Month (MM)"
 							value="<%=filterValue != null ? filterValue : ""%>" required>
 						<input type="submit" class="btn btn-primary" value="Apply Filters">
+						
+						<!-- Reset Filters Button -->
+						<a href="<%=request.getRequestURI()%>" class="btn btn-secondary">Reset
+							Filters</a>
 					</form>
 				</div>
 
@@ -1157,8 +1161,11 @@
 								<!-- Previous Page -->
 								<li class="page-item <%=pageNumber == 1 ? "disabled" : ""%>">
 									<a class="page-link"
-									href="?page=<%=pageNumber - 1%>&filterType=<%=filterType%>&filterValue=<%=filterValue%>">&laquo;</a>
+									href="<%=(filterType != null && !filterType.isEmpty() && filterValue != null && !filterValue.isEmpty())
+		? "?page=" + (pageNumber - 1) + "&filterType=" + filterType + "&filterValue=" + filterValue
+		: "?page=" + (pageNumber - 1)%>">&laquo;</a>
 								</li>
+
 								<%
 								// Dynamic page links logic (ensure no index out of bounds)
 								int startPage = Math.max(1, pageNumber - 2);
@@ -1167,25 +1174,26 @@
 								%>
 								<li class="page-item <%=pageNumber == i ? "active" : ""%>">
 									<a class="page-link"
-									href="?page=<%=i%>&filterType=<%=filterType%>&filterValue=<%=filterValue%>"><%=i%></a>
+									href="<%=(filterType != null && !filterType.isEmpty() && filterValue != null && !filterValue.isEmpty())
+		? "?page=" + i + "&filterType=" + filterType + "&filterValue=" + filterValue
+		: "?page=" + i%>"><%=i%></a>
 								</li>
 								<%
 								}
 								%>
+
 								<!-- Next Page -->
 								<li
 									class="page-item <%=pageNumber == totalPages ? "disabled" : ""%>">
 									<a class="page-link"
-									href="?page=<%=pageNumber + 1%>&filterType=<%=filterType%>&filterValue=<%=filterValue%>">&raquo;</a>
+									href="<%=(filterType != null && !filterType.isEmpty() && filterValue != null && !filterValue.isEmpty())
+		? "?page=" + (pageNumber + 1) + "&filterType=" + filterType + "&filterValue=" + filterValue
+		: "?page=" + (pageNumber + 1)%>">&raquo;</a>
 								</li>
 							</ul>
 						</nav>
 					</div>
 				</section>
-
-
-
-
 			</div>
 		</div>
 

@@ -41,23 +41,30 @@ public class BookingFilterServlet extends HttpServlet {
 
         BookingDAO bookingDAO = new BookingDAO();
         List<Booking> bookingList;
+        int totalFilteredRecords;
 
-        if (filterType != null && filterValue != null) {
-        	bookingList = bookingDAO.getFilteredBookings(filterType, filterValue, pageNumber, pageSize);
+        if (filterType != null && filterValue != null && !filterValue.isEmpty()) {
+            bookingList = bookingDAO.getFilteredBookings(filterType, filterValue, pageNumber, pageSize);
+            totalFilteredRecords = bookingDAO.getTotalFilteredBookings(filterType, filterValue);
         } else {
-        	bookingList = bookingDAO.getBookingDetailsAdmin(pageNumber, pageSize);
+            bookingList = bookingDAO.getBookingDetailsAdmin(pageNumber, pageSize);
+            totalFilteredRecords = bookingDAO.getTotalBookings();
         }
 
         session.setAttribute("bookings", bookingList);
 
         // Set session attribute for dashboard tab
         session.setAttribute("dashboardCurrentFocus", "booking-content");
+
+        // Build redirect URL without null filterType or filterValue
+        String redirectUrl = request.getContextPath() + "/public/HTML/dashboard.jsp";
         
-        String redirectUrl = request.getContextPath() + "/public/HTML/dashboard.jsp?filterType=" + filterType + "&filterValue=" + filterValue;
+        // Only append filterType and filterValue if they are not null or empty
+        if (filterType != null && !filterType.isEmpty() && filterValue != null && !filterValue.isEmpty()) {
+            redirectUrl += "?filterType=" + filterType + "&filterValue=" + filterValue;
+        }
 
         response.sendRedirect(redirectUrl);
-//        RequestDispatcher dispatcher = request.getRequestDispatcher("/public/HTML/dashboard.jsp");
-//        dispatcher.forward(request, response);
 	}
 
 	/**
