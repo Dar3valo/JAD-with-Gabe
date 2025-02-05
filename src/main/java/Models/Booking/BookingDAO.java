@@ -397,5 +397,69 @@ public class BookingDAO {
             }
         }
         return bookings;
+    };
+    
+    public int getTotalFilteredBookings(String filterType, String filterValue) {
+        int totalFilteredRecords = 0;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            Class.forName("org.postgresql.Driver");
+            String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+            conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+            String sql = "SELECT COUNT(*) FROM booking b " +
+                         "JOIN service srv ON b.service_id = srv.service_id " +
+                         "JOIN users u ON b.user_id = u.user_id " +
+                         "JOIN schedule s ON b.schedule_id = s.schedule_id ";
+            
+            // Add WHERE clause based on filter type
+            if ("date".equals(filterType)) {
+                sql += "WHERE b.booking_date = ?";
+            } else if ("month".equals(filterType)) {
+                sql += "WHERE EXTRACT(MONTH FROM b.booking_date) = ?";
+            } else {
+                throw new IllegalArgumentException("Invalid filter type: " + filterType);
+            }
+
+            stmt = conn.prepareStatement(sql);
+
+            if ("date".equals(filterType)) {
+                // For date filter, ensure filterValue is a valid date string (e.g., "2025-02-06")
+                stmt.setDate(1, Date.valueOf(filterValue));  // Convert string to Date
+            } else if ("month".equals(filterType)) {
+                // For month filter, filterValue should be an integer (e.g., "5" for May)
+                stmt.setInt(1, Integer.parseInt(filterValue));  // Convert string to integer
+            }
+            
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+            	totalFilteredRecords = rs.getInt(1);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return totalFilteredRecords;
     }
+
+
+
 }
