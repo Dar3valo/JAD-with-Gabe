@@ -46,31 +46,28 @@
 		} else {
 		%>
 		<div class="profile-header text-center">
-			<div class="wrapper"
-				style="background-image: url('<%=user.getProfile_photo_url() != null ? user.getProfile_photo_url() : "../Image/defaultpic.png"%>');">
-			</div>
-
-			<form action="<%=request.getContextPath()%>/UpdateProfilePicServlet"
-				method="post" enctype="multipart/form-data">
-				<div class="file-upload-wrapper">
-					<input type="file" name="profileImage" id="file-upload"
-						class="file-upload-input" accept="image/*" required> <label
-						for="file-upload" class="file-upload-label"> <i
-						class="bi bi-cloud-arrow-up-fill upload-icon"></i> <span
-						class="upload-text">Choose a file</span> <span
-						class="selected-file"></span>
-					</label>
-					<button type="submit" class="btn btn-dark btn-outline-light mt-3">
-						<i class="bi bi-camera-fill me-2"></i>Change Photo
-					</button>
-				</div>
-			</form>
-
-			<h1 class="mb-2"><%=user.getName()%></h1>
-			<span
-				class="role-badge <%=user.getRole_id() == 1 ? "role-admin" : "role-client"%>">
-				<%=user.getRole_id() == 1 ? "Administrator" : "Client"%>
-			</span>
+		    <%-- Profile Image Container --%>
+		    <div id="profile-image-wrapper" class="mx-auto mb-3 rounded-circle overflow-hidden" 
+		         style="width: 200px; height: 200px; background-size: cover; background-position: center; background-image: url('<%=user.getProfile_photo_url() != null ? user.getProfile_photo_url() : "../Image/defaultpic.png"%>');">
+		    </div>
+		
+		    <%-- Upload Section --%>
+		    <div class="mb-4">
+		        <div class="d-flex flex-column align-items-center">
+		            <input type="file" name="file" id="file-upload" class="d-none" accept="image/*">
+		            <label for="file-upload" class="btn btn-outline-primary mb-2">
+		                <i class="bi bi-cloud-arrow-up-fill me-2"></i>Choose Photo
+		            </label>
+		            <small id="selected-file-name" class="text-muted"></small>
+		            <%-- Progress indicator (hidden by default) --%>
+		            <div id="upload-progress" class="d-none mt-2">
+		                <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+		                    <span class="visually-hidden">Loading...</span>
+		                </div>
+		                <span class="text-primary">Uploading...</span>
+		            </div>
+		        </div>
+		    </div>
 		</div>
 
 		<div class="profile-card">
@@ -341,5 +338,101 @@
 		    }
 		});
     </script>
+    
+    <script>
+	document.getElementById('file-upload').addEventListener('change', function(e) {
+	    const file = e.target.files[0];
+	    const fileNameDisplay = document.getElementById('selected-file-name');
+	    const wrapper = document.getElementById('profile-image-wrapper');
+	    const progressIndicator = document.getElementById('upload-progress');
+	    
+	    if (file) {
+	        // Show selected file name
+	        fileNameDisplay.textContent = file.name;
+	        
+	        // Show loading state
+	        progressIndicator.classList.remove('d-none');
+	        wrapper.style.opacity = '0.5';
+	        
+	        const formData = new FormData();
+	        formData.append('file', file);
+	        
+	        // Send to servlet
+	        fetch('<%=request.getContextPath()%>/UploadProfilePicServlet', {
+	            method: 'POST',
+	            body: formData
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data.url) {
+	                // Update the profile picture immediately
+	                wrapper.style.backgroundImage = `url('${data.url}')`;
+	                
+	                // Show success alert
+	                const alertHtml = `
+	                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+	                        Profile picture updated successfully!
+	                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	                    </div>
+	                `;
+	                wrapper.insertAdjacentHTML('beforebegin', alertHtml);
+	                
+	                // Remove alert after 3 seconds
+	                setTimeout(() => {
+	                    const alert = document.querySelector('.alert');
+	                    if (alert) {
+	                        alert.remove();
+	                    }
+	                }, 3000);
+	            } else if (data.error) {
+	                throw new Error(data.error);
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Error:', error);
+	            
+	            // Show error alert
+	            const alertHtml = `
+	                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+	                    Failed to update profile picture. Please try again.
+	                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	                </div>
+	            `;
+	            wrapper.insertAdjacentHTML('beforebegin', alertHtml);
+	        })
+	        .finally(() => {
+	            // Reset everything
+	            progressIndicator.classList.add('d-none');
+	            wrapper.style.opacity = '1';
+	            e.target.value = '';
+	            fileNameDisplay.textContent = '';
+	        });
+	    } else {
+	        fileNameDisplay.textContent = '';
+	    }
+	});
+	
+	// Auto-dismiss alerts after 3 seconds
+	document.addEventListener('DOMContentLoaded', function() {
+	    const autoCloseAlerts = () => {
+	        const alerts = document.querySelectorAll('.alert');
+	        alerts.forEach(alert => {
+	            setTimeout(() => {
+	                if (alert) {
+	                    const bsAlert = new bootstrap.Alert(alert);
+	                    bsAlert.close();
+	                }
+	            }, 3000);
+	        });
+	    };
+	    
+	    // Run initially and set up a mutation observer to handle dynamically added alerts
+	    autoCloseAlerts();
+	    new MutationObserver(autoCloseAlerts).observe(document.body, {
+	        childList: true,
+	        subtree: true
+	    });
+	});
+	</script>
 </body>
 </html>
