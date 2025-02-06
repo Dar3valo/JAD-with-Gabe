@@ -1,5 +1,6 @@
 package Utils;
 
+import java.io.File;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -7,6 +8,11 @@ import javax.mail.internet.*;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class Mail {
+	static Dotenv dotenv = Dotenv.configure().load();
+	
+	static String gmail_account = dotenv.get("gmail_account");
+	static String gmail_public = dotenv.get("gmail_public");
+	
     private static Session createSession() {
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com"); // Gmail SMTP server
@@ -17,10 +23,7 @@ public class Mail {
         return Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-            	Dotenv dotenv = Dotenv.load();
-            	String gmail_address = dotenv.get("gmail_account");
-            	String gmail_public = dotenv.get("gmail_public");
-                return new PasswordAuthentication(gmail_address, gmail_public);
+                return new PasswordAuthentication(gmail_account, gmail_public);
             }
         });
     }
@@ -31,7 +34,7 @@ public class Mail {
 
             // Create the email message
             MimeMessage email = new MimeMessage(session);
-            email.setFrom(new InternetAddress("wongdarren516@gmail.com")); // Use the sender's email
+            email.setFrom(new InternetAddress(gmail_account)); // Use the sender's email
             email.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
             email.setSubject(subject);
             email.setText(body);
@@ -41,8 +44,10 @@ public class Mail {
 
             System.out.println("Email sent successfully!");
             return true;
+            
         } catch (MessagingException e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
             return false;
         }
     }
