@@ -1049,41 +1049,48 @@
 
 				<%
 				// Initialize page number and size for pagination
-				int pageNumber = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
-				int pageSize = 5;
+						int pageNumber = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
+						int pageSize = 5;
 
-				// Get filter values (if any)
-				String filterType = request.getParameter("filterType");
-				String filterValue = request.getParameter("filterValue");
+						// Get filter values (if any)
+						String filterType = request.getParameter("filterType");
+						String filterValue = request.getParameter("filterValue");
 
-				// Fetch booking details from the DAO
-				BookingDAO bookingDAO = new BookingDAO();
-				List<Booking> bookingList;
-				int totalRecords;
+						// Fetch booking details from the DAO
+						BookingDAO bookingDAO = new BookingDAO();
+						List<Booking> bookingList;
+						int totalRecords;
 
-				// Apply filters if provided, else get all bookings
-				if (filterType != null && filterValue != null && !filterValue.isEmpty()) {
-					bookingList = bookingDAO.getFilteredBookings(filterType, filterValue, pageNumber, pageSize);
-					totalRecords = bookingDAO.getTotalFilteredBookings(filterType, filterValue);
-				} else {
-					bookingList = bookingDAO.getBookingDetailsAdmin(pageNumber, pageSize);
-					totalRecords = bookingDAO.getTotalBookings();
-				}
+						// Apply filters if provided, else get all bookings
+						if ("top-customers".equals(filterType)) {
+							// Fetch top 10 users by service price (no filter value needed)
+							bookingList = bookingDAO.getTopCustomersByServicePrice(pageNumber, pageSize);
+							totalRecords = bookingDAO.getTotalTopCustomersByServicePrice();
+						} else if (filterType != null && filterValue != null && !filterValue.isEmpty()) {
+							// Apply date or month filters
+							bookingList = bookingDAO.getFilteredBookings(filterType, filterValue, pageNumber, pageSize);
+							totalRecords = bookingDAO.getTotalFilteredBookings(filterType, filterValue);
+						} else {
+							// Fetch all bookings if no filter is applied
+							bookingList = bookingDAO.getBookingDetailsAdmin(pageNumber, pageSize);
+							totalRecords = bookingDAO.getTotalBookings();
+						}
 
-				// Calculate total pages
-				int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+						// Calculate total pages
+						int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
 
-				// Calculate records range for display
-				int startRecord = (pageNumber - 1) * pageSize + 1;
-				int endRecord = Math.min(startRecord + pageSize - 1, totalRecords);
+						// Calculate records range for display
+						int startRecord = (pageNumber - 1) * pageSize + 1;
+						int endRecord = Math.min(startRecord + pageSize - 1, totalRecords);
 				%>
 
 				<!-- Filter Section -->
 				<div id="booking-filter"
 					class="m-0 p-0 <%=dashboardCurrentFocus.equals("booking-content") ? "d-block" : "d-none"%> filterOption">
+					<!-- Filter Section -->
 					<form method="GET"
 						action="${pageContext.request.contextPath}/BookingFilterServlet">
-						<label for="filterType">Filter By:</label> <select
+						<label for="filterType">Filter By: </label> <select
 							name="filterType" id="filterType">
 							<option value="date"
 								<%=filterType != null && filterType.equals("date") ? "selected" : ""%>>Booking
@@ -1091,13 +1098,14 @@
 							<option value="month"
 								<%=filterType != null && filterType.equals("month") ? "selected" : ""%>>Booking
 								Month</option>
+							<option value="top-customers"
+								<%=filterType != null && filterType.equals("top-customers") ? "selected" : ""%>>Top
+								10 Users</option>
 						</select> <input type="text" name="filterValue"
 							placeholder="Enter Date (YYYY-MM-DD) or Month (MM)"
-							value="<%=filterValue != null ? filterValue : ""%>" required>
-						<input type="submit" class="btn btn-primary" value="Apply Filters">
-						
-						<!-- Reset Filters Button -->
-						<a href="<%=request.getRequestURI()%>" class="btn btn-secondary">Reset
+							value="<%=filterValue != null ? filterValue : ""%>"> <input
+							type="submit" value="Apply Filters"> <a
+							href="<%=request.getRequestURI()%>" class="btn btn-secondary">Reset
 							Filters</a>
 					</form>
 				</div>
