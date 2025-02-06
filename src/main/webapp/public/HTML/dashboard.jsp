@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
@@ -104,7 +105,7 @@
 	List<Role> roles = (List<Role>) session.getAttribute("roles");
 	ServiceCategory currentCategory = (ServiceCategory) session.getAttribute("currentCategory");
 	Role currentRole = (Role) session.getAttribute("currentRole");
-	List<Booking> bookings = (List<Booking>) request.getAttribute("bookings");
+	List<Booking> bookings = (List<Booking>) session.getAttribute("bookings");
 
 	if (users == null) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllUsersServlet");
@@ -260,6 +261,7 @@
 								</div>
 							</form>
 						</div>
+						<%-- 
 						<!-- Filter Form (Visible Only When Booking Tab is Active) -->
 						<div id="booking-filter"
 							class="m-0 p-0 <%= dashboardCurrentFocus.equals("booking-content") ? "d-block" : "d-none" %> filterOption">
@@ -271,9 +273,11 @@
 									<option value="month">Booking Month</option>
 								</select> <input type="text" name="filterValue"
 									placeholder="Enter Date (YYYY-MM-DD) or Month (MM)" required>
-								<button type="submit">Apply Filter</button>
+								<input type="submit" class="btn btn-primary"
+										value="Apply Filters">
 							</form>
 						</div>
+						--%>
 					</div>
 
 					<%-- edit category information --%>
@@ -885,7 +889,7 @@
 					%>
 				</section>
 
-				<section class="h-100 tab-pane fade show active"
+				<section class="h-100 tab-pane fade"
 					id="reporting-content" role="tabpanel">
 					<div
 						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
@@ -940,7 +944,7 @@
 					</div>
 				</section>
 
-				<section class="h-100 tab-pane fade show active" id="service-rating-content" role="tabpanel">
+				<section class="h-100 tab-pane fade" id="service-rating-content" role="tabpanel">
 					<div
 						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
 						<h3 class="m-0 p-0 primaryFont">Service Ratings</h3>
@@ -992,7 +996,7 @@
 					</div>
 				</section>
 				
-				<section class="h-100 tab-pane fade show active" id="service-demand-content" role="tabpanel">
+				<section class="h-100 tab-pane fade" id="service-demand-content" role="tabpanel">
 					<div
 						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
 						<h3 class="m-0 p-0 primaryFont">Service Demand</h3>
@@ -1045,25 +1049,71 @@
 				</section>
 
 				<%
-				// Initialize variables for pagination
-				int pageNumber = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
-				int pageSize = 5;
+				// Initialize page number and size for pagination
+						int pageNumber = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
+						int pageSize = 5;
 
-				// Get booking details from DAO
-				BookingDAO bookingDAO = new BookingDAO();
-				List<Booking> bookingList = bookingDAO.getBookingDetailsAdmin(pageNumber, pageSize);
+						// Get filter values (if any)
+						String filterType = request.getParameter("filterType");
+						String filterValue = request.getParameter("filterValue");
 
-				// Get total bookings for pagination
-				int totalRecords = bookingDAO.getTotalBookings();
-				int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+						// Fetch booking details from the DAO
+						BookingDAO bookingDAO = new BookingDAO();
+						List<Booking> bookingList;
+						int totalRecords;
 
-				// Calculate records range for display
-				int startRecord = (pageNumber - 1) * pageSize + 1;
-				int endRecord = Math.min(startRecord + pageSize - 1, totalRecords);
+						// Apply filters if provided, else get all bookings
+						if ("top-customers".equals(filterType)) {
+							// Fetch top 10 users by service price (no filter value needed)
+							bookingList = bookingDAO.getTopCustomersByServicePrice(pageNumber, pageSize);
+							totalRecords = bookingDAO.getTotalTopCustomersByServicePrice();
+						} else if (filterType != null && filterValue != null && !filterValue.isEmpty()) {
+							// Apply date or month filters
+							bookingList = bookingDAO.getFilteredBookings(filterType, filterValue, pageNumber, pageSize);
+							totalRecords = bookingDAO.getTotalFilteredBookings(filterType, filterValue);
+						} else {
+							// Fetch all bookings if no filter is applied
+							bookingList = bookingDAO.getBookingDetailsAdmin(pageNumber, pageSize);
+							totalRecords = bookingDAO.getTotalBookings();
+						}
+
+						// Calculate total pages
+						int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+
+						// Calculate records range for display
+						int startRecord = (pageNumber - 1) * pageSize + 1;
+						int endRecord = Math.min(startRecord + pageSize - 1, totalRecords);
 				%>
 
+				<!-- Filter Section -->
+				<div id="booking-filter"
+					class="m-0 p-0 <%=dashboardCurrentFocus.equals("booking-content") ? "d-block" : "d-none"%> filterOption">
+					<!-- Filter Section -->
+					<form method="GET"
+						action="${pageContext.request.contextPath}/BookingFilterServlet">
+						<label for="filterType">Filter By: </label> <select
+							name="filterType" id="filterType">
+							<option value="date"
+								<%=filterType != null && filterType.equals("date") ? "selected" : ""%>>Booking
+								Date</option>
+							<option value="month"
+								<%=filterType != null && filterType.equals("month") ? "selected" : ""%>>Booking
+								Month</option>
+							<option value="top-customers"
+								<%=filterType != null && filterType.equals("top-customers") ? "selected" : ""%>>Top
+								10 Users</option>
+						</select> <input type="text" name="filterValue"
+							placeholder="Enter Date (YYYY-MM-DD) or Month (MM)"
+							value="<%=filterValue != null ? filterValue : ""%>"> <input
+							type="submit" value="Apply Filters"> <a
+							href="<%=request.getRequestURI()%>" class="btn btn-secondary">Reset
+							Filters</a>
+					</form>
+				</div>
+
+				<!-- Booking Table Section -->
 				<section
-					class="h-100 tab-pane fade <%= dashboardCurrentFocus.equals("booking-content") ? "show active" : "" %>"
+					class="h-100 tab-pane fade <%=dashboardCurrentFocus.equals("booking-content") ? "show active" : ""%>"
 					id="booking-content" role="tabpanel">
 					<div class="table-container">
 						<table class="table table-striped table-hover">
@@ -1078,22 +1128,28 @@
 								</tr>
 							</thead>
 							<tbody>
-								<% if (bookingList != null && !bookingList.isEmpty()) { 
-                    for (Booking booking : bookingList) { %>
+								<%
+								if (bookingList != null && !bookingList.isEmpty()) {
+									for (Booking booking : bookingList) {
+								%>
 								<tr>
-									<td><%= booking.getUsername() %></td>
-									<td><%= booking.getUserEmail() %></td>
-									<td><%= booking.getBooking_date() %></td>
-									<td><%= booking.getBookingPeriod() %></td>
-									<td><%= booking.getServiceName() %></td>
-									<td>$<%= String.format("%.2f", booking.getServicePrice()) %></td>
+									<td><%=booking.getUsername()%></td>
+									<td><%=booking.getUserEmail()%></td>
+									<td><%=booking.getBooking_date()%></td>
+									<td><%=booking.getBookingPeriod()%></td>
+									<td><%=booking.getServiceName()%></td>
+									<td>$<%=String.format("%.2f", booking.getServicePrice())%></td>
 								</tr>
-								<% } 
-                } else { %>
+								<%
+								}
+								} else {
+								%>
 								<tr>
 									<td colspan="6">No bookings found.</td>
 								</tr>
-								<% } %>
+								<%
+								}
+								%>
 							</tbody>
 						</table>
 					</div>
@@ -1102,34 +1158,46 @@
 					<div class="pagination-container">
 						<div class="results-info">
 							Showing
-							<%= startRecord %>
+							<%=startRecord%>
 							to
-							<%= endRecord %>
+							<%=endRecord%>
 							of
-							<%= totalRecords %>
+							<%=totalRecords%>
 							entries
 						</div>
 						<nav aria-label="Page navigation">
 							<ul class="pagination">
-								<li
-									class="page-item <%= pageNumber == 1 ? "disabled" : "" %>">
-									<a class="page-link" href="?page=<%= pageNumber - 1 %>">&laquo;</a>
+								<!-- Previous Page -->
+								<li class="page-item <%=pageNumber == 1 ? "disabled" : ""%>">
+									<a class="page-link"
+									href="<%=(filterType != null && !filterType.isEmpty() && filterValue != null && !filterValue.isEmpty())
+		? "?page=" + (pageNumber - 1) + "&filterType=" + filterType + "&filterValue=" + filterValue
+		: "?page=" + (pageNumber - 1)%>">&laquo;</a>
 								</li>
 
-								<% 
-                					// Generate page numbers for pagination
-                					int startPage = Math.max(1, pageNumber - 2);
-                					int endPage = Math.min(startPage + 4, totalPages);
+								<%
+								// Dynamic page links logic (ensure no index out of bounds)
+								int startPage = Math.max(1, pageNumber - 2);
+								int endPage = Math.min(startPage + 4, totalPages);
+								for (int i = startPage; i <= endPage; i++) {
+								%>
+								<li class="page-item <%=pageNumber == i ? "active" : ""%>">
+									<a class="page-link"
+									href="<%=(filterType != null && !filterType.isEmpty() && filterValue != null && !filterValue.isEmpty())
+		? "?page=" + i + "&filterType=" + filterType + "&filterValue=" + filterValue
+		: "?page=" + i%>"><%=i%></a>
+								</li>
+								<%
+								}
+								%>
 
-                					for (int i = startPage; i <= endPage; i++) { %>
-											<li class="page-item <%= pageNumber == i ? "active" : "" %>">
-												<a class="page-link" href="?page=<%= i %>"><%= i %></a>
-											</li>
-										<% } %>
-
+								<!-- Next Page -->
 								<li
-									class="page-item <%= pageNumber == totalPages ? "disabled" : "" %>">
-									<a class="page-link" href="?page=<%= pageNumber + 1 %>">&raquo;</a>
+									class="page-item <%=pageNumber == totalPages ? "disabled" : ""%>">
+									<a class="page-link"
+									href="<%=(filterType != null && !filterType.isEmpty() && filterValue != null && !filterValue.isEmpty())
+		? "?page=" + (pageNumber + 1) + "&filterType=" + filterType + "&filterValue=" + filterValue
+		: "?page=" + (pageNumber + 1)%>">&raquo;</a>
 								</li>
 							</ul>
 						</nav>

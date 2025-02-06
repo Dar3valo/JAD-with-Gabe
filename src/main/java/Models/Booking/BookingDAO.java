@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import Models.User.User;
+
 public class BookingDAO {
 	public Booking transferCartData(int user_id) {
 
@@ -397,7 +399,131 @@ public class BookingDAO {
             }
         }
         return bookings;
+    };
+    
+    public int getTotalFilteredBookings(String filterType, String filterValue) {
+        int totalFilteredRecords = 0;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            Class.forName("org.postgresql.Driver");
+            String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+            conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+            String sql = "SELECT COUNT(*) FROM booking b " +
+                         "JOIN service srv ON b.service_id = srv.service_id " +
+                         "JOIN users u ON b.user_id = u.user_id " +
+                         "JOIN schedule s ON b.schedule_id = s.schedule_id ";
+            
+            // Add WHERE clause based on filter type
+            if ("date".equals(filterType)) {
+                sql += "WHERE b.booking_date = ?";
+            } else if ("month".equals(filterType)) {
+                sql += "WHERE EXTRACT(MONTH FROM b.booking_date) = ?";
+            } else {
+                throw new IllegalArgumentException("Invalid filter type: " + filterType);
+            }
+
+            stmt = conn.prepareStatement(sql);
+
+            if ("date".equals(filterType)) {
+                // For date filter, ensure filterValue is a valid date string (e.g., "2025-02-06")
+                stmt.setDate(1, Date.valueOf(filterValue));  // Convert string to Date
+            } else if ("month".equals(filterType)) {
+                // For month filter, filterValue should be an integer (e.g., "5" for May)
+                stmt.setInt(1, Integer.parseInt(filterValue));  // Convert string to integer
+            }
+            
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+            	totalFilteredRecords = rs.getInt(1);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return totalFilteredRecords;
     }
 
-	
+    public List<Booking> getTopCustomersByServicePrice(int pageNumber, int pageSize) {
+        List<Booking> topCustomers = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            Class.forName("org.postgresql.Driver");
+            String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+            conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+            
+            String sql = "SELECT u.user_id, u.name, SUM(s.price) AS total_service_price " +
+                         "FROM booking b " +
+                         "JOIN users u ON b.user_id = u.user_id " +
+                         "JOIN service s ON b.service_id = s.service_id " +
+                         "GROUP BY u.user_id, u.name " +
+                         "ORDER BY total_service_price DESC " +
+                         "LIMIT ? OFFSET ?";
+            
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, pageSize);  // Limit to 'pageSize' number of records per page
+            stmt.setInt(2, (pageNumber - 1) * pageSize);  // Offset to skip records for pagination
+            rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                Booking booking = new Booking();
+                booking.setUser_id(rs.getInt("user_id"));
+                booking.setUsername(rs.getString("name"));
+                booking.setServicePrice(rs.getDouble("total_service_price")); // Use servicePrice for aggregated total
+                topCustomers.add(booking);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return topCustomers;
+    }
+
+    
+    public int getTotalTopCustomersByServicePrice() {
+        int totalRecords = 0;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+        	Class.forName("org.postgresql.Driver");
+            String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+            conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+            
+            String query = "SELECT COUNT(DISTINCT user_id) FROM booking";
+            
+            stmt = conn.prepareStatement(query);
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                totalRecords = rs.getInt(1);
+            }
+        	
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return totalRecords;
+    }
+
 }
