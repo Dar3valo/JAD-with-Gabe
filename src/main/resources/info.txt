@@ -1,0 +1,4 @@
+////// DISCLAIMER! //////
+/// INCLUDE .env HERE ///
+/////////////////////////
+putting it elsewhere may cause errors as the dotenv library will be unable to find the file
