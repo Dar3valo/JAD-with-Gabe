@@ -87,7 +87,7 @@ public class HandleForgetPasswordServlet extends HttpServlet {
                         + "We received a request to reset your password. Click the link below to reset it:\n"
                         + resetLink + "\n\n"
                         + "If you did not request this, please ignore this email.";
-                
+
                 boolean emailSent = Mail.sendEmail(email, subject, message); // Mail utility method
                 if (emailSent) {
                     response.sendRedirect(request.getContextPath() + "/public/HTML/forgetPasswordSuccess.jsp");
