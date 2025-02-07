@@ -42,7 +42,7 @@ public class ServiceFilterServlet extends HttpServlet {
         ServiceDAO serviceDAO = new ServiceDAO();
         if ("rating".equals(filterType)) {
             // Fetch services ordered by rating
-            List<ServiceByRating> servicesByRating = serviceDAO.getServicesOrderedByRating();
+            List<Service> servicesByRating = serviceDAO.getServicesOrderedByRating();
             session.setAttribute("serviceRatingOrder", servicesByRating);
             session.removeAttribute("bookingFrequency"); // Clear the other attribute
         } else if ("demand".equals(filterType)) {

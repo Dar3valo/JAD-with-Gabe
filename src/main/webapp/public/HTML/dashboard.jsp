@@ -33,10 +33,12 @@
 	    const servicesbutton = document.getElementById('services-tab');
 	    const usersbutton = document.getElementById('users-tab');
 	    const bookingbutton = document.getElementById('booking-list-tab');
+	    const serviceReportButton = document.getElementById('service-reporting-tab');
 	    
         const servicesFilter = document.getElementById('services-filter');
         const usersFilter = document.getElementById('users-filter');
         const bookingFilter = document.getElementById('booking-filter');
+        const serviceReportsFilter = document.getElementById('service-filter');
         
         const filterOptions = document.querySelectorAll('.filterOption');
         
@@ -58,6 +60,16 @@
             });
             
             usersFilter.classList.remove('d-none');
+	    });
+	    
+	    serviceReportButton.addEventListener('click', () => {
+	    	serviceReportsFilter.classList.remove('d-none');
+            
+            filterOptions.forEach(option => {
+                option.classList.add('d-none');
+            });
+            
+            serviceReportsFilter.classList.remove('d-none');
 	    });
 	    
 	    bookingbutton.addEventListener('click', () => {
@@ -159,31 +171,19 @@
 								</button>
 							</li>
 							<li class="nav-item" role="presentation">
-								<button class="nav-link" id="reporting-tab"
-									data-bs-toggle="pill" data-bs-target="#reporting-content"
-									type="button" role="tab">
-									<i class="bi bi-bar-chart-line-fill me-2"></i>Service Reporting
-								</button>
-							</li>
-							<li class="nav-item" role="presentation">
-								<button class="nav-link" id="service-rating-tab"
-									data-bs-toggle="pill" data-bs-target="#service-rating-content"
-									type="button" role="tab">
-									<i class="bi bi-bar-chart-line-fill me-2"></i>Service Ratings
-								</button>
-							</li>
-							<li class="nav-item" role="presentation">
-								<button class="nav-link" id="booking-frequency-tab"
-									data-bs-toggle="pill" data-bs-target="#service-demand-content"
-									type="button" role="tab">
-									<i class="bi bi-bar-chart-line-fill me-2"></i>Service Demand
-								</button>
-							</li>
-							<li class="nav-item" role="presentation">
 								<button
 									class="nav-link <%= dashboardCurrentFocus.equals("booking-content") ? "active" : "" %>"
 									id="booking-list-tab" data-bs-toggle="pill"
 									data-bs-target="#booking-content" type="button" role="tab">
+									<i class="bi bi-bar-chart-line-fill me-2"></i>Booking List
+								</button> service-reports-content
+							</li>
+							
+							<li class="nav-item" role="presentation">
+								<button
+									class="nav-link <%= dashboardCurrentFocus.equals("service-reports-content") ? "active" : "" %>"
+									id="service-reporting-tab" data-bs-toggle="pill"
+									data-bs-target="#service-reports-content" type="button" role="tab">
 									<i class="bi bi-bar-chart-line-fill me-2"></i>Booking List
 								</button>
 							</li>
@@ -889,165 +889,6 @@
 					%>
 				</section>
 
-				<section class="h-100 tab-pane fade"
-					id="reporting-content" role="tabpanel">
-					<div
-						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
-						<h3 class="m-0 p-0 primaryFont">Service Reporting</h3>
-					</div>
-
-					<form action="<%=request.getContextPath()%>/ServiceReportServlet"
-						method="get">
-						<div class="mb-4">
-							<button type="submit" class="btn btn-primary">Fetch
-								Service Reports
-							</button>
-						</div>
-					</form>
-
-					<div class="table-container"
-						style="height: 70vh; overflow-y: auto;">
-						<table class="table table-striped table-hover">
-							<thead class="sticky-top border">
-								<tr>
-									<th class="bg-white">Service ID</th>
-									<th class="bg-white">Service Name</th>
-									<th class="bg-white">Total Bookings</th>
-									<th class="bg-white">Total Revenue</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%
-								List<ServiceReport> serviceReports = (List<ServiceReport>) request.getSession().getAttribute("serviceReports");
-								if (serviceReports != null && !serviceReports.isEmpty()) {
-									for (ServiceReport report : serviceReports) {
-								%>
-								<tr>
-									<td><%=report.getServiceId()%></td>
-									<td><%=report.getServiceName()%></td>
-									<td><%=report.getTotalBookings()%></td>
-									<td>$<%=String.format("%.2f", report.getTotalRevenue())%></td>
-								</tr>
-								<%
-								}
-								} else {
-								%>
-								<tr>
-									<td colspan="4" class="text-center">No report data
-										available.</td>
-								</tr>
-								<%
-								}
-								%>
-							</tbody>
-						</table>
-					</div>
-				</section>
-
-				<section class="h-100 tab-pane fade" id="service-rating-content" role="tabpanel">
-					<div
-						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
-						<h3 class="m-0 p-0 primaryFont">Service Ratings</h3>
-					</div>
-
-					<form
-						action="<%=request.getContextPath()%>/ServiceRatingOrderServlet"
-						method="get">
-						<div class="mb-4">
-							<button type="submit" class="btn btn-primary">Fetch
-								Service Ratings</button>
-						</div>
-					</form>
-
-					<div class="table-container"
-						style="height: 70vh; overflow-y: auto;">
-						<table class="table table-striped table-hover">
-							<thead class="sticky-top border">
-								<tr>
-									<th class="bg-white">Service ID</th>
-									<th class="bg-white">Service Name</th>
-									<th class="bg-white">Average Rating</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%
-								List<ServiceByRating> serviceRatings = (List<ServiceByRating>) session.getAttribute("serviceRatingOrder");
-								if (serviceRatings != null && !serviceRatings.isEmpty()) {
-									for (ServiceByRating rating : serviceRatings) {
-								%>
-								<tr>
-									<td><%=rating.getId()%></td>
-									<td><%=rating.getName()%></td>
-									<td><%=String.format("%.2f", rating.getAverageRating())%></td>
-								</tr>
-								<%
-								}
-								} else {
-								%>
-								<tr>
-									<td colspan="5" class="text-center">No report data
-										available.</td>
-								</tr>
-								<%
-								}
-								%>
-							</tbody>
-						</table>
-					</div>
-				</section>
-				
-				<section class="h-100 tab-pane fade" id="service-demand-content" role="tabpanel">
-					<div
-						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
-						<h3 class="m-0 p-0 primaryFont">Service Demand</h3>
-					</div>
-
-					<form
-						action="<%=request.getContextPath()%>/ServiceDemandServlet"
-						method="get">
-						<div class="mb-4">
-							<button type="submit" class="btn btn-primary">Fetch
-								Service Demands</button>
-						</div>
-					</form>
-
-					<div class="table-container"
-						style="height: 70vh; overflow-y: auto;">
-						<table class="table table-striped table-hover">
-							<thead class="sticky-top border">
-								<tr>
-									<th class="bg-white">Service ID</th>
-									<th class="bg-white">Service Name</th>
-									<th class="bg-white">Booking Count</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%
-								List<Service> serviceDemands = (List<Service>) session.getAttribute("bookingFrequency");
-								if (serviceDemands != null && !serviceDemands.isEmpty()) {
-									for (Service demand : serviceDemands) {
-								%>
-								<tr>
-									<td><%=demand.getService_id()%></td>
-									<td><%=demand.getName()%></td>
-									<td><%=demand.getBooking_count() %></td>
-								</tr>
-								<%
-								}
-								} else {
-								%>
-								<tr>
-									<td colspan="5" class="text-center">No report data
-										available.</td>
-								</tr>
-								<%
-								}
-								%>
-							</tbody>
-						</table>
-					</div>
-				</section>
-
 				<%
 				// Initialize page number and size for pagination
 				int pageNumber = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
@@ -1209,6 +1050,97 @@
 						</nav>
 					</div>
 				</section>
+
+				<!-- Services Section -->
+				<%
+				// Retrieve the service reports and the serviceFilterType from the session
+				List<?> serviceReports = (List<?>) session.getAttribute("serviceReports");
+				String serviceFilterType = request.getParameter("serviceFilterType") != null ? request.getParameter("serviceFilterType")
+						: "all"; // Default to 'all' if null
+				%>
+
+				<!-- Filter Section -->
+				<div id="service-filter"
+					class="m-0 p-0 <%=dashboardCurrentFocus.equals("service-reports-content") ? "d-block" : "d-none"%> filterOption">
+					<form method="GET"
+						action="${pageContext.request.contextPath}/ServiceReportsFilterServlet">
+						<label for="serviceFilterType">Filter By: </label> <select
+							name="serviceFilterType" id="serviceFilterType">
+							<!-- Changed to serviceFilterType -->
+							<option value="rating"
+								<%=serviceFilterType.equals("rating") ? "selected" : ""%>>Highest
+								Ratings</option>
+							<option value="booking"
+								<%=serviceFilterType.equals("booking") ? "selected" : ""%>>Most
+								Bookings</option>
+						</select>
+						<button type="submit" class="btn btn-primary mt-2">Apply
+							Filters</button>
+						<a href="<%=request.getRequestURI()%>" class="btn btn-secondary">Reset
+							Filters</a>
+					</form>
+				</div>
+
+				<!-- Service Reports Table Section -->
+				<section
+					class="h-100 tab-pane fade <%=dashboardCurrentFocus.equals("service-reports-content") ? "show active" : ""%>"
+					id="service-reports-content" role="tabpanel">
+					<div class="table-container">
+						<h3>Service Reports</h3>
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>Service ID</th>
+									<th>Service Name</th>
+									<th>Additional Info</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%
+								if (serviceReports != null && !serviceReports.isEmpty()) {
+									for (Object report : serviceReports) {
+										if ("rating".equals(serviceFilterType) && report instanceof Service) {
+									Service service = (Service) report;
+								%>
+								<tr>
+									<td><%=service.getService_id()%></td>
+									<td><%=service.getName()%></td>
+									<td>Average Rating: <%=String.format("%.2f", service.getAverageRating())%></td>
+								</tr>
+								<%
+								} else if ("booking".equals(serviceFilterType) && report instanceof Service) {
+								Service service = (Service) report;
+								%>
+								<tr>
+									<td><%=service.getService_id()%></td>
+									<td><%=service.getName()%></td>
+									<td>Total Bookings: <%=service.getBooking_count()%></td>
+								</tr>
+								<%
+								} else if (report instanceof Service) {
+								Service service = (Service) report;
+								%>
+								<tr>
+									<td><%=service.getService_id()%></td>
+									<td><%=service.getName()%></td>
+									<td>Total Revenue: <%=String.format("$%.2f", service.getTotalRevenue())%></td>
+								</tr>
+								<%
+								}
+								}
+								} else {
+								%>
+								<tr>
+									<td colspan="3" class="text-center">No data available</td>
+								</tr>
+								<%
+								}
+								%>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
 			</div>
 		</div>
 

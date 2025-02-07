@@ -286,8 +286,8 @@ public class ServiceDAO {
 		return 0;
 	};
 	
-	public List<ServiceReport> getServiceReport() {
-		List<ServiceReport> serviceReports = new ArrayList<>();
+	public List<Service> getServiceReport() {
+		List<Service> serviceReports = new ArrayList<>();
 		Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
@@ -311,7 +311,7 @@ public class ServiceDAO {
                 double totalRevenue = rs.getDouble("totalRevenue");
                 int totalBookings = rs.getInt("totalBookings");
 
-                serviceReports.add(new ServiceReport(serviceId, serviceName, totalRevenue, totalBookings));
+                serviceReports.add(new Service(serviceId, serviceName, totalRevenue, totalBookings));
 			}
         }catch(Exception e) {
         	e.printStackTrace();
@@ -327,8 +327,8 @@ public class ServiceDAO {
         return serviceReports;
 	};
 	
-	public List<ServiceByRating> getServicesOrderedByRating(){
-		List<ServiceByRating> servicesByRating = new ArrayList<>();
+	public List<Service> getServicesOrderedByRating(){
+		List<Service> servicesByRating = new ArrayList<>();
 		Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
@@ -359,8 +359,8 @@ public class ServiceDAO {
 			rs = statement.executeQuery();
 			
 			while(rs.next()) {
-				ServiceByRating service = new ServiceByRating();
-                service.setId(rs.getInt("service_id"));
+				Service service = new Service();
+                service.setService_id(rs.getInt("service_id"));
                 service.setName(rs.getString("name"));
                 service.setAverageRating(rs.getDouble("average_rating"));
 

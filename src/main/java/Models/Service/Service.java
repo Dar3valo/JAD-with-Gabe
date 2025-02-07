@@ -7,6 +7,9 @@ public class Service {
 	private double price;
 	private String service_photo_url;
 	private int booking_count;
+	private double totalRevenue;
+    private int totalBookings;
+    private double averageRating;
 	
 	// constructor where all values are passed
 	public Service(int service_id, String name, String description, double price, String service_photo_url) {
@@ -26,6 +29,20 @@ public class Service {
 		this.description = "";
 		this.price = 0.0;
 		this.service_photo_url = "../Image/defaultpic.png";
+	}
+	
+	public Service(int service_id, String name, double totalRevenue, int totalBookings) {
+        this.service_id = service_id;
+        this.name = name;
+        this.totalRevenue = totalRevenue;
+        this.totalBookings = totalBookings;
+    }
+	
+	public Service(int service_id, String name, double averageRating) {
+		super();
+		this.service_id = service_id;
+		this.name = name;
+		this.averageRating = averageRating;
 	}
 	
 	public Service() {
@@ -80,5 +97,29 @@ public class Service {
 	
 	public void setService_photo_url(String service_photo_url) {
 		this.service_photo_url = service_photo_url;
+	}
+	
+	public double getTotalRevenue() {
+		return totalRevenue;
+	}
+
+	public void setTotalRevenue(double totalRevenue) {
+		this.totalRevenue = totalRevenue;
+	}
+
+	public int getTotalBookings() {
+		return totalBookings;
+	}
+
+	public void setTotalBookings(int totalBookings) {
+		this.totalBookings = totalBookings;
+	}
+	
+	public double getAverageRating() {
+		return averageRating;
+	}
+	
+	public void setAverageRating(double averageRating) {
+		this.averageRating = averageRating;
 	}
 }
