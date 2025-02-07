@@ -184,7 +184,7 @@
 									class="nav-link <%= dashboardCurrentFocus.equals("service-reports-content") ? "active" : "" %>"
 									id="service-reporting-tab" data-bs-toggle="pill"
 									data-bs-target="#service-reports-content" type="button" role="tab">
-									<i class="bi bi-bar-chart-line-fill me-2"></i>Booking List
+									<i class="bi bi-bar-chart-line-fill me-2"></i>Service Reports
 								</button>
 							</li>
 						</ul>
