@@ -1,7 +1,19 @@
 package Models.Cart;
 
 import java.sql.Timestamp;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import Models.Booking.Booking;
+
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class CartItem {
 	private int cart_item_id;
@@ -143,4 +155,45 @@ public class CartItem {
 		return null;
 	}
 	
+	public String getCartItemName() {
+		Connection conn = null;
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+	    String timing = "";
+
+	    try {
+	        Class.forName("org.postgresql.Driver");
+	        String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+	        conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+	        String sql = "SELECT start_time::time, end_time::time FROM schedule WHERE schedule_id = ?";
+	        stmt = conn.prepareStatement(sql);
+	        stmt.setInt(1, this.getSchedule_id());  // Using the current object's schedule_id
+
+	        rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            LocalTime startTime = rs.getObject("start_time", LocalTime.class);
+	            LocalTime endTime = rs.getObject("end_time", LocalTime.class);
+	            
+	            timing = String.format("%s - %s", 
+	                startTime.format(DateTimeFormatter.ofPattern("HH:mm")),
+	                endTime.format(DateTimeFormatter.ofPattern("HH:mm"))
+	            );
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (stmt != null) stmt.close();
+	            if (conn != null) conn.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		
+		return String.format("%s | %s | %s", this.getServiceName(), this.getBooking_date(), timing);
+	}
 }
