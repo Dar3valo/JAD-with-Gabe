@@ -19,6 +19,7 @@ public class Booking {
     private String username;
     private String userEmail;
     private String bookingPeriod;
+    private String status_description;
 
 	public Booking(int booking_id, Date booking_date, String special_request, String main_address, int postal_code,
 			int user_id, int schedule_id, int service_id, int status_id) {
@@ -189,5 +190,13 @@ public class Booking {
 
 	public void setBookingPeriod(String bookingPeriod) {
 		this.bookingPeriod = bookingPeriod;
+	}
+	
+	public String getStatusDescription() {
+		return status_description;
+	}
+
+	public void setStatusDescription(String status_description) {
+		this.status_description = status_description;
 	}
 }

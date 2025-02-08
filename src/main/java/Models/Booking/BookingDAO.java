@@ -619,6 +619,88 @@ public class BookingDAO {
         }
         return totalFilteredRecords;
     }
+    
+    public List<Booking> getBookingsByUserId(int userId) {
+    	List<Booking> bookingsByUser = new ArrayList<>();
+    	Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+        	Class.forName("org.postgresql.Driver");
+            String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+            conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+            
+            String sql = "SELECT * FROM Booking WHERE user_id = ?";
+            
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userId);  // Set the service name filter
+            rs = stmt.executeQuery();
+        	
+            while (rs.next()) {
+                Booking booking = new Booking();
+
+                // Set properties based on column names from the result set
+                booking.setBooking_id(rs.getInt("booking_id"));
+                booking.setBooking_date(rs.getDate("booking_date"));
+                booking.setSpecial_request(rs.getString("special_request"));
+                booking.setMain_address(rs.getString("main_address"));
+                booking.setPostal_code(rs.getInt("postal_code"));
+                booking.setUser_id(rs.getInt("user_id"));
+                booking.setSchedule_id(rs.getInt("schedule_id"));
+                booking.setService_id(rs.getInt("service_id"));
+                booking.setCreation_date(rs.getTimestamp("creation_date"));
+                booking.setStatus_id(rs.getInt("status_id"));
+
+                // Add the booking to the list
+                bookingsByUser.add(booking);
+            }
+
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }
+        return bookingsByUser;
+    }
+    
+    public boolean updateBookingStatus(int bookingId, int statusId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        
+        try {
+            // Load the JDBC driver
+            Class.forName("org.postgresql.Driver");
+            
+            // Establish the connection
+            String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+            conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+            
+            // SQL query for updating the booking status
+            String sql = "UPDATE Booking SET status_id = ? WHERE booking_id = ?";
+            
+            // Prepare the statement
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, statusId);
+            stmt.setInt(2, bookingId);
+            
+            // Execute the update and return true if successful
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+            
+        } catch (Exception e) {
+            // Handle exceptions
+            e.printStackTrace();
+            return false;
+        } finally {
+            // Close resources in the finally block
+            try {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     
 }
