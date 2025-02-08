@@ -114,4 +114,51 @@ public class ForgetPasswordDAO {
 	    return generateToken;
 	}
 	
+	public User checkTokenValidity(String token) {
+	    User userWithToken = null;
+	    Connection conn = null;
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+	    
+	    try {
+	        Class.forName("org.postgresql.Driver");
+	        String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+	        conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+	        String sql = "SELECT email, name, reset_token, token_expiry FROM Users WHERE reset_token = ?";
+	        stmt = conn.prepareStatement(sql);
+	        stmt.setString(1, token);
+
+	        rs = stmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            userWithToken = new User();
+	            userWithToken.setEmail(rs.getString("email"));
+	            userWithToken.setName(rs.getString("name"));
+	            userWithToken.setReset_token(rs.getString("reset_token"));
+	            userWithToken.setTokenExpiryTime(rs.getTimestamp("token_expiry"));
+	            
+	            // Check if the token is expired
+	            Timestamp tokenExpiryTime = userWithToken.getTokenExpiryTime();
+	            long currentTime = System.currentTimeMillis();
+	            if (tokenExpiryTime.getTime() < currentTime) {
+	                // Token is expired, return null
+	                return null;
+	            }
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        // Close resources
+	        try {
+	            if (stmt != null) stmt.close();
+	            if (conn != null) conn.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return userWithToken;
+	}
+	
 }

@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
-
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class Mail {
@@ -29,25 +28,26 @@ public class Mail {
     }
 
     public static boolean sendEmail(String recipient, String subject, String body) {
-        try {
+    	try {
             Session session = createSession();
 
-            // Create the email message
+            // Create a new email message
             MimeMessage email = new MimeMessage(session);
-            email.setFrom(new InternetAddress(gmail_account)); // Use the sender's email
-            email.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-            email.setSubject(subject);
-            email.setText(body);
+            email.setFrom(new InternetAddress(gmail_account)); // Sender's email
+            email.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient)); // Recipient's email
+            email.setSubject(subject); // Email subject
+            email.setText(body); // Email body in plain text
 
             // Send the email
             Transport.send(email);
 
-            System.out.println("Email sent successfully!");
+            System.out.println("Email sent successfully to " + recipient);
             return true;
-            
+
         } catch (MessagingException e) {
+            // Log detailed error information for debugging
             e.printStackTrace();
-            System.out.println(e.getMessage());
+            System.out.println("Error while sending email: " + e.getMessage());
             return false;
         }
     }

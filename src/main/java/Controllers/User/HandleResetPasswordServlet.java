@@ -5,8 +5,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
+import Models.ForgetPassword.ForgetPasswordDAO;
+import Models.User.User;
 import Models.User.UserDAO;
 import Utils.PasswordBcrypt;
 
@@ -29,32 +33,48 @@ public class HandleResetPasswordServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String token = request.getParameter("token");
+
+        ForgetPasswordDAO dao = new ForgetPasswordDAO();
+        User userWithToken = dao.checkTokenValidity(token); // New method to check if token is valid and not expired
+        
+        if (userWithToken != null) {
+            // Token is valid, show the reset password form
+        	HttpSession session = request.getSession();
+            session.setAttribute("token", token);
+            response.sendRedirect(request.getContextPath() + "/public/HTML/resetPasswordForm.jsp");
+        } else {
+            // Token is invalid or expired
+            response.sendRedirect(request.getContextPath() + "/public/HTML/tokenExpired.jsp");
+        }
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		String email = request.getParameter("email");
+		String token = request.getParameter("token");
         String newPassword = request.getParameter("newPassword");
+
+        ForgetPasswordDAO dao = new ForgetPasswordDAO();
+        User userWithToken = dao.checkTokenValidity(token); // Check if token is valid
         
-        UserDAO userDAO = new UserDAO();
-        
-        if(userDAO.isEmailExist(email)) {
-        	String hashedPassword = PasswordBcrypt.hashPassword(newPassword);
-        	
-        	boolean isUpdatedPassword = userDAO.updatePassword(email, hashedPassword);
-        	
-        	if(isUpdatedPassword) {
-        		response.sendRedirect(request.getContextPath() + "/public/HTML/resetSuccess.jsp");
-        	}else {
-        		response.sendRedirect(request.getContextPath() + "/public/HTML/error.jsp");
-        	}
-        }else {
-        	response.sendRedirect(request.getContextPath() + "/public/HTML/error.jsp");
+        if (userWithToken != null) {
+            // Token is valid, proceed with password reset
+            String email = userWithToken.getEmail();
+            String hashedPassword = PasswordBcrypt.hashPassword(newPassword);
+            
+            UserDAO userDAO = new UserDAO();
+            boolean isUpdatedPassword = userDAO.updatePassword(email, hashedPassword);
+            
+            if (isUpdatedPassword) {
+                response.sendRedirect(request.getContextPath() + "/public/HTML/resetSuccess.jsp");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/public/HTML/error.jsp");
+            }
+        } else {
+            // Token is expired or invalid
+            response.sendRedirect(request.getContextPath() + "/public/HTML/tokenExpired.jsp");
         }
 	}
 

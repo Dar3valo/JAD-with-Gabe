@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 
 import Models.ForgetPassword.ForgetPasswordDAO;
 import Models.User.User;
@@ -67,23 +68,25 @@ public class HandleForgetPasswordServlet extends HttpServlet {
 
         ForgetPasswordDAO dao = new ForgetPasswordDAO();
         try {
-            // Check if email exists in the database
-            User checkExistingEmail = dao.checkExistingEmail(email);
-            if (checkExistingEmail == null) {
-                response.sendRedirect(request.getContextPath() + "/public/HTML/error.jsp");
-                return;
-            }
+//            // Check if email exists in the database
+//            User checkExistingEmail = dao.checkExistingEmail(email);
+//            if (checkExistingEmail == null) {
+//                response.sendRedirect(request.getContextPath() + "/public/HTML/error.jsp");
+//                return;
+//            }
 
             // Generate reset token
             User userWithToken = dao.generateResetToken(email);
             if (userWithToken != null) {
                 // Send the reset token to the user's email
                 String resetToken = userWithToken.getReset_token(); // Ensure the User model includes this field
+                Timestamp tokenExpiryTime = userWithToken.getTokenExpiryTime();
                 String resetLink = request.getRequestURL().toString().replace("HandleForgetPasswordServlet", "public/HTML/resetPassword.jsp") 
                         + "?token=" + resetToken;
 
                 String subject = "Password Reset Request";
-                String message = "Hello " + userWithToken.getName() + ",\n\n"
+                String message = "Hello " + userWithToken.getName() + ",\n\n" + 
+                		"This link will expire at: " + tokenExpiryTime + "\n\n"
                         + "We received a request to reset your password. Click the link below to reset it:\n"
                         + resetLink + "\n\n"
                         + "If you did not request this, please ignore this email.";
