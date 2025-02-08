@@ -1,6 +1,9 @@
 package Models.Feedback;
 
+import java.sql.*;
+
 public class Feedback {
+	private int feedback_id;
 	private int user_id;
 	private int rating;
 	private String sources;
@@ -8,6 +11,9 @@ public class Feedback {
 	private String comments;
 	private String improvements;
 	private int service_id;
+	private String service_name;
+	private Timestamp created_at;
+	private String username;
 
 	public Feedback(int user_id, int rating, String sources, String other_sources, String comments,
 			String improvements, int service_id) {
@@ -31,6 +37,10 @@ public class Feedback {
 		this.comments = comments;
 		this.improvements = improvements;
 	}
+	
+	public Feedback() {
+		
+	}
 
 	public int getService_id() {
 		return service_id;
@@ -38,6 +48,22 @@ public class Feedback {
 
 	public void setService_id(int service_id) {
 		this.service_id = service_id;
+	}
+	
+	public int getFeedback_id() {
+		return feedback_id;
+	}
+
+	public void setFeedback_id(int feedback_id) {
+		this.feedback_id = feedback_id;
+	}
+	
+	public String getService_name() {
+		return service_name;
+	}
+
+	public void setService_name(String service_name) {
+		this.service_name = service_name;
 	}
 
 	public int getUser_id() {
@@ -86,5 +112,21 @@ public class Feedback {
 
 	public void setImprovements(String improvements) {
 		this.improvements = improvements;
+	}
+	
+	public Timestamp getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(Timestamp created_at) {
+		this.created_at = created_at;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }
