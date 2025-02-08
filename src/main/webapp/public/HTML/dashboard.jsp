@@ -441,6 +441,28 @@
 									<form id="addServiceForm" method="POST"
 										action="${pageContext.request.contextPath}/EditServiceServlet?action=create">
 										<div class="modal-body">
+                                            <!-- Service Image Upload Section -->
+                                            <div class="row mb-4">
+                                                <div class="col-12 text-center">
+                                                    <div id="service-image-preview" class="mx-auto mb-3 rounded overflow-hidden" 
+                                                         style="width: 200px; height: 200px; background-size: cover; background-position: center; background-image: url('../Image/defaultpic.png');">
+                                                    </div>
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <input type="file" name="serviceImage" id="service-image-upload" class="d-none" accept="image/*">
+                                                        <input type="hidden" name="serviceImageUrl" id="service-image-url">
+                                                        <label for="service-image-upload" class="btn btn-outline-primary mb-2">
+                                                            <i class="bi bi-cloud-arrow-up-fill me-2"></i>Choose Service Image
+                                                        </label>
+                                                        <small id="selected-image-name" class="text-muted"></small>
+                                                        <div id="image-upload-progress" class="d-none mt-2">
+                                                            <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                                                                <span class="visually-hidden">Loading...</span>
+                                                            </div>
+                                                            <span class="text-primary">Uploading...</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 											<div class="row mb-3">
 												<div class="col-3">
 													<label for="addServiceName">Name:</label>
@@ -1150,6 +1172,79 @@
 	<footer>
 		<jsp:include page="footer.jsp" />
 	</footer>
+
+	<script>
+    // Service Image Upload Handler
+    document.getElementById('service-image-upload').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const previewContainer = document.getElementById('service-image-preview');
+        const fileNameDisplay = document.getElementById('selected-image-name');
+        const progressIndicator = document.getElementById('image-upload-progress');
+        const imageUrlInput = document.getElementById('service-image-url');
+        
+        if (file) {
+            // Show selected file name
+            fileNameDisplay.textContent = file.name;
+            
+            // Show loading state
+            progressIndicator.classList.remove('d-none');
+            previewContainer.style.opacity = '0.5';
+            
+            // Create preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewContainer.style.backgroundImage = `url('${e.target.result}')`;
+            };
+            reader.readAsDataURL(file);
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            // Send to servlet
+            fetch('${pageContext.request.contextPath}/UploadServiceImageServlet', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.url) {
+                    // Update the hidden input with the image URL
+                    imageUrlInput.value = data.url;
+                    
+                    // Show success message
+                    const alertHtml = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Image uploaded successfully!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    previewContainer.insertAdjacentHTML('beforebegin', alertHtml);
+                } else if (data.error) {
+                    throw new Error(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                
+                // Show error message
+                const alertHtml = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Failed to upload image. Please try again.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                previewContainer.insertAdjacentHTML('beforebegin', alertHtml);
+            })
+            .finally(() => {
+                // Reset loading state
+                progressIndicator.classList.add('d-none');
+                previewContainer.style.opacity = '1';
+            });
+        } else {
+            fileNameDisplay.textContent = '';
+        }
+    });
+	</script>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

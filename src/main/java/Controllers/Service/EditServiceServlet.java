@@ -78,7 +78,10 @@ public class EditServiceServlet extends HttpServlet {
 				String addServiceName = request.getParameter("addServiceName");
 				String addServiceDescription = request.getParameter("addServiceDescription");
 				double addServicePrice = Double.parseDouble(input_addServicePrice != null ? input_addServicePrice : "0");
-				String addServicePhotoUrl = "../Image/carouselImage1.jpg";
+				String addServicePhotoUrl = request.getParameter("serviceImageUrl");
+				if (addServicePhotoUrl == null || addServicePhotoUrl.isEmpty()) {
+					addServicePhotoUrl = "../Image/carouselImage1.jpg";
+				}
 				int[] addServiceCategories = new int[input_addServiceCategories.length];
 				
 				for (int i = 0; i < input_addServiceCategories.length; i++) {
