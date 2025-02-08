@@ -157,8 +157,7 @@ public class TransferServlet extends HttpServlet {
             	purchaseItems.add(singleItem);
             }
 
-            JSONObject requestBody = new JSONOb
-            		ject();
+            JSONObject requestBody = new JSONObject();
             requestBody.put("items", purchaseItems);
             requestBody.put("currency", "SGD");
             requestBody.put("successUrl", "http://localhost:8080" + request.getContextPath() + "/TransactionServlet");
