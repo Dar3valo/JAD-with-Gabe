@@ -1,4 +1,4 @@
-package Controllers.Cart;
+package Controllers.Booking;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -156,10 +156,13 @@ public class TransferServlet extends HttpServlet {
             	
             	purchaseItems.add(singleItem);
             }
-            
-            JSONObject requestBody = new JSONObject();
+
+            JSONObject requestBody = new JSONOb
+            		ject();
             requestBody.put("items", purchaseItems);
             requestBody.put("currency", "SGD");
+            requestBody.put("successUrl", "http://localhost:8080" + request.getContextPath() + "/TransactionServlet");
+            requestBody.put("cancelUrl", "http://localhost:8080" + request.getContextPath() + "/public/HTML/checkOut.jsp");
             
             URL url = new URL("http://localhost:8081/api/product/v1/checkout");
             conn = (HttpURLConnection) url.openConnection();
@@ -207,23 +210,6 @@ public class TransferServlet extends HttpServlet {
             // Close the connection
             conn.disconnect();
             
-            // here
-            
-            
-            
-            
-            Booking newBooking = null; //bookDAO.transferCartData(userId);
-
-            if (newBooking != null) {
-                // Update session with the latest bookings
-                List<Booking> updatedBookings = bookDAO.getTransactionLatestResults(userId);
-                session.setAttribute("allBookedItems", updatedBookings); // Update session
-                session.setAttribute("latestBooking", newBooking);      // Set the latest transaction
-                response.sendRedirect(request.getContextPath() + "/public/HTML/invoice.jsp");
-            } else {
-                request.setAttribute("errorMessage", "Empty Booking List");
-                request.getRequestDispatcher("/public/HTML/checkOut.jsp").forward(request, response);
-            }
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "An unexpected error occurred! Please try again later.");
