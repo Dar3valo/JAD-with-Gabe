@@ -2,8 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="Models.Feedback.Feedback" %>
-<%@ page import="Models.Feedback.Feedback" %>
-
 <!DOCTYPE html>
 <html>
 <head>
