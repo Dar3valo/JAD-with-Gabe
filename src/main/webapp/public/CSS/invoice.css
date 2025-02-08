@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+.invoice-container {
+	max-width: 1200px;
+	margin: 2rem auto;
+	padding: 2rem;
+	background-color: #fff;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+}
+
+.invoice-header {
+	border-bottom: 2px solid #eee;
+	margin-bottom: 2rem;
+	padding-bottom: 1rem;
+}
+
+.table {
+	margin-top: 2rem;
+}
+
+.total-price {
+	margin-top: 2rem;
+	padding: 1rem;
+	background-color: #f8f9fa;
+	border-radius: 4px;
+	text-align: right;
+}
+
+.alert {
+	margin: 1rem 0;
+}
+
+.action-buttons {
+	margin-top: 2rem;
+	display: flex;
+	gap: 1rem;
+	justify-content: flex-end;
+}

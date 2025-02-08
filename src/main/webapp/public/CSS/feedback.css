@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+#otherSource{
+	display: none;
+}
+
+#others:checked + label + #otherSource,
+#others:checked ~ #otherSource {
+	display: block;
+}

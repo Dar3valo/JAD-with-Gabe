@@ -1,0 +1,222 @@
+/* Overall */
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Font weights */
+.primaryFont {
+    font-weight: 700;
+}
+
+.secondaryFont {
+    font-weight: 600;
+}
+
+/* Filter by Category */
+.filterCategories {
+    max-height: 75vh;
+}
+
+input[type="radio"] {
+    margin-right: 10px;
+}
+
+/* Services */
+.servicesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    gap: 10px;
+    max-height: 75vh;
+}
+
+.servicesContainer > * {
+    flex: 0 0 auto;
+    width: 200px;
+    height: 150px;
+    border: 1px solid #ccc;
+}
+
+/* Service Modal */
+.serviceModal {
+    width: 300px;
+    height: 400px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.serviceModal img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.serviceModal div {
+    height: 50%;
+    padding: 10px;
+    text-align: center;
+}
+
+.serviceModalImageWrapper {
+    position: relative;
+    width: 100%;
+    height: 300px;
+}
+
+.serviceModalImageImg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.serviceModalImageGradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0) 100%);
+}
+
+.serviceModalImageText {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    color: white;
+    text-shadow: 0 0 8px green, 0 0 12px green, 0 0 16px green;
+}
+
+.serviceModalImagePrice {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    color: limegreen;
+    text-shadow: 0 0 8px green, 0 0 12px green, 0 0 16px green;
+}
+
+/* Edit Service Modal */
+.modal-backdrop {
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-body .row {
+    margin-bottom: 15px;
+}
+
+.modal-body label {
+    font-weight: 500;
+}
+
+.modal-body .form-control {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.modal-body .form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.modal-body .overflow-auto {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.modal-body .overflow-auto input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.modal-body .overflow-auto label {
+    user-select: none;
+    cursor: pointer;
+}
+
+/* User Management */
+.nav-pills .nav-link.active {
+    background-color: var(--bs-primary);
+}
+
+.nav-pills .nav-link {
+    color: var(--bs-dark);
+}
+
+/* Table Styles */
+#reporting-content .table-container {
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+#service-rating-content .table-container {
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+#service-demand-content .table-container {
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+#booking-content .table-container {
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+/* Pagination Styles */
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    margin-top: 1rem;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.page-item .page-link {
+    padding: 0.5rem 0.75rem;
+    margin: 0 0.25rem;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.page-item.active .page-link {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+.page-item .page-link:hover {
+    background: #f3f4f6;
+}
+
+.results-info {
+    color: #6b7280;
+    font-size: 0.875rem;
+}

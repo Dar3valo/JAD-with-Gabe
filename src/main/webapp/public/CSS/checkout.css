@@ -1,0 +1,141 @@
+@charset "UTF-8";
+
+/* Base Styles */
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #76bfb6;
+    --danger-color: #dc3545;
+    --text-color: #2c3e50;
+    --border-color: #e1e8ed;
+    --background-color: #f8f9fa;
+    --shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    line-height: 1.6;
+}
+
+/* Container Styles */
+.checkout-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Cart Item Styles */
+.cart-item .card {
+    border: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+.cart-item .card:hover {
+    transform: translateY(-2px);
+}
+
+.cart-item img {
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.375rem 0 0 0.375rem;
+}
+
+.cart-item .card-title {
+    color: var(--text-color);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.cart-item .price {
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+/* Schedule Select Styles */
+.schedule-select label {
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.schedule-select .form-select {
+    border-color: var(--border-color);
+    padding: 0.75rem;
+}
+
+.schedule-select .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+}
+
+/* Empty Cart Styles */
+.empty-cart {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow);
+}
+
+.empty-cart i {
+    color: var(--border-color);
+}
+
+/* Order Summary Styles */
+.summary-item {
+    font-size: 1rem;
+}
+
+.summary-item strong {
+    font-size: 1.25rem;
+    color: var(--text-color);
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: darken(var(--primary-color), 10%);
+    transform: translateY(-1px);
+}
+
+.btn-outline-danger {
+    color: var(--danger-color);
+    border-color: var(--danger-color);
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .cart-item img {
+        border-radius: 0.375rem 0.375rem 0 0;
+        height: 200px;
+    }
+    
+    .cart-item .card-body {
+        padding: 1rem;
+    }
+    
+    .summary-item {
+        font-size: 0.875rem;
+    }
+    
+    .summary-item strong {
+        font-size: 1rem;
+    }
+}
