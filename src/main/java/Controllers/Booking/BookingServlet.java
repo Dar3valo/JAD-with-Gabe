@@ -78,9 +78,9 @@ public class BookingServlet extends HttpServlet {
 		
 		if (bookingDateStr == null || scheduleIdStr == null || serviceTypeStr == null || 
                 mainAddress == null || postalCodeStr == null) {
-				response.sendRedirect(request.getContextPath() + "/public/HTML/booking.jsp");
-                return;
-            }
+			response.sendRedirect(request.getContextPath() + "/public/HTML/booking.jsp");
+            return;
+        }
 		
 		Date bookingDate = Date.valueOf(bookingDateStr);
         int scheduleId = Integer.parseInt(scheduleIdStr);
