@@ -55,8 +55,10 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="appointmentDate">Appointment Date</label>
-                            <input type="date" class="form-control" id="appointmentDate" name="bookingDate" required>
-                        </div>
+                            <input type="date" class="form-control" id="appointmentDate"
+								name="bookingDate" required
+								min="<%=new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date())%>" />
+						</div>
 
                         <div class="form-group">
                             <label for="schedule">Preferred Time</label>
