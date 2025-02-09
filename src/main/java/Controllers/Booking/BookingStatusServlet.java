@@ -32,41 +32,41 @@ public class BookingStatusServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Get the user ID from the session
-        HttpSession session = request.getSession();
+    	HttpSession session = request.getSession(false); // Don't create new session if none exists
         User loggedInUser = (User) session.getAttribute("loggedInUser");
+        
         if (loggedInUser == null) {
             response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
             return;
         }
-        int userId = loggedInUser.getUser_id();	
 
-        // Instantiate DAO classes
-        StatusDAO statusDAO = new StatusDAO();
-        BookingDAO bookingDAO = new BookingDAO();
-
-        // Get bookings by user ID
-        List<Booking> bookings;
-        if(loggedInUser.getRole_id() == 1) {
-        	bookings = bookingDAO.getAllBookingsForAdmin();
-        }else {
-        	bookings = bookingDAO.getBookingsByUserId(loggedInUser.getUser_id());
-        }
-
-        
-        // Add status descriptions for each booking
-        for (Booking booking : bookings) {
-            Status status = statusDAO.getStatus(booking.getStatus_id());
-            if (status != null) {
-                booking.setStatusDescription(status.getName());  // Set status description
+        try {
+            // Instantiate DAO classes
+            StatusDAO statusDAO = new StatusDAO();
+            BookingDAO bookingDAO = new BookingDAO();
+            
+            // Get bookings based on role
+            List<Booking> bookings;
+            if(loggedInUser.getRole_id() == 1) {
+                bookings = bookingDAO.getAllBookingsForAdmin();
             } else {
-                booking.setStatusDescription("Unknown");  // Default if no status found
+                bookings = bookingDAO.getBookingsByUserId(loggedInUser.getUser_id());
             }
+            
+            // Add status descriptions
+            for (Booking booking : bookings) {
+                Status status = statusDAO.getStatus(booking.getStatus_id());
+                booking.setStatusDescription(status != null ? status.getName() : "Unknown");
+            }
+            
+            // Store in session and forward (don't redirect)
+            session.setAttribute("bookings", bookings);
+            request.getRequestDispatcher("/public/HTML/bookingStatus.jsp").forward(request, response);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/public/HTML/error.jsp");
         }
-
-        // Store the list of bookings in the session and redirect to booking status page
-        session.setAttribute("bookings", bookings);
-        response.sendRedirect(request.getContextPath() + "/public/HTML/bookingStatus.jsp");
     }
 
     /**
