@@ -103,7 +103,7 @@
                         <div class="mb-4">
                             <h5>Current Status</h5>
                             <%
-                            String statusDesc = booking.getStatusDescription();
+                            String statusDesc = booking.getStatusName();
                             String badgeClass = "bg-secondary text-white";
                             
                             if (statusDesc != null) {
