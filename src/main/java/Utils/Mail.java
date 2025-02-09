@@ -7,7 +7,7 @@ import javax.mail.internet.*;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class Mail {
-	static Dotenv dotenv = Dotenv.configure().load();
+	static Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 	
 	static String gmail_account = dotenv.get("gmail_account");
 	static String gmail_public = dotenv.get("gmail_public");
