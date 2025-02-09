@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StatusDAO {
-	public Status getStatus(int statusId) {
+	public static Status getStatus(int statusId) {
 	    Status status = null;
 	    Connection conn = null;
 	    PreparedStatement stmt = null;

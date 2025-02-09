@@ -620,7 +620,7 @@ public class BookingDAO {
         return totalFilteredRecords;
     }
     
-    public List<Booking> getBookingsByUserId(int userId) {
+    public static List<Booking> getBookingsByUserId(int userId) {
         List<Booking> bookingsByUser = new ArrayList<>();
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -778,7 +778,7 @@ public class BookingDAO {
     	return bookingDetail;
     };
     
-    public List<Booking> getAllBookingsForAdmin() {
+    public static List<Booking> getAllBookingsForAdmin() {
     	List<Booking> adminBookingsView = new ArrayList<>();
     	Connection conn = null;
         PreparedStatement stmt = null;
