@@ -105,6 +105,8 @@ body:before{
 						</li>
 						<li class="nav-item"><a class="nav-link" href="UserCRUD.jsp">Profile</a>
 						</li>
+						<li class="nav-item"><a class="nav-link" href="bookingStatusClient.jsp">Booking Status</a>
+						</li>
 					<% } %>
 					
 					<% if (pageAccessLevel <= 1) { %>
