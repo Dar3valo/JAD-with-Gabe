@@ -766,7 +766,15 @@ public class BookingDAO {
             }
     	}catch(Exception e) {
     		e.printStackTrace();
-    	}
+    	}finally {
+            // Close resources in the finally block
+            try {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     	return bookingDetail;
     };
     
@@ -823,6 +831,14 @@ public class BookingDAO {
         	
         }catch(Exception e) {
         	e.printStackTrace();
+        }finally {
+            // Close resources in the finally block
+            try {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return adminBookingsView;
     };

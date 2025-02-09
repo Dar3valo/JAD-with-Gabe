@@ -61,7 +61,7 @@ public class BookingStatusServlet extends HttpServlet {
             
             // Store in session and forward (don't redirect)
             session.setAttribute("bookings", bookings);
-            request.getRequestDispatcher("/public/HTML/bookingStatus.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/public/HTML/bookingStatus.jsp");
             
         } catch (Exception e) {
             e.printStackTrace();

@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import Models.Booking.Booking;
 import Models.Booking.BookingDAO;
+import Models.User.User;
 
 /**
  * Servlet implementation class ViewBookingDetailsServlet
@@ -32,14 +33,36 @@ public class ViewBookingDetailsServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int bookingId = Integer.parseInt(request.getParameter("bookingId"));
-        BookingDAO bookingDAO = new BookingDAO();
-        HttpSession session = request.getSession();
+		try {
+            HttpSession session = request.getSession();
+            
+            // Get the logged in user's role
+            User loggedInUser = (User) session.getAttribute("loggedInUser");
+            if (loggedInUser == null) {
+                response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+                return;
+            }
 
-        Booking booking = bookingDAO.getBookingDetailsByBookingId(bookingId);
-        session.setAttribute("bookingDetails", booking);
-        
-        response.sendRedirect(request.getContextPath() + "/public/HTML/bookingDetails.jsp");
+            // Get and set booking details
+            int bookingId = Integer.parseInt(request.getParameter("bookingId"));
+            BookingDAO bookingDAO = new BookingDAO();
+            Booking booking = bookingDAO.getBookingDetailsByBookingId(bookingId);
+            session.setAttribute("bookingDetails", booking);
+            
+            // Redirect based on role
+            if (loggedInUser.getRole_id() == 1) {
+                response.sendRedirect(request.getContextPath() + "/public/HTML/bookingDetails.jsp");
+            } else if (loggedInUser.getRole_id() == 2) {
+                response.sendRedirect(request.getContextPath() + "/public/HTML/bookingDetailsClient.jsp");
+            } else {
+                // Handle unexpected role
+                response.sendRedirect(request.getContextPath() + "/public/HTML/error.jsp");
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/public/HTML/error.jsp");
+        }
 	}
 
 	/**

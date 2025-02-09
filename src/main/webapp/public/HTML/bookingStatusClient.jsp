@@ -103,8 +103,8 @@
                                 <td><%= booking.getBookingPeriod() %></td>
                                 <td>
                                     <span class="status-badge <%= 
-                                        booking.getStatusDescription().equalsIgnoreCase("Pending") ? "bg-warning" :
-                                        booking.getStatusDescription().equalsIgnoreCase("Incomplete") ? "bg-info" :
+                                        booking.getStatusDescription().equalsIgnoreCase("Incomplete") ? "bg-warning" :
+                                        booking.getStatusDescription().equalsIgnoreCase("In Progress") ? "bg-info" :
                                         booking.getStatusDescription().equalsIgnoreCase("Completed") ? "bg-success" :
                                         "bg-secondary" %>">
                                         <%= booking.getStatusDescription() %>
