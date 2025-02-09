@@ -76,8 +76,24 @@
                     <i class="fas fa-plus me-2"></i>Make a New Booking
                 </a>
             </div>
-        <% } else { %>
-            <div class="table-responsive booking-table">
+		<% } else { %>
+		<!-- Add Refresh Button Row -->
+		<div class="row mb-3">
+			<div class="col-md-10">
+				<!-- Empty space for alignment -->
+			</div>
+			<div class="col-md-2">
+				<form action="<%=request.getContextPath()%>/RefreshBookingServlet"
+					method="get">
+					<button type="submit" class="btn btn-primary w-100">
+						<i class="fas fa-sync-alt me-2"></i>Refresh
+					</button>
+				</form>
+			</div>
+		</div>
+		<!-- End Refresh Button Row -->
+
+		<div class="table-responsive booking-table">
                 <table class="table table-hover mb-0">
                     <thead class="table-dark">
                         <tr>
@@ -112,13 +128,24 @@
                                 </td>
                                 <td>
                                     <div class="btn-group">
-                                        <!-- View Details Button only -->
+                                        <!-- View Details Button -->
                                         <form action="<%=request.getContextPath() %>/ViewBookingDetailsServlet" method="get">
                                             <input type="hidden" name="bookingId" value="<%= booking.getBooking_id() %>">
                                             <button type="submit" class="btn btn-sm btn-outline-primary" title="View Details">
                                                 <i class="fas fa-eye"></i>
                                             </button>
                                         </form>
+
+                                        <!-- Cancel Booking Button - only show for incomplete bookings -->
+                                        <% if (booking.getStatusDescription().equalsIgnoreCase("Incomplete")) { %>
+                                            <form action="<%=request.getContextPath()%>/DeleteBookingServlet" method="post" 
+                                                  onsubmit="return confirm('Are you sure you want to cancel this booking? This action cannot be undone.');">
+                                                <input type="hidden" name="bookingId" value="<%=booking.getBooking_id()%>">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Cancel Booking">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </form>
+                                        <% } %>
                                     </div>
                                 </td>
                             </tr>
