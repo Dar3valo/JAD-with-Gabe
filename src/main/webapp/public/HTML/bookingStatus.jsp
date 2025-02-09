@@ -41,7 +41,7 @@
     <%-- Permission Check --%>
     <%
     {
-        request.setAttribute("pageAccessLevel", "2");
+        request.setAttribute("pageAccessLevel", "1");
         RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
         rd.include(request, response);
         
