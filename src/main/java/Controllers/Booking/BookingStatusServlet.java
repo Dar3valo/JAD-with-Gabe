@@ -15,6 +15,7 @@ import Models.Booking.Booking;
 import Models.Booking.BookingDAO;
 import Models.Status.Status;
 import Models.Status.StatusDAO;
+import Models.User.User;
 
 /**
  * Servlet implementation class BookingStatusServlet
@@ -33,13 +34,12 @@ public class BookingStatusServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Get the user ID from the session
         HttpSession session = request.getSession();
-        Integer userId = (Integer) session.getAttribute("userId");
-
-        // If the user is not logged in, redirect to login page
-        if (userId == null) {
-            response.sendRedirect("login.jsp");
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
             return;
         }
+        int userId = loggedInUser.getUser_id();	
 
         // Instantiate DAO classes
         StatusDAO statusDAO = new StatusDAO();
