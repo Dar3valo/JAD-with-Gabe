@@ -96,11 +96,16 @@ body {
     border: 1px solid #cbd5e0;
     border-radius: 8px;
     font-size: 1rem;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
 
 .form-control:focus, .form-select:focus {
     border-color: #3498db;
+    -webkit-box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    -moz-box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
     outline: none;
 }
@@ -142,6 +147,9 @@ textarea.form-control {
     border-radius: 8px;
     color: white;
     cursor: pointer;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
@@ -150,7 +158,12 @@ textarea.form-control {
 
 .booking-btn:hover {
     background-color: #2980b9;
+    -webkit-transform: translateY(-1px);
+    -moz-transform: translateY(-1px);
+    -ms-transform: translateY(-1px);
     transform: translateY(-1px);
+    -webkit-box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+    -moz-box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
     box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
 }
 
