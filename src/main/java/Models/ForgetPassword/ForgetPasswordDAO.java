@@ -59,8 +59,8 @@ public class ForgetPasswordDAO {
 	        random.nextBytes(tokenBytes);
 	        String token = Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBytes);
 
-	        // Set expiration time (e.g., 15 minutes from now)
-	        long expiryDuration = 15 * 60 * 1000; // 15 minutes in milliseconds
+	        // Set expiration time (e.g., 5 minutes from now)
+	        long expiryDuration = 5 * 60 * 1000; // 15 minutes in milliseconds
 	        Timestamp tokenExpiryTime = new Timestamp(System.currentTimeMillis() + expiryDuration);
 	        
 	        Class.forName("org.postgresql.Driver");
@@ -125,7 +125,7 @@ public class ForgetPasswordDAO {
 	        String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
 	        conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
 
-	        String sql = "SELECT email, name, reset_token, token_expiry FROM Users WHERE reset_token = ?";
+	        String sql = "SELECT email, name, reset_token, token_expiry FROM Users WHERE reset_token = ? AND token_expiry > NOW();";
 	        stmt = conn.prepareStatement(sql);
 	        stmt.setString(1, token);
 
@@ -138,11 +138,9 @@ public class ForgetPasswordDAO {
 	            userWithToken.setReset_token(rs.getString("reset_token"));
 	            userWithToken.setTokenExpiryTime(rs.getTimestamp("token_expiry"));
 	            
-	            // Check if the token is expired
-	            Timestamp tokenExpiryTime = userWithToken.getTokenExpiryTime();
-	            long currentTime = System.currentTimeMillis();
-	            if (tokenExpiryTime.getTime() < currentTime) {
-	                // Token is expired, return null
+	         // Clear expired token
+	            if (userWithToken.getTokenExpiryTime().getTime() < System.currentTimeMillis()) {
+	                clearExpiredToken(conn, userWithToken.getEmail());
 	                return null;
 	            }
 	        }
@@ -161,4 +159,21 @@ public class ForgetPasswordDAO {
 	    return userWithToken;
 	}
 	
+	private void clearExpiredToken(Connection conn, String email) {
+	    PreparedStatement stmt = null;
+	    try {
+	        String sql = "UPDATE Users SET reset_token = NULL, token_expiry = NULL WHERE email = ?";
+	        stmt = conn.prepareStatement(sql);
+	        stmt.setString(1, email);
+	        stmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (stmt != null) stmt.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
 }
