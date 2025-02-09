@@ -621,26 +621,34 @@ public class BookingDAO {
     }
     
     public List<Booking> getBookingsByUserId(int userId) {
-    	List<Booking> bookingsByUser = new ArrayList<>();
-    	Connection conn = null;
+        List<Booking> bookingsByUser = new ArrayList<>();
+        Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        
+
         try {
-        	Class.forName("org.postgresql.Driver");
+            // Load the PostgreSQL driver
+            Class.forName("org.postgresql.Driver");
             String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
             conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
-            
-            String sql = "SELECT * FROM Booking WHERE user_id = ?";
-            
+
+            // SQL query to include 'start_time' and 'end_time' from the 'schedule' table
+            String sql = "SELECT b.*, s.name as service_name, " +
+                    "CONCAT(TO_CHAR(sch.start_time, 'HH24:MI'), ' - ', " +
+                    "TO_CHAR(sch.end_time, 'HH24:MI')) as booking_period " +
+                    "FROM Booking b " +
+                    "LEFT JOIN Service s ON b.service_id = s.service_id " +
+                    "LEFT JOIN Schedule sch ON b.schedule_id = sch.schedule_id " +
+                    "WHERE b.user_id = ?";
+
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, userId);  // Set the service name filter
+            stmt.setInt(1, userId);  // Set the user_id filter
             rs = stmt.executeQuery();
-        	
+
             while (rs.next()) {
                 Booking booking = new Booking();
 
-                // Set properties based on column names from the result set
+                // Set existing properties
                 booking.setBooking_id(rs.getInt("booking_id"));
                 booking.setBooking_date(rs.getDate("booking_date"));
                 booking.setSpecial_request(rs.getString("special_request"));
@@ -651,16 +659,27 @@ public class BookingDAO {
                 booking.setService_id(rs.getInt("service_id"));
                 booking.setCreation_date(rs.getTimestamp("creation_date"));
                 booking.setStatus_id(rs.getInt("status_id"));
+                booking.setServiceName(rs.getString("service_name"));
+                booking.setBookingPeriod(rs.getString("booking_period"));
 
-                // Add the booking to the list
                 bookingsByUser.add(booking);
             }
 
-        }catch(Exception e) {
-        	e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+
         return bookingsByUser;
     }
+
     
     public boolean updateBookingStatus(int bookingId, int statusId) {
         Connection conn = null;

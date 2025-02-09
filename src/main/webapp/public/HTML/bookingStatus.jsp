@@ -80,6 +80,8 @@
                             <th>Booking ID</th>
                             <th>Date</th>
                             <th>Address</th>
+                            <th>Service</th>
+                            <th>Timing</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -93,6 +95,8 @@
                                 <td>#<%= booking.getBooking_id() %></td>
                                 <td><%= dateFormat.format(booking.getBooking_date()) %></td>
                                 <td><%= booking.getMain_address() %></td>
+                                <td><%= booking.getServiceName() %></td>
+                                <td><%= booking.getBookingPeriod() %></td>
                                 <td>
                                     <span class="status-badge <%= 
                                         booking.getStatusDescription().equalsIgnoreCase("Pending") ? "bg-warning" :
@@ -173,8 +177,16 @@
                                 <p class="mb-0">${row.cells[2].textContent}</p>
                             </div>
                             <div class="mb-3">
+                                <strong><i class="fas fa-broom me-2"></i>Service:</strong>
+                                <p class="mb-0">${row.cells[3].textContent}</p>
+                            </div>
+                            <div class="mb-3">
+                            	<strong><i class="fas fa-broom me-2"></i>Timing:</strong>
+                            	<p class="mb-0">${row.cells[4].textContent}</p>
+                        	</div>
+                            <div class="mb-3">
                                 <strong><i class="fas fa-info-circle me-2"></i>Status:</strong>
-                                <p class="mb-0">${row.cells[3].textContent.trim()}</p>
+                                <p class="mb-0">${row.cells[5].textContent.trim()}</p>
                             </div>
                         </div>
                     `;
