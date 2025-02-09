@@ -11,21 +11,21 @@
 </head>
 <body>
 	<%
-    { // check permission
-    	request.setAttribute("pageAccessLevel", "3");
-        RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
-        rd.include(request, response);
-        
-        Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
-        
-        if (hasAccess == null || !hasAccess) {
-            response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
-            return;
-        }
-    }
+	{ // check permission
+		request.setAttribute("pageAccessLevel", "3");
+		RequestDispatcher rd = application.getRequestDispatcher("/checkAccessServlet"); // Use absolute path
+		rd.include(request, response);
+
+		Boolean hasAccess = (Boolean) session.getAttribute("accessCheckResult");
+
+		if (hasAccess == null || !hasAccess) {
+			response.sendRedirect(request.getContextPath() + "/public/HTML/login.jsp");
+			return;
+		}
+	}
 	%>
 
-    <jsp:include page="navbar.jsp" />
+	<jsp:include page="navbar.jsp" />
 
     <div class="container py-5">
         <div class="terms-wrapper bg-white rounded-3 shadow-sm">
