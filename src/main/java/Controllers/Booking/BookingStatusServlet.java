@@ -67,39 +67,6 @@ public class BookingStatusServlet extends HttpServlet {
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Set response content type to plain text
-        response.setContentType("text/plain");
-
-        // Get booking and status IDs from request parameters
-        try {
-            int bookingId = Integer.parseInt(request.getParameter("bookingId"));
-            int statusId = Integer.parseInt(request.getParameter("statusId"));
-
-            // Validate status exists in the database
-            StatusDAO statusDAO = new StatusDAO();
-            Status status = statusDAO.getStatus(statusId);
-            if (status == null) {
-                response.getWriter().write("Invalid status ID");
-                return;
-            }
-
-            // Update booking status
-            BookingDAO bookingDAO = new BookingDAO();
-            boolean updated = bookingDAO.updateBookingStatus(bookingId, statusId);
-
-            if (updated) {
-                // Respond with success message
-                response.getWriter().write("Status updated successfully to: " + status.getName());
-            } else {
-                // Respond with error message
-                response.getWriter().write("Failed to update status");
-            }
-        } catch (NumberFormatException e) {
-            // Handle invalid format for booking or status ID
-            response.getWriter().write("Invalid booking or status ID format");
-        } catch (Exception e) {
-            // Handle any unexpected exceptions
-            response.getWriter().write("An error occurred while updating status");
-        }
+        doGet(request, response);
     }
 }

@@ -122,7 +122,7 @@
                                         
                                         <% if (booking.getStatusDescription().equalsIgnoreCase("Pending")) { %>
                                             <!-- Mark as Incomplete -->
-                                            <form action="UpdateBookingStatusServlet" method="post">
+                                            <form action="<%=request.getContextPath() %>/UpdateBookingStatusServlet" method="post">
                                                 <input type="hidden" name="bookingId" value="<%= booking.getBooking_id() %>">
                                                 <input type="hidden" name="statusId" value="2">
                                                 <button type="submit" class="btn btn-sm btn-outline-warning" title="Mark as Incomplete">
@@ -131,7 +131,7 @@
                                             </form>
                                             
                                             <!-- Mark as Completed -->
-                                            <form action="UpdateBookingStatusServlet" method="post">
+                                            <form action="<%=request.getContextPath() %>/UpdateBookingStatusServlet" method="post">
                                                 <input type="hidden" name="bookingId" value="<%= booking.getBooking_id() %>">
                                                 <input type="hidden" name="statusId" value="3">
                                                 <button type="submit" class="btn btn-sm btn-outline-success" title="Mark as Completed">
@@ -140,7 +140,7 @@
                                             </form>
                                         <% } else if (booking.getStatusDescription().equalsIgnoreCase("Incomplete")) { %>
                                             <!-- Mark as Completed -->
-                                            <form action="UpdateBookingStatusServlet" method="post">
+                                            <form action="<%=request.getContextPath() %>/UpdateBookingStatusServlet" method="post">
                                                 <input type="hidden" name="bookingId" value="<%= booking.getBooking_id() %>">
                                                 <input type="hidden" name="statusId" value="3">
                                                 <button type="submit" class="btn btn-sm btn-outline-success" title="Mark as Completed">
