@@ -176,7 +176,7 @@
 									id="booking-list-tab" data-bs-toggle="pill"
 									data-bs-target="#booking-content" type="button" role="tab">
 									<i class="bi bi-bar-chart-line-fill me-2"></i>Booking List
-								</button> service-reports-content
+								</button>
 							</li>
 							
 							<li class="nav-item" role="presentation">
@@ -463,6 +463,8 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            
+                                            <!-- Other Fields -->
 											<div class="row mb-3">
 												<div class="col-3">
 													<label for="addServiceName">Name:</label>
