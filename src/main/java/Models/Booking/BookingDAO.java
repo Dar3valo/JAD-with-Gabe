@@ -720,6 +720,54 @@ public class BookingDAO {
         }
     }
 
+    public Booking getBookingDetailsByBookingId(int bookingId) {
+    	Booking bookingDetail = null;
+    	Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+    	try {
+    		Class.forName("org.postgresql.Driver");
+            String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+            conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+    		String sql = "SELECT " +
+                    "b.booking_id, " +
+                    "b.booking_date, " +
+                    "b.main_address, " +
+                    "s.name AS service_name, " +
+                    "st.name AS status_name, " +
+                    "CONCAT(TO_CHAR(sch.start_time, 'HH24:MI'), ' - ', TO_CHAR(sch.end_time, 'HH24:MI')) AS booking_period " +
+                    "FROM booking b " +
+                    "LEFT JOIN service s ON b.service_id = s.service_id " +
+                    "LEFT JOIN schedule sch ON b.schedule_id = sch.schedule_id " +
+                    "LEFT JOIN status st ON b.status_id = st.status_id " +
+                    "WHERE b.booking_id = ?";
+    		
+    		stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, bookingId);  // Set the user_id filter
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) { // Use `if` since we're fetching a single booking
+            	bookingDetail = new Booking();
 
+                // Populate the Booking object with data from the result set
+                bookingDetail.setBooking_id(rs.getInt("booking_id"));
+                bookingDetail.setBooking_date(rs.getDate("booking_date"));
+                bookingDetail.setMain_address(rs.getString("main_address"));
+
+                // Set service name
+                bookingDetail.setServiceName(rs.getString("service_name"));
+
+                // Set booking period (already concatenated in SQL)
+                bookingDetail.setBookingPeriod(rs.getString("booking_period"));
+
+                // Set status name
+                bookingDetail.setStatusName(rs.getString("status_name"));
+            }
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	return bookingDetail;
+    }
     
 }
