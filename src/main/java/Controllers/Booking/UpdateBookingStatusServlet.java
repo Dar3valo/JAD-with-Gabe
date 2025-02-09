@@ -52,14 +52,12 @@ public class UpdateBookingStatusServlet extends HttpServlet {
 			int statusId = Integer.parseInt(request.getParameter("statusId"));
 
 			// Validate status exists
-			StatusDAO statusDAO = new StatusDAO();
-			Status status = statusDAO.getStatus(statusId);
+			Status status = StatusDAO.getStatus(statusId);
 			if (status == null) {
 				request.setAttribute("error", "Invalid status ID");
 			} else {
 				// Update booking status
-				BookingDAO bookingDAO = new BookingDAO();
-				boolean updated = bookingDAO.updateBookingStatus(bookingId, statusId);
+				boolean updated = BookingDAO.updateBookingStatus(bookingId, statusId);
 
 				if (updated) {
 					// Get fresh bookings list immediately after update
@@ -68,14 +66,14 @@ public class UpdateBookingStatusServlet extends HttpServlet {
 					List<Booking> bookings;
 
 					if (loggedInUser.getRole_id() == 1) {
-						bookings = bookingDAO.getAllBookingsForAdmin();
+						bookings = BookingDAO.getAllBookingsForAdmin();
 					} else {
-						bookings = bookingDAO.getBookingsByUserId(loggedInUser.getUser_id());
+						bookings = BookingDAO.getBookingsByUserId(loggedInUser.getUser_id());
 					}
 
 					// Add status descriptions for each booking
 					for (Booking booking : bookings) {
-						Status bookingStatus = statusDAO.getStatus(booking.getStatus_id());
+						Status bookingStatus = StatusDAO.getStatus(booking.getStatus_id());
 						booking.setStatusDescription(bookingStatus != null ? bookingStatus.getName() : "Unknown");
 					}
 

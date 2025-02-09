@@ -681,7 +681,7 @@ public class BookingDAO {
     }
 
     
-    public boolean updateBookingStatus(int bookingId, int statusId) {
+    public static boolean updateBookingStatus(int bookingId, int statusId) {
         Connection conn = null;
         PreparedStatement stmt = null;
         
