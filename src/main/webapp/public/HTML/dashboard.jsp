@@ -11,6 +11,10 @@
 <%@ page import="Models.ServiceOrderByRating.ServiceByRating" %>
 <%@ page import="Models.Booking.Booking" %>
 <%@ page import="Models.Booking.BookingDAO" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Collections" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,11 +38,13 @@
 	    const usersbutton = document.getElementById('users-tab');
 	    const bookingbutton = document.getElementById('booking-list-tab');
 	    const serviceReportButton = document.getElementById('service-reporting-tab');
+	    const customerReportButton = document.getElementById('customer-report-tab');
 	    
         const servicesFilter = document.getElementById('services-filter');
         const usersFilter = document.getElementById('users-filter');
         const bookingFilter = document.getElementById('booking-filter');
         const serviceReportsFilter = document.getElementById('service-filter');
+        const customerReportFilter = document.getElementById('customer-report-filter');
         
         const filterOptions = document.querySelectorAll('.filterOption');
         
@@ -81,6 +87,16 @@
             
             bookingFilter.classList.remove('d-none');
 	    });
+	    
+	    customerReportButton.addEventListener('click', () => {
+	    	customerReportFilter.classList.remove('d-none');
+            
+            filterOptions.forEach(option => {
+                option.classList.add('d-none');
+            });
+            
+            customerReportFilter.classList.remove('d-none');
+	    });
 	});
 </script>
 </head>
@@ -118,6 +134,7 @@
 	ServiceCategory currentCategory = (ServiceCategory) session.getAttribute("currentCategory");
 	Role currentRole = (Role) session.getAttribute("currentRole");
 	List<Booking> bookings = (List<Booking>) session.getAttribute("bookings");
+	Map<String, List<Booking>> groupedBookings = (Map<String, List<Booking>>) session.getAttribute("allBookingInformationFormatted");
 
 	if (users == null) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetAllUsersServlet");
@@ -142,6 +159,13 @@
 		dispatcher.forward(request, response);
 		return;
 	}
+	
+	if (groupedBookings == null) {
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/GetCustomerInformation");
+		dispatcher.forward(request, response);
+		return;
+	}
+	
 	%>
 	<%--Navbar --%>
 	<%@ include file="navbar.jsp"%>
@@ -154,37 +178,53 @@
 				<section id="filter" class="border-end h-100">
 					<div class="border-bottom mx-3 pb-5 mb-5">
 						<ul class="nav nav-pills" id="managementTabs" role="tablist">
+							<!-- services -->
 							<li class="nav-item" role="presentation">
 								<button
-									class="nav-link <%=dashboardCurrentFocus == "services-content" ? "active" : ""%>"
+									class="nav-link <%=dashboardCurrentFocus.equals("services-content") ? "active" : ""%>"
 									id="services-tab" data-bs-toggle="pill"
 									data-bs-target="#services-content" type="button" role="tab">
 									<i class="bi bi-gear-fill me-2"></i>Services
 								</button>
 							</li>
+							
+							<!-- users -->
 							<li class="nav-item" role="presentation">
 								<button
-									class="nav-link <%=dashboardCurrentFocus == "users-content" ? "active" : ""%>"
+									class="nav-link <%=dashboardCurrentFocus.equals("users-content") ? "active" : ""%>"
 									id="users-tab" data-bs-toggle="pill"
 									data-bs-target="#users-content" type="button" role="tab">
 									<i class="bi bi-people-fill me-2"></i>Users
 								</button>
 							</li>
+							
+							<!-- bookings -->
 							<li class="nav-item" role="presentation">
 								<button
 									class="nav-link <%= dashboardCurrentFocus.equals("booking-content") ? "active" : "" %>"
 									id="booking-list-tab" data-bs-toggle="pill"
 									data-bs-target="#booking-content" type="button" role="tab">
-									<i class="bi bi-bar-chart-line-fill me-2"></i>Booking List
+									<i class="bi bi-bar-chart-line-fill me-2"></i>Bookings
 								</button>
 							</li>
 							
+							<!-- service reports -->
 							<li class="nav-item" role="presentation">
 								<button
 									class="nav-link <%= dashboardCurrentFocus.equals("service-reports-content") ? "active" : "" %>"
 									id="service-reporting-tab" data-bs-toggle="pill"
 									data-bs-target="#service-reports-content" type="button" role="tab">
-									<i class="bi bi-bar-chart-line-fill me-2"></i>Service Reports
+									<i class="bi bi-bar-chart-line-fill me-2"></i>Service Report
+								</button>
+							</li>
+							
+							<!-- customer report -->
+							<li class="nav-item" role="presentation">
+								<button
+									class="nav-link <%= dashboardCurrentFocus.equals("customer-report-content") ? "active" : "" %>"
+									id="customer-report-tab" data-bs-toggle="pill"
+									data-bs-target="#customer-report-content" type="button" role="tab">
+									<i class="bi bi-bar-chart-line-fill me-2"></i>Customer Report
 								</button>
 							</li>
 						</ul>
@@ -194,7 +234,7 @@
 					<div class="mx-3">
 					
 						<!-- Filter Categories Form Here -->
-						<div id="services-filter" class="m-0 p-0 <%= dashboardCurrentFocus == "services-content" ? "d-block" : "d-none" %> filterOption">
+						<div id="services-filter" class="m-0 p-0 <%= dashboardCurrentFocus.equals("services-content") ? "d-block" : "d-none" %> filterOption">
 							<h4 class="secondaryFont">Service Categories</h4>
 							<form class="lh-lg d-flex flex-column filterCategories"
 								action="${pageContext.request.contextPath}/GetServiceInformationServlet"
@@ -232,7 +272,7 @@
 						</div>
 						
 						<!-- for user role -->
-						<div id="users-filter" class="m-0 p-0 <%= dashboardCurrentFocus == "users-content" ? "d-block" : "d-none" %> filterOption">
+						<div id="users-filter" class="m-0 p-0 <%= dashboardCurrentFocus.equals("users-content") ? "d-block" : "d-none" %> filterOption">
 							<h4 class="secondaryFont">User Roles</h4>
 							<form class="lh-lg d-flex flex-column filterCategories"
 								action="${pageContext.request.contextPath}/GetUsersByRoleServlet"
@@ -396,13 +436,13 @@
 				</section>
 			</div>
 
-			<%-- Display Services --%>
+			<%-- Display Content --%>
 			<div class="col-8 pr-5 ml-5 tab-content">
 				<%-- =================
 					Services Section 
 					================== --%>
 				<section
-					class="h-100 tab-pane fade <%=dashboardCurrentFocus == "services-content" ? "show active" : ""%>"
+					class="h-100 tab-pane fade <%=dashboardCurrentFocus.equals("services-content") ? "show active" : ""%>"
 					id="services-content" role="tabpanel">
 					<!-- Service Title -->
 					<div
@@ -803,7 +843,7 @@
 					Users Section 
 					================== --%>
 				<section
-					class="h-100 tab-pane fade <%=dashboardCurrentFocus == "users-content" ? "show active" : ""%>"
+					class="h-100 tab-pane fade <%=dashboardCurrentFocus.equals("users-content") ? "show active" : ""%>"
 					id="users-content" role="tabpanel">
 					<div
 						class="border-bottom mx-3 pb-5 mb-5 d-flex justify-content-between">
@@ -1051,7 +1091,10 @@
 				int startRecord = (pageNumber - 1) * pageSize + 1;
 				int endRecord = Math.min(startRecord + pageSize - 1, totalRecords);
 				%>
-
+				
+				<%-- =================
+					Bookings Section 
+					================== --%>
 				<!-- Filter Section -->
 				<div id="booking-filter"
 					class="m-0 p-0 <%=dashboardCurrentFocus.equals("booking-content") ? "d-block" : "d-none"%> filterOption">
@@ -1173,7 +1216,9 @@
 					</div>
 				</section>
 
-				<!-- Services Section -->
+				<%-- ======================
+					Service Reports Section 
+					======================= --%>
 				<%
 				// Retrieve the service reports and the serviceFilterType from the session
 				List<?> serviceReports = (List<?>) session.getAttribute("serviceReports");
@@ -1263,6 +1308,111 @@
 					</div>
 				</section>
 
+				<%-- ========================
+					Customer Reports Section 
+					========================= --%>
+				<section
+					class="h-100 tab-pane fade <%=dashboardCurrentFocus.equals("customer-report-content") ? "show active" : ""%>"
+					id="customer-report-content" role="tabpanel" style="max-height: 70vh; overflow-y: auto;">
+					<!-- Area Selection Dropdown -->
+				    <div class="container-fluid">
+				        <div class="row mb-4">
+				            <div class="col-4">
+				                <select class="form-select" id="areaSelector" onchange="filterBookingsByArea()">
+				                    <option value="all" selected>All Areas</option>
+				                    <% 
+				                    if (groupedBookings != null) {
+				                        // Sort areas alphabetically for better UX
+				                        List<String> sortedAreas = new ArrayList<>(groupedBookings.keySet());
+				                        Collections.sort(sortedAreas);
+				                        for (String area : sortedAreas) { 
+				                    %>
+				                        <option value="<%=area%>"><%=area%></option>
+				                    <% 
+				                        }
+				                    } 
+				                    %>
+				                </select>
+				            </div>
+				        </div>
+				
+				        <!-- Bookings Display -->
+				        <div id="bookingsContainer">
+				            <% 
+				            if (groupedBookings != null && !groupedBookings.isEmpty()) {
+				                // Sort areas alphabetically for display
+				                List<String> sortedAreas = new ArrayList<>(groupedBookings.keySet());
+				                Collections.sort(sortedAreas);
+				                for (String area : sortedAreas) {
+				                    List<Booking> areaBookings = groupedBookings.get(area);
+				            %>
+				                <div class="area-section mb-4" data-area="<%=area%>">
+				                    <div class="d-flex justify-content-between align-items-center bg-light p-2 rounded">
+				                        <h4 class="area-title m-0"><%=area%></h4>
+				                        <span class="badge bg-primary"><%=areaBookings.size()%> bookings</span>
+				                    </div>
+				                    <div class="table-responsive">
+				                        <table class="table table-striped table-hover">
+				                            <thead>
+				                                <tr>
+				                                    <th>Customer Name</th>
+				                                    <th>Service</th>
+				                                    <th>Booking Date</th>
+				                                    <th>Time Period</th>
+				                                    <th>Postal Code</th>
+				                                    <th>Address</th>
+				                                    <th>Special Request</th>
+				                                    <th>Price</th>
+				                                </tr>
+				                            </thead>
+				                            <tbody>
+				                                <% 
+				                                for (Booking booking : areaBookings) { 
+				                                %>
+				                                <tr>
+				                                    <td><%=booking.getUsername()%></td>
+				                                    <td><%=booking.getServiceName()%></td>
+				                                    <td><%=booking.getBooking_date()%></td>
+				                                    <td><%=booking.getBookingPeriod()%></td>
+				                                    <td><%=booking.getPostal_code()%></td>
+				                                    <td><%=booking.getMain_address()%></td>
+				                                    <td><%=booking.getSpecial_request() != null ? booking.getSpecial_request() : "-"%></td>
+				                                    <td>$<%=String.format("%.2f", booking.getServicePrice())%></td>
+				                                </tr>
+				                                <% 
+				                                } 
+				                                %>
+				                            </tbody>
+				                        </table>
+				                    </div>
+				                </div>
+				            <% 
+				                }
+				            } else { 
+				            %>
+				                <div class="alert alert-info">No booking information available.</div>
+				            <% 
+				            } 
+				            %>
+				        </div>
+				    </div>
+				
+				    <!-- JavaScript for Area Filtering -->
+				    <script>
+				        function filterBookingsByArea() {
+				            const selectedArea = document.getElementById('areaSelector').value;
+				            const areaSections = document.querySelectorAll('.area-section');
+				            
+				            areaSections.forEach(section => {
+				                if (selectedArea === 'all' || section.dataset.area === selectedArea) {
+				                    section.style.display = 'block';
+				                } else {
+				                    section.style.display = 'none';
+				                }
+				            });
+				        }
+				    </script>
+				</section>
 			</div>
 		</div>
 

@@ -770,4 +770,89 @@ public class BookingDAO {
     	return bookingDetail;
     }
     
+    // Booking Query with User Details
+    public static List<Booking> getBookingsWithUserDetails() {
+        List<Booking> bookingsWithUserDetails = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+            conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+            String sql = """
+                SELECT 
+                    b.booking_id,
+                    b.booking_date,
+                    b.special_request,
+                    b.main_address,
+                    b.postal_code,
+                    b.creation_date,
+                    b.status_id,
+                    u.user_id,
+                    u.name AS user_name,
+                    u.email AS user_email,
+                    s.service_id,
+                    s.name AS service_name,
+                    s.price AS service_price,
+                    st.name AS status_name,
+                    CONCAT(TO_CHAR(sch.start_time, 'HH24:MI'), ' - ', 
+                           TO_CHAR(sch.end_time, 'HH24:MI')) as booking_period
+                FROM 
+                    booking b
+                    JOIN users u ON b.user_id = u.user_id
+                    JOIN service s ON b.service_id = s.service_id
+                    JOIN schedule sch ON b.schedule_id = sch.schedule_id
+                    JOIN status st ON b.status_id = st.status_id
+            """;
+
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Booking booking = new Booking();
+                
+                // Set booking details
+                booking.setBooking_id(rs.getInt("booking_id"));
+                booking.setBooking_date(rs.getDate("booking_date"));
+                booking.setSpecial_request(rs.getString("special_request"));
+                booking.setMain_address(rs.getString("main_address"));
+                booking.setPostal_code(rs.getInt("postal_code"));
+                booking.setCreation_date(rs.getTimestamp("creation_date"));
+                booking.setStatus_id(rs.getInt("status_id"));
+                
+                // Set user details
+                booking.setUser_id(rs.getInt("user_id"));
+                booking.setUsername(rs.getString("user_name"));
+                booking.setUserEmail(rs.getString("user_email"));
+                
+                // Set service details
+                booking.setService_id(rs.getInt("service_id"));
+                booking.setServiceName(rs.getString("service_name"));
+                booking.setServicePrice(rs.getDouble("service_price"));
+                
+                // Set additional details
+                booking.setStatusName(rs.getString("status_name"));
+                booking.setBookingPeriod(rs.getString("booking_period"));
+
+                bookingsWithUserDetails.add(booking);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return bookingsWithUserDetails;
+    }
+    
 }
