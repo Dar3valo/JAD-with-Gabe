@@ -105,13 +105,19 @@ body:before{
 						</li>
 						<li class="nav-item"><a class="nav-link" href="UserCRUD.jsp">Profile</a>
 						</li>
+					<% } %>
+					
+					<% if (pageAccessLevel == 2) { %>
 						<li class="nav-item"><a class="nav-link" href="bookingStatusClient.jsp">Booking Status</a>
 						</li>
 					<% } %>
 					
-					<% if (pageAccessLevel <= 1) { %>
-						<li class="nav-item"><a class="nav-link" href="bookingStatus.jsp">Booking Status</a>
+					<% if (pageAccessLevel == 1) { %>
+						<li class="nav-item"><a class="nav-link" href="bookingStatus.jsp">Status View</a>
 						</li>
+					<% } %>
+					
+					<% if (pageAccessLevel <= 1) { %>
 						<li class="nav-item"><a class="nav-link" href="dashboard.jsp">Dashboard</a>
 						</li>
 					<% } %>
