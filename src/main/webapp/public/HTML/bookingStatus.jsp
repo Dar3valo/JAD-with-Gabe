@@ -136,45 +136,82 @@
                                         <%= booking.getStatusDescription() %>
                                     </span>
                                 </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <!-- View Details Button -->
-                                        <form action="<%=request.getContextPath() %>/ViewBookingDetailsServlet" method="get">
-                                            <input type="hidden" name="bookingId" value="<%= booking.getBooking_id() %>">
-                                            <button type="submit" class="btn btn-sm btn-outline-primary" title="View Details">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                        </form>
+						<td>
+							<div class="btn-group">
+								<!-- View Details Button -->
+								<form
+									action="<%=request.getContextPath()%>/ViewBookingDetailsServlet"
+									method="get">
+									<input type="hidden" name="bookingId"
+										value="<%=booking.getBooking_id()%>">
+									<button type="submit" class="btn btn-sm btn-outline-primary"
+										title="View Details">
+										<i class="fas fa-eye"></i>
+									</button>
+								</form>
 
-                                        <!-- Assign Cleaner Button -->
-                                        <button type="button" class="btn btn-sm btn-outline-primary" 
-                                                onclick="showAssignModal('<%= booking.getBooking_id() %>')"
-                                                title="Assign Cleaner">
-                                            <i class="fas fa-envelope"></i> Assign
-                                        </button>
+								<!-- Assign Cleaner Button -->
+								<button type="button" class="btn btn-sm btn-outline-primary"
+									onclick="showAssignModal('<%=booking.getBooking_id()%>')"
+									title="Assign Cleaner">
+									<i class="fas fa-envelope"></i> Assign
+								</button>
 
-                                        <% if (booking.getStatusDescription().equalsIgnoreCase("Incomplete")) { %>
-                                            <!-- Mark as In Progress -->
-                                            <form action="<%=request.getContextPath()%>/UpdateBookingStatusServlet" method="post">
-                                                <input type="hidden" name="bookingId" value="<%=booking.getBooking_id()%>">
-                                                <input type="hidden" name="statusId" value="2">
-                                                <button type="submit" class="btn btn-sm btn-outline-info" title="Mark as In Progress">
-                                                    <i class="fas fa-clock"></i>
-                                                </button>
-                                            </form>
-                                        <% } else if (booking.getStatusDescription().equalsIgnoreCase("In Progress")) { %>
-                                            <!-- Mark as Completed -->
-                                            <form action="<%=request.getContextPath()%>/UpdateBookingStatusServlet" method="post">
-                                                <input type="hidden" name="bookingId" value="<%=booking.getBooking_id()%>">
-                                                <input type="hidden" name="statusId" value="3">
-                                                <button type="submit" class="btn btn-sm btn-outline-success" title="Mark as Completed">
-                                                    <i class="fas fa-check"></i>
-                                                </button>
-                                            </form>
-                                        <% } %>
-                                    </div>
-                                </td>
-                            </tr>
+								<%
+								if (booking.getStatusDescription().equalsIgnoreCase("Incomplete")) {
+								%>
+								<!-- Mark as In Progress -->
+								<form
+									action="<%=request.getContextPath()%>/UpdateBookingStatusServlet"
+									method="post">
+									<input type="hidden" name="bookingId"
+										value="<%=booking.getBooking_id()%>"> <input
+										type="hidden" name="statusId" value="2">
+									<button type="submit" class="btn btn-sm btn-outline-info"
+										title="Mark as In Progress">
+										<i class="fas fa-clock"></i>
+									</button>
+								</form>
+								<%
+								} else if (booking.getStatusDescription().equalsIgnoreCase("In Progress")) {
+								%>
+								<!-- Mark as Completed -->
+								<form
+									action="<%=request.getContextPath()%>/UpdateBookingStatusServlet"
+									method="post">
+									<input type="hidden" name="bookingId"
+										value="<%=booking.getBooking_id()%>"> <input
+										type="hidden" name="statusId" value="3">
+									<button type="submit" class="btn btn-sm btn-outline-success"
+										title="Mark as Completed">
+										<i class="fas fa-check"></i>
+									</button>
+								</form>
+								<%
+								}
+								%>
+
+								<%
+								if (!booking.getStatusDescription().equalsIgnoreCase("Completed")) {
+								%>
+								<!-- Delete Booking Button -->
+								<form
+									action="<%=request.getContextPath()%>/DeleteBookingServlet"
+									method="post"
+									onsubmit="return confirm('Are you sure you want to delete this booking? This action cannot be undone.');">
+									<input type="hidden" name="bookingId"
+										value="<%=booking.getBooking_id()%>">
+									<button type="submit" class="btn btn-sm btn-outline-danger"
+										title="Delete Booking">
+										<i class="fas fa-trash"></i>
+									</button>
+								</form>
+								<%
+								}
+								%>
+							</div>
+						</td>
+					</tr>
                         <% } %>
                     </tbody>
                 </table>

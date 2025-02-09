@@ -926,6 +926,47 @@ public class BookingDAO {
         }
         
         return bookingsWithUserDetails;
+    };
+    
+    public static void deleteBookingById(int booking_id) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            // config
+            Class.forName("org.postgresql.Driver");
+            String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+            connection = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+            // query
+            String ps = "DELETE FROM Booking WHERE booking_id = ?";
+
+            statement = connection.prepareStatement(ps);
+            statement.setInt(1, booking_id);
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Booking successfully deleted");
+            } else {
+                throw new SQLException("(probably) wrong input or no booking found with booking id: " + booking_id);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
     
 }
