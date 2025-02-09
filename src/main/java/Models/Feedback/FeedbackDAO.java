@@ -103,6 +103,123 @@ public class FeedbackDAO {
 		}
 
 		return feedbackList;
+	};
+	
+	public List<Feedback> getAllFeedback() {
+		List<Feedback> feedbackList = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+			String sql = """
+					    SELECT f.*, u.name as username, s.name as service_name
+					    FROM feedback f
+					    LEFT JOIN users u ON f.user_id = u.user_id
+					    LEFT JOIN service s ON f.service_id = s.service_id
+					    ORDER BY f.created_at DESC
+					""";
+		
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				Feedback feedback = new Feedback();
+				feedback.setFeedback_id(rs.getInt("feedback_id"));
+			    feedback.setUser_id(rs.getInt("user_id"));
+			    feedback.setService_id(rs.getInt("service_id"));
+			    feedback.setRating(rs.getInt("rating"));
+			    feedback.setComments(rs.getString("comments"));
+			    feedback.setCreated_at(rs.getTimestamp("created_at"));
+			    feedback.setUsername(rs.getString("username"));
+			    feedback.setService_name(rs.getString("service_name"));
+			    feedbackList.add(feedback);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return feedbackList;
+	};
+	
+	public List<Feedback> getFeedbackByRating(int rating) {
+		List<Feedback> feedbackRatingList = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+			conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+			
+			String sql = """
+		            SELECT f.*, u.name as username, s.name as service_name
+		            FROM feedback f 
+		            LEFT JOIN users u ON f.user_id = u.user_id 
+		            LEFT JOIN service s ON f.service_id = s.service_id
+		            WHERE f.rating = ? 
+		            ORDER BY f.created_at DESC
+		        """;
+			
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, rating);
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				Feedback feedback = new Feedback();
+			    feedback.setFeedback_id(rs.getInt("feedback_id"));
+			    feedback.setUser_id(rs.getInt("user_id"));
+			    feedback.setService_id(rs.getInt("service_id"));
+			    feedback.setRating(rs.getInt("rating"));
+			    feedback.setComments(rs.getString("comments"));
+			    feedback.setCreated_at(rs.getTimestamp("created_at"));
+			    feedback.setUsername(rs.getString("username"));
+			    feedback.setService_name(rs.getString("service_name"));
+			    feedbackRatingList.add(feedback);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return feedbackRatingList;
 	}
+	
+	public boolean deleteFeedback(int feedbackId) {
+	    Connection conn = null;
+	    PreparedStatement stmt = null;
+
+	    try {
+	        // Load the PostgreSQL JDBC Driver
+	        Class.forName("org.postgresql.Driver");
+
+	        // Database connection details
+	        String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+	        conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+
+	        String sql = "DELETE FROM feedback WHERE feedback_id = ?";
+
+	        stmt = conn.prepareStatement(sql);
+	        stmt.setInt(1, feedbackId);
+	        int rowsAffected = stmt.executeUpdate();
+	        return rowsAffected > 0;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (stmt != null) stmt.close();
+	            if (conn != null) conn.close();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return false;
+	};
+
 	
 }
