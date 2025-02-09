@@ -9,7 +9,9 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Models.Booking.Booking;
 import Models.Booking.BookingDAO;
@@ -41,21 +43,25 @@ public class BookingStatusServlet extends HttpServlet {
         }
 
         try {
-            // Instantiate DAO classes
-            StatusDAO statusDAO = new StatusDAO();
-            BookingDAO bookingDAO = new BookingDAO();
-            
             // Get bookings based on role
             List<Booking> bookings;
             if(loggedInUser.getRole_id() == 1) {
-                bookings = bookingDAO.getAllBookingsForAdmin();
+                bookings = BookingDAO.getAllBookingsForAdmin();
             } else {
-                bookings = bookingDAO.getBookingsByUserId(loggedInUser.getUser_id());
+                bookings = BookingDAO.getBookingsByUserId(loggedInUser.getUser_id());
             }
             
-            // Add status descriptions
+            // First get all statuses at once
+            Map<Integer, Status> statusMap = new HashMap<>();
+            List<Status> allStatuses = new StatusDAO().getAllStatuses();
+            for (Status status : allStatuses) {
+                statusMap.put(status.getStatus_id(), status);
+            }
+
+            // Update booking descriptions using the status map
             for (Booking booking : bookings) {
-                Status status = statusDAO.getStatus(booking.getStatus_id());
+                int statusId = booking.getStatus_id();
+                Status status = statusMap.get(statusId);
                 booking.setStatusDescription(status != null ? status.getName() : "Unknown");
             }
             
