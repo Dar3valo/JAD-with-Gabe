@@ -66,7 +66,7 @@
         <%
         List<Booking> bookings = (List<Booking>) session.getAttribute("bookings");
         if (bookings == null) {
-        	RequestDispatcher rd = request.getRequestDispatcher("/BookingStatusServlet");
+            RequestDispatcher rd = request.getRequestDispatcher("/BookingStatusServlet");
             rd.forward(request, response);
             return;
         } else if (bookings.isEmpty()) {
@@ -79,21 +79,29 @@
                 </a>
             </div>
         <% } else { %>
-		<div class="row mb-3">
-			<div class="col-md-4">
-				<input type="text" id="searchInput" class="form-control"
-					placeholder="Search bookings...">
-			</div>
-			<div class="col-md-3">
-				<select class="form-select" id="statusFilter">
-					<option value="">All Statuses</option>
-					<option value="Incomplete">Incomplete</option>
-					<option value="In Progress">In Progress</option>
-					<option value="Completed">Completed</option>
-				</select>
-			</div>
-		</div>
-		<div class="table-responsive booking-table">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search bookings...">
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" id="statusFilter">
+                        <option value="">All Statuses</option>
+                        <option value="Incomplete">Incomplete</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+                <!-- New Refresh Button -->
+                <div class="col-md-2">
+                    <form action="<%=request.getContextPath()%>/RefreshBookingServlet" method="get">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-sync-alt me-2"></i>Refresh
+                        </button>
+                    </form>
+                </div>
+                <!-- End New Refresh Button -->
+            </div>
+            <div class="table-responsive booking-table">
                 <table class="table table-hover mb-0">
                     <thead class="table-dark">
                         <tr>
@@ -138,37 +146,33 @@
                                             </button>
                                         </form>
 
-								<% if (booking.getStatusDescription().equalsIgnoreCase("Incomplete")) { %>
-								<!-- Mark as In Progress -->
-								<form
-									action="<%=request.getContextPath()%>/UpdateBookingStatusServlet"
-									method="post">
-									<input type="hidden" name="bookingId"
-										value="<%=booking.getBooking_id()%>"> <input
-										type="hidden" name="statusId" value="2">
-									<button type="submit" class="btn btn-sm btn-outline-info"
-										title="Mark as In Progress">
-										<i class="fas fa-clock"></i>
-									</button>
-								</form>
+                                        <!-- Assign Cleaner Button -->
+                                        <button type="button" class="btn btn-sm btn-outline-primary" 
+                                                onclick="showAssignModal('<%= booking.getBooking_id() %>')"
+                                                title="Assign Cleaner">
+                                            <i class="fas fa-envelope"></i> Assign
+                                        </button>
 
-								<%
-								} else if (booking.getStatusDescription().equalsIgnoreCase("In Progress")) {
-								%>
-								<!-- Mark as Completed -->
-								<form
-									action="<%=request.getContextPath()%>/UpdateBookingStatusServlet"
-									method="post">
-									<input type="hidden" name="bookingId"
-										value="<%=booking.getBooking_id()%>"> <input
-										type="hidden" name="statusId" value="3">
-									<button type="submit" class="btn btn-sm btn-outline-success"
-										title="Mark as Completed">
-										<i class="fas fa-check"></i>
-									</button>
-								</form>
-								<% } %>
-							</div>
+                                        <% if (booking.getStatusDescription().equalsIgnoreCase("Incomplete")) { %>
+                                            <!-- Mark as In Progress -->
+                                            <form action="<%=request.getContextPath()%>/UpdateBookingStatusServlet" method="post">
+                                                <input type="hidden" name="bookingId" value="<%=booking.getBooking_id()%>">
+                                                <input type="hidden" name="statusId" value="2">
+                                                <button type="submit" class="btn btn-sm btn-outline-info" title="Mark as In Progress">
+                                                    <i class="fas fa-clock"></i>
+                                                </button>
+                                            </form>
+                                        <% } else if (booking.getStatusDescription().equalsIgnoreCase("In Progress")) { %>
+                                            <!-- Mark as Completed -->
+                                            <form action="<%=request.getContextPath()%>/UpdateBookingStatusServlet" method="post">
+                                                <input type="hidden" name="bookingId" value="<%=booking.getBooking_id()%>">
+                                                <input type="hidden" name="statusId" value="3">
+                                                <button type="submit" class="btn btn-sm btn-outline-success" title="Mark as Completed">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                            </form>
+                                        <% } %>
+                                    </div>
                                 </td>
                             </tr>
                         <% } %>
@@ -190,33 +194,89 @@
         <% } %>
     </div>
 
+    <!-- Assign Cleaner Modal -->
+    <div class="modal fade" id="assignModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Assign Cleaner</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="assignForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="bookingIdInput" name="input_booking_id">
+                        <div class="mb-3">
+                            <label for="emailInput" class="form-label">Cleaner's Email</label>
+                            <input type="email" class="form-control" id="emailInput" name="input_email" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Send Assignment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    <script>
+        // Search and filter functionality
+        document.getElementById('searchInput').addEventListener('keyup', filterTable);
+        document.getElementById('statusFilter').addEventListener('change', filterTable);
+
+        function filterTable() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase().trim();
+            const statusFilter = document.getElementById('statusFilter').value.toLowerCase().trim();
+            const rows = document.querySelectorAll('.booking-row');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const statusElement = row.querySelector('.status-badge');
+                const status = statusElement ? statusElement.textContent.toLowerCase().trim() : '';
+                
+                const matchesStatus = statusFilter === '' || status === statusFilter;
+                const matchesSearch = searchText === '' || text.includes(searchText);
+                
+                row.style.display = (matchesSearch && matchesStatus) ? '' : 'none';
+            });
+        }
+
+        // Modal handling
+        let assignModal;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            assignModal = new bootstrap.Modal(document.getElementById('assignModal'));
+            
+            document.getElementById('assignForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                
+                fetch('<%=request.getContextPath()%>/SendCleanerEmailServlet?' + new URLSearchParams(formData))
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Email sent successfully to cleaner!');
+                            assignModal.hide();
+                        } else {
+                            alert('Error: ' + (data.error || 'Failed to send email'));
+                        }
+                    })
+                    .catch(error => {
+                        alert('Error: ' + error);
+                    });
+            });
+        });
+
+        function showAssignModal(bookingId) {
+            document.getElementById('bookingIdInput').value = bookingId;
+            assignModal.show();
+        }
+    </script>
+
     <%-- Include Footer --%>
     <jsp:include page="footer.jsp" />
-
-	<script>
-    document.getElementById('searchInput').addEventListener('keyup', filterTable);
-    document.getElementById('statusFilter').addEventListener('change', filterTable);
-
-    function filterTable() {
-        const searchText = document.getElementById('searchInput').value.toLowerCase().trim();
-        const statusFilter = document.getElementById('statusFilter').value.toLowerCase().trim();
-        const rows = document.querySelectorAll('.booking-row');
-
-        rows.forEach(row => {
-            const text = row.textContent.toLowerCase();
-            const statusElement = row.querySelector('.status-badge');
-            const status = statusElement ? statusElement.textContent.toLowerCase().trim() : '';
-            
-            // More precise status matching
-            const matchesStatus = statusFilter === '' || status === statusFilter;
-            const matchesSearch = searchText === '' || text.includes(searchText);
-            
-            row.style.display = (matchesSearch && matchesStatus) ? '' : 'none';
-        });
-    }
-</script>
 </body>
 </html>
