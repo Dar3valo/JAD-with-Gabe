@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Models.Booking.Booking;
 import Models.Booking.BookingDAO;
@@ -70,12 +72,18 @@ public class UpdateBookingStatusServlet extends HttpServlet {
 					} else {
 						bookings = BookingDAO.getBookingsByUserId(loggedInUser.getUser_id());
 					}
+		            
+		            Map<Integer, Status> statusMap = new HashMap<>();
+		            List<Status> allStatuses = new StatusDAO().getAllStatuses();
+		            for (Status temp_status : allStatuses) {
+		                statusMap.put(temp_status.getStatus_id(), temp_status);
+		            }
 
-					// Add status descriptions for each booking
-					for (Booking booking : bookings) {
-						Status bookingStatus = StatusDAO.getStatus(booking.getStatus_id());
-						booking.setStatusDescription(bookingStatus != null ? bookingStatus.getName() : "Unknown");
-					}
+		            for (Booking booking : bookings) {
+		                int temp_statusId = booking.getStatus_id();
+		                Status temp_status = statusMap.get(temp_statusId);
+		                booking.setStatusDescription(temp_status != null ? temp_status.getName() : "Unknown");
+		            }
 
 					session.setAttribute("bookings", bookings);
 					request.setAttribute("message", "Status updated successfully to " + status.getName());
