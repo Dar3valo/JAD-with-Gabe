@@ -51,14 +51,12 @@ public class BookingStatusServlet extends HttpServlet {
                 bookings = BookingDAO.getBookingsByUserId(loggedInUser.getUser_id());
             }
             
-            // First get all statuses at once
             Map<Integer, Status> statusMap = new HashMap<>();
             List<Status> allStatuses = new StatusDAO().getAllStatuses();
             for (Status status : allStatuses) {
                 statusMap.put(status.getStatus_id(), status);
             }
 
-            // Update booking descriptions using the status map
             for (Booking booking : bookings) {
                 int statusId = booking.getStatus_id();
                 Status status = statusMap.get(statusId);

@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Models.Booking.Booking;
 import Models.Booking.BookingDAO;
@@ -52,14 +54,12 @@ public class UpdateBookingStatusServlet extends HttpServlet {
 			int statusId = Integer.parseInt(request.getParameter("statusId"));
 
 			// Validate status exists
-			StatusDAO statusDAO = new StatusDAO();
-			Status status = statusDAO.getStatus(statusId);
+			Status status = StatusDAO.getStatus(statusId);
 			if (status == null) {
 				request.setAttribute("error", "Invalid status ID");
 			} else {
 				// Update booking status
-				BookingDAO bookingDAO = new BookingDAO();
-				boolean updated = bookingDAO.updateBookingStatus(bookingId, statusId);
+				boolean updated = BookingDAO.updateBookingStatus(bookingId, statusId);
 
 				if (updated) {
 					// Get fresh bookings list immediately after update
@@ -68,16 +68,22 @@ public class UpdateBookingStatusServlet extends HttpServlet {
 					List<Booking> bookings;
 
 					if (loggedInUser.getRole_id() == 1) {
-						bookings = bookingDAO.getAllBookingsForAdmin();
+						bookings = BookingDAO.getAllBookingsForAdmin();
 					} else {
-						bookings = bookingDAO.getBookingsByUserId(loggedInUser.getUser_id());
+						bookings = BookingDAO.getBookingsByUserId(loggedInUser.getUser_id());
 					}
+		            
+		            Map<Integer, Status> statusMap = new HashMap<>();
+		            List<Status> allStatuses = new StatusDAO().getAllStatuses();
+		            for (Status temp_status : allStatuses) {
+		                statusMap.put(temp_status.getStatus_id(), temp_status);
+		            }
 
-					// Add status descriptions for each booking
-					for (Booking booking : bookings) {
-						Status bookingStatus = statusDAO.getStatus(booking.getStatus_id());
-						booking.setStatusDescription(bookingStatus != null ? bookingStatus.getName() : "Unknown");
-					}
+		            for (Booking booking : bookings) {
+		                int temp_statusId = booking.getStatus_id();
+		                Status temp_status = statusMap.get(temp_statusId);
+		                booking.setStatusDescription(temp_status != null ? temp_status.getName() : "Unknown");
+		            }
 
 					session.setAttribute("bookings", bookings);
 					request.setAttribute("message", "Status updated successfully to " + status.getName());
