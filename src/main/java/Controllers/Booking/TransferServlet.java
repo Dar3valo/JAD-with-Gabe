@@ -90,7 +90,8 @@ public class TransferServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/public/HTML/checkOut.jsp");
                 return;
             } else {
-                session.setAttribute("allBookedItems", bookedItems);
+            	session.removeAttribute("allCartItems");
+                session.setAttribute("bookingInfo", bookedItems);
                 response.sendRedirect(request.getContextPath() + "/public/HTML/bookingList.jsp");
             }
 

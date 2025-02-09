@@ -220,3 +220,23 @@ input[type="radio"] {
     color: #6b7280;
     font-size: 0.875rem;
 }
+
+.feedback-table {
+	background: white;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rating-badge {
+	padding: 6px 12px;
+	border-radius: 20px;
+	font-weight: 500;
+}
+
+.filter-section {
+	background: white;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	margin-bottom: 20px;
+	padding: 20px;
+}
