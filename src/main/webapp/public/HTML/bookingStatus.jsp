@@ -77,11 +77,26 @@
                 </a>
             </div>
         <% } else { %>
-            <div class="table-responsive booking-table">
+		<div class="row mb-3">
+			<div class="col-md-4">
+				<input type="text" id="searchInput" class="form-control"
+					placeholder="Search bookings...">
+			</div>
+			<div class="col-md-3">
+				<select class="form-select" id="statusFilter">
+					<option value="">All Statuses</option>
+					<option value="Pending">Pending</option>
+					<option value="Incomplete">Incomplete</option>
+					<option value="Completed">Completed</option>
+				</select>
+			</div>
+		</div>
+		<div class="table-responsive booking-table">
                 <table class="table table-hover mb-0">
                     <thead class="table-dark">
                         <tr>
                             <th>Booking ID</th>
+                            <th>Customer</th>
                             <th>Date</th>
                             <th>Address</th>
                             <th>Service</th>
@@ -97,6 +112,7 @@
                         %>
                             <tr class="booking-row">
                                 <td>#<%= booking.getBooking_id() %></td>
+                                <td><%= booking.getUsername() %></td>
                                 <td><%= dateFormat.format(booking.getBooking_date()) %></td>
                                 <td><%= booking.getMain_address() %></td>
                                 <td><%= booking.getServiceName() %></td>
@@ -175,5 +191,24 @@
 
     <%-- Include Footer --%>
     <jsp:include page="footer.jsp" />
+    
+    <script>
+    document.getElementById('searchInput').addEventListener('keyup', filterTable);
+    document.getElementById('statusFilter').addEventListener('change', filterTable);
+
+    function filterTable() {
+        const searchText = document.getElementById('searchInput').value.toLowerCase();
+        const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+        const rows = document.querySelectorAll('.booking-row');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            const status = row.querySelector('.status-badge').textContent.toLowerCase();
+            const matchesSearch = text.includes(searchText);
+            const matchesStatus = statusFilter === '' || status.includes(statusFilter);
+            row.style.display = matchesSearch && matchesStatus ? '' : 'none';
+        });
+    }
+</script>
 </body>
 </html>
