@@ -19,6 +19,7 @@ public class Booking {
     private String username;
     private String userEmail;
     private String bookingPeriod;
+    private String status_name;
     private String status_description;
 
 	public Booking(int booking_id, Date booking_date, String special_request, String main_address, int postal_code,
@@ -198,5 +199,13 @@ public class Booking {
 
 	public void setStatusDescription(String status_description) {
 		this.status_description = status_description;
+	}
+	
+	public String getStatusName() {
+		return status_name;
+	}
+
+	public void setStatusName(String status_name) {
+		this.status_name = status_name;
 	}
 }
