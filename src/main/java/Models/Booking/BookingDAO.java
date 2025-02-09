@@ -768,7 +768,64 @@ public class BookingDAO {
     		e.printStackTrace();
     	}
     	return bookingDetail;
-    }
+    };
+    
+    public List<Booking> getAllBookingsForAdmin() {
+    	List<Booking> adminBookingsView = new ArrayList<>();
+    	Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+        	Class.forName("org.postgresql.Driver");
+            String dbUrl = "jdbc:postgresql://ep-shiny-queen-a5kntisz.us-east-2.aws.neon.tech/neondb?sslmode=require";
+            conn = DriverManager.getConnection(dbUrl, "neondb_owner", "mMGl0ndLNXD6");
+            
+			String sql = """
+					SELECT
+					    b.*,
+					    u.name AS Customer,
+					    s.name AS service_name,
+					    CONCAT(TO_CHAR(sc.start_time, 'HH24:MI'), ' - ', TO_CHAR(sc.end_time, 'HH24:MI')) AS booking_period
+					FROM
+					    booking b
+					JOIN
+					    users u
+					ON
+					    b.user_id = u.user_id
+					JOIN
+					    service s
+					ON
+					    b.service_id = s.service_id
+					JOIN
+					    schedule sc
+					ON
+					    b.schedule_id = sc.schedule_id
+					ORDER BY
+					    b.booking_date DESC;
+					""";
+			
+			stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            
+            while(rs.next()) {
+            	 Booking booking = new Booking();
+                 booking.setBooking_id(rs.getInt("booking_id"));
+                 booking.setUser_id(rs.getInt("user_id"));
+                 booking.setBooking_date(rs.getDate("booking_date"));
+                 booking.setMain_address(rs.getString("main_address"));
+                 booking.setStatus_id(rs.getInt("status_id"));
+                 booking.setServiceName(rs.getString("service_name"));
+                 booking.setBookingPeriod(rs.getString("booking_period"));
+                 booking.setUsername(rs.getString("Customer"));
+                 adminBookingsView.add(booking);
+            }
+        	
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }
+        return adminBookingsView;
+    };
     
     // Booking Query with User Details
     public static List<Booking> getBookingsWithUserDetails() {

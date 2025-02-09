@@ -41,7 +41,7 @@
     <%-- Permission Check --%>
     <%
     {
-        request.setAttribute("pageAccessLevel", "1");
+        request.setAttribute("pageAccessLevel", "2");
         RequestDispatcher rd = request.getRequestDispatcher("/checkAccessServlet");
         rd.include(request, response);
         
@@ -77,26 +77,11 @@
                 </a>
             </div>
         <% } else { %>
-		<div class="row mb-3">
-			<div class="col-md-4">
-				<input type="text" id="searchInput" class="form-control"
-					placeholder="Search bookings...">
-			</div>
-			<div class="col-md-3">
-				<select class="form-select" id="statusFilter">
-					<option value="">All Statuses</option>
-					<option value="Pending">Pending</option>
-					<option value="Incomplete">Incomplete</option>
-					<option value="Completed">Completed</option>
-				</select>
-			</div>
-		</div>
-		<div class="table-responsive booking-table">
+            <div class="table-responsive booking-table">
                 <table class="table table-hover mb-0">
                     <thead class="table-dark">
                         <tr>
                             <th>Booking ID</th>
-                            <th>Customer</th>
                             <th>Date</th>
                             <th>Address</th>
                             <th>Service</th>
@@ -112,7 +97,6 @@
                         %>
                             <tr class="booking-row">
                                 <td>#<%= booking.getBooking_id() %></td>
-                                <td><%= booking.getUsername() %></td>
                                 <td><%= dateFormat.format(booking.getBooking_date()) %></td>
                                 <td><%= booking.getMain_address() %></td>
                                 <td><%= booking.getServiceName() %></td>
@@ -128,42 +112,13 @@
                                 </td>
                                 <td>
                                     <div class="btn-group">
-                                        <!-- View Details Button -->
+                                        <!-- View Details Button only -->
                                         <form action="<%=request.getContextPath() %>/ViewBookingDetailsServlet" method="get">
                                             <input type="hidden" name="bookingId" value="<%= booking.getBooking_id() %>">
                                             <button type="submit" class="btn btn-sm btn-outline-primary" title="View Details">
                                                 <i class="fas fa-eye"></i>
                                             </button>
                                         </form>
-                                        
-                                        <% if (booking.getStatusDescription().equalsIgnoreCase("Pending")) { %>
-                                            <!-- Mark as Incomplete -->
-                                            <form action="<%=request.getContextPath() %>/UpdateBookingStatusServlet" method="post">
-                                                <input type="hidden" name="bookingId" value="<%= booking.getBooking_id() %>">
-                                                <input type="hidden" name="statusId" value="2">
-                                                <button type="submit" class="btn btn-sm btn-outline-warning" title="Mark as Incomplete">
-                                                    <i class="fas fa-clock"></i>
-                                                </button>
-                                            </form>
-                                            
-                                            <!-- Mark as Completed -->
-                                            <form action="<%=request.getContextPath() %>/UpdateBookingStatusServlet" method="post">
-                                                <input type="hidden" name="bookingId" value="<%= booking.getBooking_id() %>">
-                                                <input type="hidden" name="statusId" value="3">
-                                                <button type="submit" class="btn btn-sm btn-outline-success" title="Mark as Completed">
-                                                    <i class="fas fa-check"></i>
-                                                </button>
-                                            </form>
-                                        <% } else if (booking.getStatusDescription().equalsIgnoreCase("Incomplete")) { %>
-                                            <!-- Mark as Completed -->
-                                            <form action="<%=request.getContextPath() %>/UpdateBookingStatusServlet" method="post">
-                                                <input type="hidden" name="bookingId" value="<%= booking.getBooking_id() %>">
-                                                <input type="hidden" name="statusId" value="3">
-                                                <button type="submit" class="btn btn-sm btn-outline-success" title="Mark as Completed">
-                                                    <i class="fas fa-check"></i>
-                                                </button>
-                                            </form>
-                                        <% } %>
                                     </div>
                                 </td>
                             </tr>
@@ -191,24 +146,5 @@
 
     <%-- Include Footer --%>
     <jsp:include page="footer.jsp" />
-    
-    <script>
-    document.getElementById('searchInput').addEventListener('keyup', filterTable);
-    document.getElementById('statusFilter').addEventListener('change', filterTable);
-
-    function filterTable() {
-        const searchText = document.getElementById('searchInput').value.toLowerCase();
-        const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
-        const rows = document.querySelectorAll('.booking-row');
-
-        rows.forEach(row => {
-            const text = row.textContent.toLowerCase();
-            const status = row.querySelector('.status-badge').textContent.toLowerCase();
-            const matchesSearch = text.includes(searchText);
-            const matchesStatus = statusFilter === '' || status.includes(statusFilter);
-            row.style.display = matchesSearch && matchesStatus ? '' : 'none';
-        });
-    }
-</script>
 </body>
 </html>
