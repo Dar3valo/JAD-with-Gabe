@@ -46,8 +46,14 @@ public class BookingStatusServlet extends HttpServlet {
         BookingDAO bookingDAO = new BookingDAO();
 
         // Get bookings by user ID
-        List<Booking> bookings = bookingDAO.getBookingsByUserId(userId);
+        List<Booking> bookings;
+        if(loggedInUser.getRole_id() == 1) {
+        	bookings = bookingDAO.getAllBookingsForAdmin();
+        }else {
+        	bookings = bookingDAO.getBookingsByUserId(loggedInUser.getUser_id());
+        }
 
+        
         // Add status descriptions for each booking
         for (Booking booking : bookings) {
             Status status = statusDAO.getStatus(booking.getStatus_id());
