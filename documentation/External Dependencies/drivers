@@ -20,3 +20,11 @@
 4. JSON-java for more organised handling of JSON data, driver used is this version:
 	20250107:
 	https://github.com/stleary/JSON-java
+	
+5. Javax mail and javax activation for sending out of email, driver used is this version:
+	Javax mail: 1.4,7
+	Install link: https://mvnrepository.com/artifact/javax.mail/mail/1.4.7
+	
+	Javax activation: 1.1.1
+	Install link: https://mvnrepository.com/artifact/javax.activation/activation/1.1.1
+	

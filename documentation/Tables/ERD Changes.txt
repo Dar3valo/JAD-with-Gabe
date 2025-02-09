@@ -17,3 +17,6 @@
 
 -ERD V4.0
 	Modified the cart such that the cart will store the information 	after the user submits the booking form
+
+-ERD 5.0
+	Modified the user table such that the reset token will be stored inside the user table when the user uses his email address to request for a reset password link. Also added a token_expiry attribute along with the reset_token so that users cannot update their passwords after the tokens for that expires in 5 minutes.
