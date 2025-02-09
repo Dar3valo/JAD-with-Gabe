@@ -47,12 +47,14 @@ public class FeedbackRatingFilterServlet extends HttpServlet {
 	            feedbackList = feedbackDAO.getFeedbackByRating(rating);
 	            // Redirect with the rating parameter
 	            session.setAttribute("feedbackList", feedbackList);
-	            response.sendRedirect(request.getContextPath() + "/public/HTML/feedbackManagement.jsp?rating=" + rating);
+	            session.setAttribute("dashboardCurrentFocus", "feedback-report-content");
+	            response.sendRedirect(request.getContextPath() + "/public/HTML/dashboard.jsp?rating=" + rating);
 	        } else {
 	            // If no rating specified, get all feedback
 	            feedbackList = feedbackDAO.getAllFeedback();
 	            session.setAttribute("feedbackList", feedbackList);
-	            response.sendRedirect(request.getContextPath() + "/public/HTML/feedbackManagement.jsp");
+	            session.setAttribute("dashboardCurrentFocus", "feedback-report-content");
+	            response.sendRedirect(request.getContextPath() + "/public/HTML/dashboard.jsp");
 	        }
 	        
 	    } catch (Exception e) {

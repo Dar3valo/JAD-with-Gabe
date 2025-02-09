@@ -36,7 +36,8 @@ public class DeleteFeedbackServlet extends HttpServlet {
 
             if (feedbackIdStr == null || feedbackIdStr.trim().isEmpty()) {
                 session.setAttribute("errorMessage", "Feedback ID is missing.");
-                response.sendRedirect(request.getContextPath() + "/public/HTML/feedbackManagement.jsp");
+	            session.setAttribute("dashboardCurrentFocus", "feedback-report-content");
+                response.sendRedirect(request.getContextPath() + "/public/HTML/dashboard.jsp");
                 return;
             }
 
@@ -45,7 +46,8 @@ public class DeleteFeedbackServlet extends HttpServlet {
 
             if (feedbackId <= 0) {
                 session.setAttribute("errorMessage", "Invalid feedback ID.");
-                response.sendRedirect(request.getContextPath() + "/public/HTML/feedbackManagement.jsp");
+	            session.setAttribute("dashboardCurrentFocus", "feedback-report-content");
+                response.sendRedirect(request.getContextPath() + "/public/HTML/dashboard.jsp");
                 return;
             }
 
@@ -59,16 +61,16 @@ public class DeleteFeedbackServlet extends HttpServlet {
                 session.setAttribute("errorMessage", "Failed to delete feedback.");
             }
 
-            // Redirect to feedback management page
-            response.sendRedirect(request.getContextPath() + "/public/HTML/feedbackManagement.jsp");
+            session.setAttribute("dashboardCurrentFocus", "feedback-report-content");
+            response.sendRedirect(request.getContextPath() + "/public/HTML/dashboard.jsp");
         } catch (NumberFormatException e) {
             e.printStackTrace();
             session.setAttribute("errorMessage", "Invalid feedback ID format.");
-            response.sendRedirect(request.getContextPath() + "/public/HTML/feedbackManagement.jsp");
+            response.sendRedirect(request.getContextPath() + "/public/HTML/error.jsp");
         } catch (Exception e) {
             e.printStackTrace();
             session.setAttribute("errorMessage", "An error occurred while deleting feedback.");
-            response.sendRedirect(request.getContextPath() + "/public/HTML/feedbackManagement.jsp");
+            response.sendRedirect(request.getContextPath() + "/public/HTML/error.jsp");
         }
 	}
 
