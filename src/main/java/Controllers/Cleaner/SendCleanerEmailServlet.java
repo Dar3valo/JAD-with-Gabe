@@ -50,22 +50,22 @@ public class SendCleanerEmailServlet extends HttpServlet {
             // allow date based on booking
             // ============================
             
-//            String[] times = booking.getBookingPeriod().split(" - ");
-//            LocalTime startTime = LocalTime.parse(times[0], DateTimeFormatter.ofPattern("HH:mm"));
-//            LocalTime endTime = LocalTime.parse(times[1], DateTimeFormatter.ofPattern("HH:mm"));
-//
-//            LocalDateTime bookingDate = booking.getBooking_date().toLocalDate().atTime(startTime);
-//            LocalDateTime allowedStart = bookingDate.minusHours(1);
-//            LocalDateTime allowedEnd = booking.getBooking_date().toLocalDate().atTime(endTime).plusHours(1);
+            String[] times = booking.getBookingPeriod().split(" - ");
+            LocalTime startTime = LocalTime.parse(times[0], DateTimeFormatter.ofPattern("HH:mm"));
+            LocalTime endTime = LocalTime.parse(times[1], DateTimeFormatter.ofPattern("HH:mm"));
+
+            LocalDateTime bookingDate = booking.getBooking_date().toLocalDate().atTime(startTime);
+            LocalDateTime allowedStart = bookingDate.minusHours(1);
+            LocalDateTime allowedEnd = booking.getBooking_date().toLocalDate().atTime(endTime).plusHours(1);
             
             // =======================================
             // always going to allow access (test)
             // =======================================
             
-            LocalDateTime startDateTime = LocalDateTime.of(2025, 2, 9, 13, 0); // February 9, 2025 1:00 PM
-            LocalDateTime endDateTime = LocalDateTime.of(2027, 2, 20, 14, 0);  // February 20, 2027 2:00 PM
-            LocalDateTime allowedStart = startDateTime.minusHours(1);
-            LocalDateTime allowedEnd = endDateTime.plusHours(1);
+//            LocalDateTime startDateTime = LocalDateTime.of(2025, 2, 9, 13, 0); // February 9, 2025 1:00 PM
+//            LocalDateTime endDateTime = LocalDateTime.of(2027, 2, 20, 14, 0);  // February 20, 2027 2:00 PM
+//            LocalDateTime allowedStart = startDateTime.minusHours(1);
+//            LocalDateTime allowedEnd = endDateTime.plusHours(1);
             
             // ==========================
             // never allow access (test)
